@@ -21,7 +21,7 @@ def getsheets(inputfile, fileformat):
     df1 = pd.ExcelFile(inputfile)
     for x in df1.sheet_names:
         print(x + '.' + fileformat, 'Done!')
-        df2 = pd.read_excel(inputfile, sheet_name=x)
+        df2 = pd.read_excel(inputfile, sheet_name=x, keep_default_na=False)
         filename = os.path.join(name, x + '.' + fileformat)
         if fileformat == 'csv':
             df2.to_csv(filename, index=False)
