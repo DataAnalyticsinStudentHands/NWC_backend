@@ -8,101 +8,105 @@ const url = "mongodb://localhost:27017/";
 const dbName = "nwc";
 const collection = "participants";
 
+// Exceute MongoDB function
+function ExecuteDB(jsonBulk, logInfo) {
+  MongoClient.connect(
+    url,
+    { useNewUrlParser: true, useUnifiedTopology: true },
+    (err, client) => {
+      if (err) throw err;
+
+      client
+        .db(dbName)
+        .collection(collection)
+        .bulkWrite(jsonBulk, (err, res) => {
+          if (err) throw err;
+
+          console.log(`${logInfo}: ${JSON.stringify(res)}`);
+          client.close();
+        });
+    }
+  );
+};
+
 // basic information
 function createBasic() {
   csvtojson()
-  .fromFile("../data/sample/Basic Data.csv")
-  .then(csvData => {
-    
-    // clean up keys
-    let jsonBulk = [];
-    for(var i = 0; i < csvData.length; i++) {
+    .fromFile("../data/sample/Basic Data.csv")
+    .then(csvData => {
+
+      // clean up keys
+      let jsonBulk = [];
+      for (var i = 0; i < csvData.length; i++) {
         var obj = csvData[i];
-    
+
         var key, keys = Object.keys(obj);
-        var newobj={}
+        var newobj = {}
         for (var n = 0; n < keys.length; n++) {
-            key = keys[n];
-            // remove instructions (in parantheses)
-            newkey = key.replace(/\([^()]*\)/g, '');
-            newkey = newkey.replace(/\s+/g, '_').toLowerCase();
-            // remove trailing underscore
-            if (endsWith(newkey, '_'))
-                newkey = newkey.slice(0, -1) //'abcde'
-            // remove unknown
-            if (obj[key] === "unknown")
-                obj[key] = "";
-            newobj[newkey] = obj[key];
+          key = keys[n];
+          // remove instructions (in parantheses)
+          newkey = key.replace(/\([^()]*\)/g, '');
+          newkey = newkey.replace(/\s+/g, '_').toLowerCase();
+          // remove trailing underscore
+          if (endsWith(newkey, '_'))
+            newkey = newkey.slice(0, -1) //'abcde'
+          // remove unknown
+          if (obj[key] === "unknown")
+            obj[key] = "";
+          newobj[newkey] = obj[key];
         }
         var bulk = {
           updateOne: {
             filter: { id: obj['ID'] },
             update: { $set: newobj },
-            upsert: true 
+            upsert: true
           }
         };
         // remove Notes
         delete newobj['notes'];
 
         jsonBulk.push(bulk);
-    }
-
-    MongoClient.connect(
-      url,
-      { useNewUrlParser: true, useUnifiedTopology: true },
-      (err, client) => {
-        if (err) throw err;
-
-        client
-          .db(dbName)
-          .collection(collection)
-          .bulkWrite(jsonBulk, (err, res) => {
-            if (err) throw err;
-
-            console.log(`Basic: ${JSON.stringify(res)}`);
-            client.close();
-          });
       }
-    ); 
-  });
+
+      ExecuteDB(jsonBulk, "Basic");
+    });
 };
 
 // race/ethnicity
 function updateRace() {
   csvtojson()
-  .fromFile("../data/sample/Racial and Ethnic Identifiers.csv")
-  .then(csvData => {
-    
-    // clean up keys
-    let jsonBulk = [];
-    for(var i = 0; i < csvData.length; i++) {
+    .fromFile("../data/sample/Racial and Ethnic Identifiers.csv")
+    .then(csvData => {
+
+      // clean up keys
+      let jsonBulk = [];
+      for (var i = 0; i < csvData.length; i++) {
         var obj = csvData[i];
-    
+
         var key, keys = Object.keys(obj);
-        var newobj={}
+        var newobj = {}
         for (var n = 0; n < keys.length; n++) {
-            key = keys[n];
-            // remove instructions (in parantheses)
-            newkey = key.replace(/\([^()]*\)/g, '');
-            newkey = newkey.replace(/\//g, '');
-            newkey = newkey.replace(/\s+/g, '_').toLowerCase();
-            // remove trailing underscore
-            if (endsWith(newkey, '_'))
-                newkey = newkey.slice(0, -1) //'abcde'
-            // remove unknown
-            console.log(obj[key]);
-            if (obj[key] === "unknown")
-                obj[key] = "";
-            else if (obj[key] === "Yes")
-                obj[key] = 1;
-            else if (obj[key] === "N/A")
-                obj[key] = 0;
-            newobj[newkey] = obj[key];
+          key = keys[n];
+          // remove instructions (in parantheses)
+          newkey = key.replace(/\([^()]*\)/g, '');
+          newkey = newkey.replace(/\//g, '');
+          newkey = newkey.replace(/\s+/g, '_').toLowerCase();
+          // remove trailing underscore
+          if (endsWith(newkey, '_'))
+            newkey = newkey.slice(0, -1) //'abcde'
+          // remove unknown
+          if (obj[key] === "unknown")
+            obj[key] = "";
+          else if (obj[key] === "Yes")
+            obj[key] = 1;
+          else if (obj[key] === "N/A")
+            obj[key] = 0;
+          newobj[newkey] = obj[key];
         }
         var bulk = {
           updateOne: {
             filter: { id: obj['ID'] },
-            update: { $set: { race: newobj }}
+            update: { $set: { race: newobj } }
           }
         };
         // remove Notes
@@ -111,26 +115,10 @@ function updateRace() {
         delete newobj['name'];
 
         jsonBulk.push(bulk);
-    }
-
-    MongoClient.connect(
-      url,
-      { useNewUrlParser: true, useUnifiedTopology: true },
-      (err, client) => {
-        if (err) throw err;
-
-        client
-          .db(dbName)
-          .collection(collection)
-          .bulkWrite(jsonBulk, (err, res) => {
-            if (err) throw err;
-
-            console.log(`Race Ethnicity: ${JSON.stringify(res)}`);
-            client.close();
-          });
       }
-    ); 
-  });
+
+      ExecuteDB(jsonBulk, "Race Ethnicity");
+    });
 };
 
 //ed and career
@@ -172,62 +160,46 @@ function updateEdCareer() {
         var bulk = {
           updateOne: {
             filter: { id: obj['ID'] },
-            update: { $set: {edc: newobj} }
+            update: { $addToSet: { edc: newobj } }
           }
         }
 
         jsonBulk.push(bulk);
       }
 
-      MongoClient.connect(
-        url,
-        { useNewUrlParser: true, useUnifiedTopology: true },
-        (err, client) => {
-          if (err) throw err;
-
-          client
-            .db(dbName)
-            .collection(collection)
-            .bulkWrite(jsonBulk, (err, res) => {
-              if (err) throw err;
-
-              console.log(`Ed & Career: ${JSON.stringify(res)}`);
-              client.close();
-            });
-        }
-      );
+      ExecuteDB(jsonBulk, "Ed & Career");
     });
 };
 
-  //electoral politics
+//electoral politics
 function updateElectoralPolitics() {
   csvtojson()
-  .fromFile("../data/sample/Electoral Politics.csv")
-  .then(csvData => {
-    
-    // clean up keys and create array for query
-    let jsonBulk = [];
-    for(var i = 0; i < csvData.length; i++) {
+    .fromFile("../data/sample/Electoral Politics.csv")
+    .then(csvData => {
+
+      // clean up keys and create array for query
+      let jsonBulk = [];
+      for (var i = 0; i < csvData.length; i++) {
         var obj = csvData[i];
-        
+
         var key, keys = Object.keys(obj);
-        var newobj={}
+        var newobj = {}
         for (var n = 0; n < keys.length; n++) {
-            key = keys[n];
-            // remove instructions (in parantheses)
-            newkey = key.replace(/\([^()]*\)/g, '');
-            // remove colons, single quote, forward slash
-            newkey = newkey.replace(/:/g, '');
-            newkey = newkey.replace(/'/g, '');
-            newkey = newkey.replace(/\//g, '');
-            newkey = newkey.replace(/\s+/g, '_').toLowerCase();
-            // remove trailing underscore
-            if (endsWith(newkey, '_'))
-                newkey = newkey.slice(0, -1) //'abcde'
-            // remove unknown
-            if (obj[key] === "unknown")
-                obj[key] = "";
-            newobj[newkey] = obj[key];
+          key = keys[n];
+          // remove instructions (in parantheses)
+          newkey = key.replace(/\([^()]*\)/g, '');
+          // remove colons, single quote, forward slash
+          newkey = newkey.replace(/:/g, '');
+          newkey = newkey.replace(/'/g, '');
+          newkey = newkey.replace(/\//g, '');
+          newkey = newkey.replace(/\s+/g, '_').toLowerCase();
+          // remove trailing underscore
+          if (endsWith(newkey, '_'))
+            newkey = newkey.slice(0, -1) //'abcde'
+          // remove unknown
+          if (obj[key] === "unknown")
+            obj[key] = "";
+          newobj[newkey] = obj[key];
         }
 
         // remove Notes
@@ -237,64 +209,98 @@ function updateElectoralPolitics() {
 
         var bulk = {
           updateOne: {
-            filter: {id: obj['ID']},
-            update: {$set: { poli: newobj }}
+            filter: { id: obj['ID'] },
+            update: { $addToSet: { poli: newobj } }
           }
         }
 
-        
+
         jsonBulk.push(bulk);
-    }
-
-    MongoClient.connect(
-      url,
-      { useNewUrlParser: true, useUnifiedTopology: true },
-      (err, client) => {
-        if (err) throw err;
-
-        client
-          .db(dbName)
-          .collection(collection)
-          .bulkWrite(jsonBulk, (err, res) => {
-            if (err) throw err;
-
-            console.log(`Electoral Politics: ${JSON.stringify(res)}`);
-            client.close();
-          });
       }
-    );
-  });
+
+      ExecuteDB(jsonBulk, "Electoral Politics");
+    });
 };
 
 //role at NWC
 function updateRoleNWC() {
   csvtojson()
-  .fromFile("../data/sample/Role at NWC.csv")
-  .then(csvData => {
-    
-    // clean up keys and create array for query
-    let jsonBulk = [];
-    for(var i = 0; i < csvData.length; i++) {
+    .fromFile("../data/sample/Role at NWC.csv")
+    .then(csvData => {
+
+      // clean up keys and create array for query
+      let jsonBulk = [];
+      for (var i = 0; i < csvData.length; i++) {
         var obj = csvData[i];
-        
+
         var key, keys = Object.keys(obj);
-        var newobj={}
+        var newobj = {}
         for (var n = 0; n < keys.length; n++) {
-            key = keys[n];
-            // remove instructions (in parantheses)
-            newkey = key.replace(/\([^()]*\)/g, '');
-            // remove colons, single quote, forward slash
-            newkey = newkey.replace(/:/g, '');
-            newkey = newkey.replace(/'/g, '');
-            newkey = newkey.replace(/,/g, '');
-            newkey = newkey.replace(/\//g, '');
-            newkey = newkey.replace(/\s+/g, '_').toLowerCase();
-            // remove trailing underscore
-            if (endsWith(newkey, '_'))
-                newkey = newkey.slice(0, -1) //'abcde'
-            // remove unknown
-            if (obj[key] === "unknown")
-                obj[key] = "";
+          key = keys[n];
+          // remove instructions (in parantheses)
+          newkey = key.replace(/\([^()]*\)/g, '');
+          // remove colons, single quote, forward slash
+          newkey = newkey.replace(/:/g, '');
+          newkey = newkey.replace(/'/g, '');
+          newkey = newkey.replace(/,/g, '');
+          newkey = newkey.replace(/\//g, '');
+          newkey = newkey.replace(/\s+/g, '_').toLowerCase();
+          // remove trailing underscore
+          if (endsWith(newkey, '_'))
+            newkey = newkey.slice(0, -1) //'abcde'
+          // remove unknown
+          if (obj[key] === "unknown")
+            obj[key] = "";
+          newobj[newkey] = obj[key];
+        }
+
+        // remove Notes
+        delete newobj['notes'];
+        delete newobj['id'];
+        delete newobj['name'];
+
+        var bulk = {
+          updateOne: {
+            filter: { id: obj['ID'] },
+            update: { $set: { roles: newobj } }
+          }
+        };
+
+        jsonBulk.push(bulk);
+      }
+
+      ExecuteDB(jsonBulk, "Role at NW");
+    });
+};
+
+//organizations
+function updateOrganizational() {
+  csvtojson()
+    .fromFile("../data/sample/Organizational & Political.csv")
+    .then(csvData => {
+
+      // clean up keys and create array for query
+      let jsonBulk = [];
+      for (var i = 0; i < csvData.length; i++) {
+        var obj = csvData[i];
+
+        var key, keys = Object.keys(obj);
+        var newobj = {}
+        for (var n = 0; n < keys.length; n++) {
+          key = keys[n];
+          // remove colons, single quote, forward slash
+          newkey = key.replace(/\(/g, '');
+          newkey = newkey.replace(/\)/g, '');
+          newkey = newkey.replace(/:/g, '');
+          newkey = newkey.replace(/'/g, '');
+          newkey = newkey.replace(/,/g, '');
+          newkey = newkey.replace(/\//g, '');
+          newkey = newkey.replace(/\s+/g, '_').toLowerCase();
+          // remove trailing underscore
+          if (endsWith(newkey, '_'))
+            newkey = newkey.slice(0, -1) //'abcde'
+          // remove unknown
+          if (obj[key] == "yes")
             newobj[newkey] = obj[key];
         }
 
@@ -305,64 +311,99 @@ function updateRoleNWC() {
 
         var bulk = {
           updateOne: {
-            filter: {id: obj['ID']},
-            update: {$set: {roles: newobj}}
+            filter: { id: obj['ID'] },
+            update: { $set: { orgs: newobj } }
           }
         };
-        
+
         jsonBulk.push(bulk);
-    }
-
-    MongoClient.connect(
-      url,
-      { useNewUrlParser: true, useUnifiedTopology: true },
-      (err, client) => {
-        if (err) throw err;
-
-        client
-          .db(dbName)
-          .collection(collection)
-          .bulkWrite(jsonBulk, (err, res) => {
-            if (err) throw err;
-
-            console.log(`Role at NWC: ${JSON.stringify(res)}`);
-            client.close();
-          });
       }
-    );
-  });
+
+      ExecuteDB(jsonBulk, "Organizations");
+    });
+};
+
+//organizations
+function updateLeadership() {
+  csvtojson()
+    .fromFile("../data/sample/Leadership in Org.csv")
+    .then(csvData => {
+
+      // clean up keys and create array for query
+      let jsonBulk = [];
+      for (var i = 0; i < csvData.length; i++) {
+        var obj = csvData[i];
+
+        var key, keys = Object.keys(obj);
+        var newobj = {}
+        for (var n = 0; n < keys.length; n++) {
+          key = keys[n];
+          // remove instructions (in parantheses)
+          newkey = key.replace(/\([^()]*\)/g, '');
+          // remove colons, single quote, forward slash
+          newkey = newkey.replace(/:/g, '');
+          newkey = newkey.replace(/'/g, '');
+          newkey = newkey.replace(/,/g, '');
+          newkey = newkey.replace(/\//g, '');
+          newkey = newkey.replace(/\s+/g, '_').toLowerCase();
+          // remove trailing underscore
+          if (endsWith(newkey, '_'))
+            newkey = newkey.slice(0, -1) //'abcde'
+          // remove unknown
+          if (obj[key] === "unknown")
+            obj[key] = "";
+          newobj[newkey] = obj[key];
+        }
+
+        // remove Notes
+        delete newobj['notes'];
+        delete newobj['id'];
+        delete newobj['name'];
+
+        var bulk = {
+          updateOne: {
+            filter: { id: obj['ID'] },
+            update: { $addToSet: { leadership: newobj } }
+          }
+        };
+
+        jsonBulk.push(bulk);
+      }
+
+      ExecuteDB(jsonBulk, "Leadership");
+    });
 };
 
 //sources
 function updateSources() {
   csvtojson()
-  .fromFile("../data/sample/Sources.csv")
-  .then(csvData => {
-    
-    // clean up keys and create array for query
-    let jsonBulk = [];
-    for(var i = 0; i < csvData.length; i++) {
+    .fromFile("../data/sample/Sources.csv")
+    .then(csvData => {
+
+      // clean up keys and create array for query
+      let jsonBulk = [];
+      for (var i = 0; i < csvData.length; i++) {
         var obj = csvData[i];
-        
+
         var key, keys = Object.keys(obj);
-        var newobj={}
+        var newobj = {}
         for (var n = 0; n < keys.length; n++) {
-            key = keys[n];
-            // remove instructions (in parantheses)
-            newkey = key.replace(/\([^()]*\)/g, '');
-            // remove colons, single quote, forward slash
-            newkey = newkey.replace(/:/g, '');
-            newkey = newkey.replace(/'/g, '');
-            newkey = newkey.replace(/,/g, '');
-            newkey = newkey.replace(/\//g, '');
-            newkey = newkey.replace(/\s+/g, '_').toLowerCase();
-            // remove trailing underscore
-            if (endsWith(newkey, '_'))
-                newkey = newkey.slice(0, -1) //'abcde'
-            // remove unknown
-            if (obj[key] === "unknown")
-                obj[key] = "";
-            newobj[newkey] = obj[key];
+          key = keys[n];
+          // remove instructions (in parantheses)
+          newkey = key.replace(/\([^()]*\)/g, '');
+          // remove colons, single quote, forward slash
+          newkey = newkey.replace(/:/g, '');
+          newkey = newkey.replace(/'/g, '');
+          newkey = newkey.replace(/,/g, '');
+          newkey = newkey.replace(/\//g, '');
+          newkey = newkey.replace(/\s+/g, '_').toLowerCase();
+          // remove trailing underscore
+          if (endsWith(newkey, '_'))
+            newkey = newkey.slice(0, -1) //'abcde'
+          // remove unknown
+          if (obj[key] === "unknown")
+            obj[key] = "";
+          newobj[newkey] = obj[key];
         }
 
         // remove Notes
@@ -372,32 +413,16 @@ function updateSources() {
 
         var bulk = {
           updateOne: {
-            filter: {id: obj['ID']},
-            update: {$set: {sources: newobj}}
+            filter: { id: obj['ID'] },
+            update: { $set: { sources: newobj } }
           }
         };
-        
+
         jsonBulk.push(bulk);
-    }
-
-    MongoClient.connect(
-      url,
-      { useNewUrlParser: true, useUnifiedTopology: true },
-      (err, client) => {
-        if (err) throw err;
-
-        client
-          .db(dbName)
-          .collection(collection)
-          .bulkWrite(jsonBulk, (err, res) => {
-            if (err) throw err;
-
-            console.log(`Sources: ${JSON.stringify(res)}`);
-            client.close();
-          });
       }
-    );
-  });
+
+      ExecuteDB(jsonBulk, "Sources");
+    });
 };
 
 const argv = yargs
@@ -426,6 +451,16 @@ const argv = yargs
     description: 'Insert/Update roles at NWC',
     type: 'boolean',
   })
+  .option('leadership', {
+    alias: 'l',
+    description: 'Insert/Update Leadership in Voluntary Organizations',
+    type: 'boolean',
+  })
+  .option('organizations', {
+    alias: 'o',
+    description: 'Insert/Update organizational & political',
+    type: 'boolean',
+  })
   .option('sources', {
     alias: 's',
     description: 'Insert/Update sources',
@@ -449,6 +484,12 @@ if (argv.p) {
 }
 if (argv.r) {
   updateRoleNWC();
+}
+if (argv.l) {
+  updateLeadership();
+}
+if (argv.o) {
+  updateOrganizational();
 }
 if (argv.s) {
   updateSources();
