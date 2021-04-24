@@ -1,7 +1,7 @@
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
 const csvtojson = require("csvtojson");
-const { endsWith } = require('lodash');
+const { endsWith, startsWith } = require('lodash');
 const yargs = require('yargs');
 
 const url = "mongodb://localhost:27017/";
@@ -39,7 +39,6 @@ function createBasic() {
       let jsonBulk = [];
       for (var i = 0; i < csvData.length; i++) {
         var obj = csvData[i];
-
         var key, keys = Object.keys(obj);
         var newobj = {}
         for (var n = 0; n < keys.length; n++) {
@@ -53,8 +52,22 @@ function createBasic() {
           // remove unknown
           if (obj[key] === "unknown")
             obj[key] = "";
-          newobj[newkey] = obj[key];
+          
+          // making sure new objects have the correct type before import
+          if(startsWith(newkey, 'age') || startsWith(newkey, 'total') || startsWith(newkey, 'median')) {
+            var numberValue = parseInt(obj[key]);
+            newobj[newkey] = numberValue;
+          } else if (startsWith(newkey, 'longitude') || startsWith(newkey, 'latitude')) {
+            var numberValue = parseFloat(obj[key]);
+            newobj[newkey] = numberValue;
+          } else {
+            newobj[newkey] = obj[key];
+          }
         }
+
+        // remove Notes
+        delete newobj['notes'];
+
         var bulk = {
           updateOne: {
             filter: { id: obj['ID'] },
@@ -62,9 +75,6 @@ function createBasic() {
             upsert: true
           }
         };
-        // remove Notes
-        delete newobj['notes'];
-
         jsonBulk.push(bulk);
       }
 
@@ -149,7 +159,14 @@ function updateEdCareer() {
           // remove unknown
           if (obj[key] === "unknown")
             obj[key] = "";
-          newobj[newkey] = obj[key];
+
+          // making sure new objects have the correct type before import
+          if (newkey.includes('year')) {
+            var numberValue = parseInt(obj[key]);
+            newobj[newkey] = numberValue;
+          } else {
+            newobj[newkey] = obj[key];
+          }
         }
 
         // remove Notes etc.
@@ -199,7 +216,13 @@ function updateElectoralPolitics() {
           // remove unknown
           if (obj[key] === "unknown")
             obj[key] = "";
-          newobj[newkey] = obj[key];
+          // making sure new objects have the correct type before import
+          if (newkey.includes('year')) {
+            var numberValue = parseInt(obj[key]);
+            newobj[newkey] = numberValue;
+          } else {
+            newobj[newkey] = obj[key];
+          }
         }
 
         // remove Notes
@@ -274,56 +297,6 @@ function updateRoleNWC() {
 };
 
 //organizations
-function updateOrganizational() {
-  csvtojson()
-    .fromFile("../data/sample/Organizational & Political.csv")
-    .then(csvData => {
-
-      // clean up keys and create array for query
-      let jsonBulk = [];
-      for (var i = 0; i < csvData.length; i++) {
-        var obj = csvData[i];
-
-        var key, keys = Object.keys(obj);
-        var newobj = {}
-        for (var n = 0; n < keys.length; n++) {
-          key = keys[n];
-          // remove colons, single quote, forward slash
-          newkey = key.replace(/\(/g, '');
-          newkey = newkey.replace(/\)/g, '');
-          newkey = newkey.replace(/:/g, '');
-          newkey = newkey.replace(/'/g, '');
-          newkey = newkey.replace(/,/g, '');
-          newkey = newkey.replace(/\//g, '');
-          newkey = newkey.replace(/\s+/g, '_').toLowerCase();
-          // remove trailing underscore
-          if (endsWith(newkey, '_'))
-            newkey = newkey.slice(0, -1) //'abcde'
-          // remove unknown
-          if (obj[key] == "yes")
-            newobj[newkey] = obj[key];
-        }
-
-        // remove Notes
-        delete newobj['notes'];
-        delete newobj['id'];
-        delete newobj['name'];
-
-        var bulk = {
-          updateOne: {
-            filter: { id: obj['ID'] },
-            update: { $set: { orgs: newobj } }
-          }
-        };
-
-        jsonBulk.push(bulk);
-      }
-
-      ExecuteDB(jsonBulk, "Organizations");
-    });
-};
-
-//organizations
 function updateLeadership() {
   csvtojson()
     .fromFile("../data/sample/Leadership in Org.csv")
@@ -371,6 +344,56 @@ function updateLeadership() {
       }
 
       ExecuteDB(jsonBulk, "Leadership");
+    });
+};
+
+//organizations
+function updateOrganizational() {
+  csvtojson()
+    .fromFile("../data/sample/Organizational & Political.csv")
+    .then(csvData => {
+
+      // clean up keys and create array for query
+      let jsonBulk = [];
+      for (var i = 0; i < csvData.length; i++) {
+        var obj = csvData[i];
+
+        var key, keys = Object.keys(obj);
+        var newobj = {}
+        for (var n = 0; n < keys.length; n++) {
+          key = keys[n];
+          // remove colons, single quote, forward slash
+          newkey = key.replace(/\(/g, '');
+          newkey = newkey.replace(/\)/g, '');
+          newkey = newkey.replace(/:/g, '');
+          newkey = newkey.replace(/'/g, '');
+          newkey = newkey.replace(/,/g, '');
+          newkey = newkey.replace(/\//g, '');
+          newkey = newkey.replace(/\s+/g, '_').toLowerCase();
+          // remove trailing underscore
+          if (endsWith(newkey, '_'))
+            newkey = newkey.slice(0, -1) //'abcde'
+          // remove unknown
+          if (obj[key] == "yes")
+            newobj[newkey] = obj[key];
+        }
+
+        // remove Notes
+        delete newobj['notes'];
+        delete newobj['id'];
+        delete newobj['name'];
+
+        var bulk = {
+          updateOne: {
+            filter: { id: obj['ID'] },
+            update: { $set: { orgs: newobj } }
+          }
+        };
+
+        jsonBulk.push(bulk);
+      }
+
+      ExecuteDB(jsonBulk, "Organizations");
     });
 };
 
@@ -431,14 +454,14 @@ const argv = yargs
     description: 'Insert/Update new particpants',
     type: 'boolean',
   })
-  .option('ed', {
-    alias: 'e',
-    description: 'Insert/Update ed & career',
-    type: 'boolean',
-  })
   .option('race', {
     alias: 'a',
     description: 'Insert/Update race/ethnicity',
+    type: 'boolean',
+  })
+  .option('ed', {
+    alias: 'e',
+    description: 'Insert/Update ed & career',
     type: 'boolean',
   })
   .option('politics', {
@@ -473,11 +496,11 @@ const argv = yargs
 if (argv.b) {
   createBasic();
 }
-if (argv.e) {
-  updateEdCareer();
-}
 if (argv.a) {
   updateRace();
+}
+if (argv.e) {
+  updateEdCareer();
 }
 if (argv.p) {
   updateElectoralPolitics();
