@@ -1,7 +1,7 @@
 'use strict';
 
-const _ = require('lodash');
-const { default: createStrapi } = require('strapi');
+//const _ = require('lodash');
+//const { default: createStrapi } = require('strapi');
 
 /**
  * An asynchronous bootstrap function that runs before
@@ -14,7 +14,7 @@ const { default: createStrapi } = require('strapi');
  */
 
 module.exports = () => {
-  const csv2Json = require('convert-csv-to-json');
+  /*const csv2Json = require('convert-csv-to-json');
   const json = csv2Json.getJsonFromCsv("./data/sample.csv");
 
   json.forEach(async entry => {
@@ -27,9 +27,9 @@ module.exports = () => {
         name: entry.name,
         age: entry.age,
       });
-    }/*else {
-      strapi.services.person.update({id: result.id}, entry);
-    }*/
+    }//else {
+      //strapi.services.person.update({id: result.id}, entry);
+    //}
   })
-  console.log(json);
+  console.log(json);*/
 };
