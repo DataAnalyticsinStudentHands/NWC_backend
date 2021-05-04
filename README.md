@@ -2,7 +2,7 @@
 
 ## ongendb Branch:
 
-In this branch, I will get things working with a general db before pulling changes to the server and running the server
+In this branch, I will get things working with a general db before pulling changes to the server, setting the official keys/uris, and running the server
 
 Still in development.
 
