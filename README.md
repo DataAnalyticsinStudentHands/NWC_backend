@@ -15,8 +15,8 @@ This backend is split up into 2 main functionalities: managing excel/tabular dat
 ### Excel/Tabular Data:
 Excel/Tabular data can be uploaded by running:
 
-    // **Still needa figure out this**
-    npm run import_participants <filename>
+    // **need to run from root of project to use .env file**
+    node methods/import_participants
 
 Excel/Tabular data's api is handled in api/participants.
 

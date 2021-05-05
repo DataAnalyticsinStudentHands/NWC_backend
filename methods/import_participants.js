@@ -1,3 +1,7 @@
+require('dotenv').config()
+
+console.log(process.env.DATABASE_NAME);
+
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
 const csvtojson = require("csvtojson");

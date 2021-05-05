@@ -7,8 +7,7 @@
     "develop": "strapi develop",
     "start": "strapi start",
     "build": "strapi build",
-    "strapi": "strapi",
-    "import_participants": "node methods/import_participants"
+    "strapi": "strapi"
   },
   "devDependencies": {},
   "dependencies": {
