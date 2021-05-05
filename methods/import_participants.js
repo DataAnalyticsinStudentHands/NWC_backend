@@ -1,6 +1,5 @@
 require('dotenv').config()
 
-console.log(process.env.DATABASE_NAME);
 
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
@@ -8,8 +7,8 @@ const csvtojson = require("csvtojson");
 const { endsWith, startsWith } = require('lodash');
 const yargs = require('yargs');
 
-const url = "mongodb://localhost:27017/";
-const dbName = "nwc";
+const url = process.env.DATABASE_URL //"mongodb://localhost:27017/";
+const dbName = process.env.DATABASE_NAME //"nwc";
 const collection = "participants";
 
 // Exceute MongoDB function

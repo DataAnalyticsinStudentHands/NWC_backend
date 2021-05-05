@@ -1,0 +1,23 @@
+{
+  "kind": "collectionType",
+  "collectionName": "array_t_ests",
+  "info": {
+    "name": "ArrayTEst"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "SomeList": {
+      "type": "enumeration",
+      "enum": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ]
+    }
+  }
+}
