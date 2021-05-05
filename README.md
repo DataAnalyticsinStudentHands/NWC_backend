@@ -12,7 +12,7 @@
 ### The Organization:
 This backend is split up into 2 main functionalities: managing excel/tabular data and managing stories for participants.
 
-### Excel/Tabular Data
+### Excel/Tabular Data:
 Excel/Tabular data can be uploaded by running:
 
     // **Still needa figure out this**
@@ -20,5 +20,5 @@ Excel/Tabular data can be uploaded by running:
 
 Excel/Tabular data's api is handled in api/participants.
 
-### Story Data
+### Story Data:
 Story data will be handled with more or less elementary Strapi functionality, with basic upload and find apis. [This 3-5 minute get-started page should detail thoroughly how to handle this aspect.](https://strapi.io/documentation/developer-docs/latest/getting-started/quick-start.html)
