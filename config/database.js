@@ -4,12 +4,12 @@ module.exports = ({ env }) => ({
     default: {
       connector: 'mongoose',
       settings: {
-        host: env('DATABASE_HOST', 'cluster0.rea5p.mongodb.net'),
+        host: env('DATABASE_HOST', process.env.DATABASE_HOST),
         srv: env.bool('DATABASE_SRV', true),
         port: env.int('DATABASE_PORT', 27017),
-        database: env('DATABASE_NAME', 'nwcback'),
-        username: env('DATABASE_USERNAME', 'mtn819'),
-        password: env('DATABASE_PASSWORD', '12Donuts'),
+        database: env('DATABASE_NAME', process.env.DATABASE_NAME),
+        username: env('DATABASE_USERNAME', process.env.DATABASE_USERNAME),
+        password: env('DATABASE_PASSWORD', process.env.DATABASE_PASSWORD),
       },
       options: {
         authenticationDatabase: env('AUTHENTICATION_DATABASE', null),
