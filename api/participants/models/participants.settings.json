@@ -1,0 +1,77 @@
+{
+  "kind": "collectionType",
+  "collectionName": "participants",
+  "info": {
+    "name": "participants"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "age_in_1977": {
+      "type": "integer"
+    },
+    "gender": {
+      "type": "string"
+    },
+    "latitude_of_residence_in_1977": {
+      "type": "float"
+    },
+    "longitude_of_residence_in_1977": {
+      "type": "float"
+    },
+    "marital_classification": {
+      "type": "string"
+    },
+    "median_household_income_of_place_of_residence": {
+      "type": "integer"
+    },
+    "name": {
+      "type": "string"
+    },
+    "name_of_spouse": {
+      "type": "string"
+    },
+    "place_of_birth": {
+      "type": "string"
+    },
+    "religion": {
+      "type": "string"
+    },
+    "residence_in_1977": {
+      "type": "string"
+    },
+    "sexual_orientation": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "total_number_of_children": {
+      "type": "integer"
+    },
+    "total_population_of_place_of_residence": {
+      "type": "integer"
+    },
+    "race": {
+      "type": "json"
+    },
+    "poli": {
+      "type": "json"
+    },
+    "edc": {
+      "type": "json"
+    },
+    "roles": {
+      "type": "json"
+    },
+    "orgs": {
+      "type": "json"
+    },
+    "sources": {
+      "type": "json"
+    }
+  }
+}

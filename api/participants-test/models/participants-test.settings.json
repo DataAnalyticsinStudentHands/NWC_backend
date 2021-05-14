@@ -1,0 +1,17 @@
+{
+  "kind": "collectionType",
+  "collectionName": "participants_tests",
+  "info": {
+    "name": "Participants_Test"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "Sources": {
+      "type": "json"
+    }
+  }
+}

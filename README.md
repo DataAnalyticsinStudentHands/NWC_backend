@@ -8,15 +8,27 @@
     // create the proper .env file in the root folder of the project
     // to run in development
     npm run develop
+    // to run for real
+    npm start
 
 ### The Organization:
 This backend is split up into 2 main functionalities: managing excel/tabular data and managing stories for participants.
 
 ### Excel/Tabular Data:
-Excel/Tabular data can be uploaded by running:
+- First make excel to CSV
+- then run
+- OPTIONS:
+- fill from bottom of import_participants file
+- -b should work as first one to test
 
-    // **need to run from root of project to use .env file**
-    node methods/import_participants
+
+Excel/Tabular data can be uploaded by running:
+    
+    //this turns xlsx into csv
+    python methods/getsheets.py data/sample.xlsx -f csv
+    // **must put a copy of the .env file into methods/**
+    cd methods
+    node import_participants -b -a -e -p -r -l -o -s
 
 Excel/Tabular data's api is handled in api/participants.
 
