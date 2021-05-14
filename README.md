@@ -15,14 +15,7 @@
 This backend is split up into 2 main functionalities: managing excel/tabular data and managing stories for participants.
 
 ### Excel/Tabular Data:
-- First make excel to CSV
-- then run
-- OPTIONS:
-- fill from bottom of import_participants file
-- -b should work as first one to test
-
-
-Excel/Tabular data can be uploaded by running:
+Excel/Tabular data can be uploaded by running the following:
     
     //this turns xlsx into csv
     python methods/getsheets.py data/sample.xlsx -f csv
