@@ -1,8 +1,8 @@
 {
   "kind": "collectionType",
-  "collectionName": "array_tests2s",
+  "collectionName": "content_homes",
   "info": {
-    "name": "ArrayTests2"
+    "name": "CONTENT_Home"
   },
   "options": {
     "increments": true,
@@ -10,8 +10,11 @@
     "draftAndPublish": true
   },
   "attributes": {
-    "somefield": {
-      "type": "json"
+    "Section": {
+      "type": "string"
+    },
+    "Content": {
+      "type": "richtext"
     }
   }
 }
