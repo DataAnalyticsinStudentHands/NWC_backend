@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "frames",
+  "info": {
+    "name": "Frame",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "SlidingImageLeft": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "MainText": {
+      "type": "richtext"
+    },
+    "story": {
+      "model": "story",
+      "via": "frames"
+    },
+    "TypeOfFrame": {
+      "type": "enumeration",
+      "enum": [
+        "Frame_Type_1",
+        "Frame_Type_2",
+        "Frame_Type_3",
+        "Frame_Type_4",
+        "Frame_Type_5",
+        "Frame_Type_6"
+      ]
+    }
+  }
+}
