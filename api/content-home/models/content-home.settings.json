@@ -1,9 +1,8 @@
 {
   "kind": "collectionType",
-  "collectionName": "people",
+  "collectionName": "content_homes",
   "info": {
-    "name": "person",
-    "description": ""
+    "name": "CONTENT_Home"
   },
   "options": {
     "increments": true,
@@ -11,11 +10,11 @@
     "draftAndPublish": true
   },
   "attributes": {
-    "name": {
+    "Section": {
       "type": "string"
     },
-    "age": {
-      "type": "integer"
+    "Content": {
+      "type": "richtext"
     }
   }
 }
