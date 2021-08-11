@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "content_home_maps",
+  "info": {
+    "name": "CONTENT_Home_MapPoint",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "Map": {
+      "type": "enumeration",
+      "enum": [
+        "downtown",
+        "thirdward_uh",
+        "museum_district",
+        "magnolia_park",
+        "astrodome"
+      ]
+    },
+    "Name": {
+      "type": "string"
+    },
+    "x": {
+      "type": "decimal"
+    },
+    "y": {
+      "type": "decimal"
+    },
+    "Description": {
+      "type": "richtext"
+    }
+  }
+}

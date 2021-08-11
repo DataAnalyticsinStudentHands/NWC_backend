@@ -2,48 +2,48 @@
   "routes": [
     {
       "method": "GET",
-      "path": "/stories",
-      "handler": "story.find",
+      "path": "/content-home-maps",
+      "handler": "content-home-map.find",
       "config": {
         "policies": []
       }
     },
     {
       "method": "GET",
-      "path": "/stories/count",
-      "handler": "story.count",
+      "path": "/content-home-maps/count",
+      "handler": "content-home-map.count",
       "config": {
         "policies": []
       }
     },
     {
       "method": "GET",
-      "path": "/stories/:id",
-      "handler": "story.findOne",
+      "path": "/content-home-maps/:id",
+      "handler": "content-home-map.findOne",
       "config": {
         "policies": []
       }
     },
     {
       "method": "POST",
-      "path": "/stories",
-      "handler": "story.create",
+      "path": "/content-home-maps",
+      "handler": "content-home-map.create",
       "config": {
         "policies": []
       }
     },
     {
       "method": "PUT",
-      "path": "/stories/:id",
-      "handler": "story.update",
+      "path": "/content-home-maps/:id",
+      "handler": "content-home-map.update",
       "config": {
         "policies": []
       }
     },
     {
       "method": "DELETE",
-      "path": "/stories/:id",
-      "handler": "story.delete",
+      "path": "/content-home-maps/:id",
+      "handler": "content-home-map.delete",
       "config": {
         "policies": []
       }
