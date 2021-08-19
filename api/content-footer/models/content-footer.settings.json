@@ -1,0 +1,20 @@
+{
+  "kind": "collectionType",
+  "collectionName": "content_footers",
+  "info": {
+    "name": "CONTENT_Footer"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "Section": {
+      "type": "string"
+    },
+    "Content": {
+      "type": "richtext"
+    }
+  }
+}
