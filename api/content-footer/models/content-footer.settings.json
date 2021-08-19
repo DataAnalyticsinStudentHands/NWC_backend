@@ -1,8 +1,8 @@
 {
   "kind": "collectionType",
-  "collectionName": "stories",
+  "collectionName": "content_footers",
   "info": {
-    "name": "Story"
+    "name": "CONTENT_Footer"
   },
   "options": {
     "increments": true,
@@ -10,12 +10,11 @@
     "draftAndPublish": true
   },
   "attributes": {
-    "Title": {
+    "Section": {
       "type": "string"
     },
-    "frames": {
-      "via": "story",
-      "collection": "frame"
+    "Content": {
+      "type": "richtext"
     }
   }
 }
