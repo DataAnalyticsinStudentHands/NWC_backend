@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "content_abouts",
+  "info": {
+    "name": "CONTENT_About",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "Section": {
+      "type": "string"
+    },
+    "Content": {
+      "type": "richtext"
+    }
+  }
+}
