@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_general_positions",
+  "info": {
+    "name": "POSITION",
+    "icon": "map-marker-alt"
+  },
+  "options": {},
+  "attributes": {
+    "X": {
+      "type": "integer"
+    },
+    "Y": {
+      "type": "integer"
+    }
+  }
+}

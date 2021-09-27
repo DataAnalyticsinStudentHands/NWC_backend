@@ -1,0 +1,55 @@
+{
+  "kind": "collectionType",
+  "collectionName": "map_points",
+  "info": {
+    "name": "MAP_POINTS",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "MAP": {
+      "type": "enumeration",
+      "enum": [
+        "ASTRO",
+        "DOWNTOWN",
+        "MAGNOLIA",
+        "MUSEUM",
+        "THIRD"
+      ]
+    },
+    "TITLE": {
+      "type": "string"
+    },
+    "CONTENT": {
+      "type": "richtext"
+    },
+    "POSITION": {
+      "type": "component",
+      "repeatable": false,
+      "component": "general.position"
+    },
+    "MAIN_IMAGE": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "PDF": {
+      "type": "component",
+      "repeatable": true,
+      "component": "general.pdf"
+    },
+    "SOURCE": {
+      "type": "string"
+    }
+  }
+}

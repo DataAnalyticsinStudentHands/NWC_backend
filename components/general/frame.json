@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_general_frames",
+  "info": {
+    "name": "FRAME",
+    "icon": "images",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "TITLE": {
+      "type": "string"
+    },
+    "CONTENT": {
+      "type": "richtext"
+    },
+    "IMAGE": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "HREF": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "content_home_carousels",
+  "info": {
+    "name": "CONTENT_Home_Carousel_Imgs",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "Section": {
+      "type": "string"
+    },
+    "Image": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    }
+  }
+}

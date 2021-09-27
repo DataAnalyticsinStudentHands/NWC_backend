@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_general_images",
+  "info": {
+    "name": "IMAGE",
+    "icon": "image",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "IMAGE": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "ELEMENT": {
+      "type": "string"
+    }
+  }
+}

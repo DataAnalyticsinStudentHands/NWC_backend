@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/map-points",
+      "handler": "map-points.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/map-points/count",
+      "handler": "map-points.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/map-points/:id",
+      "handler": "map-points.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/map-points",
+      "handler": "map-points.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/map-points/:id",
+      "handler": "map-points.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/map-points/:id",
+      "handler": "map-points.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

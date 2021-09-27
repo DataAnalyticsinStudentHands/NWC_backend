@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_general_textfields",
+  "info": {
+    "name": "TEXTFIELD",
+    "icon": "text-height",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "ELEMENT": {
+      "type": "string"
+    },
+    "CONTENT": {
+      "type": "richtext"
+    }
+  }
+}

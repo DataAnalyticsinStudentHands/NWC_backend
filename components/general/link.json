@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_general_links",
+  "info": {
+    "name": "LINK",
+    "icon": "link",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "ELEMENT": {
+      "type": "string"
+    },
+    "HREF": {
+      "type": "string"
+    }
+  }
+}
