@@ -1,8 +1,6 @@
 #####
 # CUSTOM
 ####
-config/database.js
-config/server.js
 api/carousel/
 api/map-points/
 api/page/
