@@ -1,0 +1,14 @@
+{
+  "kind": "collectionType",
+  "collectionName": "rand_tests",
+  "info": {
+    "name": "RAND_TEST",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {}
+}

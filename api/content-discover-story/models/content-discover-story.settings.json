@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "content_discover_stories",
+  "info": {
+    "name": "CONTENT_Discover_StoryCard",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    }
+  }
+}

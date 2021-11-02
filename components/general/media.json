@@ -1,13 +1,15 @@
 {
-  "collectionName": "components_general_images",
+  "collectionName": "components_general_media",
   "info": {
-    "name": "IMAGE",
-    "icon": "image",
-    "description": ""
+    "name": "MEDIA",
+    "icon": "file-image"
   },
   "options": {},
   "attributes": {
-    "IMAGE": {
+    "SECTION": {
+      "type": "string"
+    },
+    "MEDIA": {
       "collection": "file",
       "via": "related",
       "allowedTypes": [
@@ -17,9 +19,6 @@
       ],
       "plugin": "upload",
       "required": false
-    },
-    "ELEMENT": {
-      "type": "string"
     }
   }
 }

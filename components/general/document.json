@@ -1,9 +1,8 @@
 {
-  "collectionName": "components_general_pdfs",
+  "collectionName": "components_general_documents",
   "info": {
-    "name": "PDF",
-    "icon": "file-pdf",
-    "description": ""
+    "name": "DOCUMENT",
+    "icon": "file-pdf"
   },
   "options": {},
   "attributes": {

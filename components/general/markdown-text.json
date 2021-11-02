@@ -1,13 +1,13 @@
 {
-  "collectionName": "components_general_textfields",
+  "collectionName": "components_general_markdown_texts",
   "info": {
     "name": "TEXTFIELD",
-    "icon": "text-height",
+    "icon": "marker",
     "description": ""
   },
   "options": {},
   "attributes": {
-    "ELEMENT": {
+    "SECTION": {
       "type": "string"
     },
     "CONTENT": {

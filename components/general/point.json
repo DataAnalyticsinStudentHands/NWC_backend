@@ -1,8 +1,8 @@
 {
-  "collectionName": "components_general_positions",
+  "collectionName": "components_general_points",
   "info": {
-    "name": "POSITION",
-    "icon": "map-marker-alt"
+    "name": "POINT",
+    "icon": "map-marker"
   },
   "options": {},
   "attributes": {
