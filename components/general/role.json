@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_general_roles",
+  "info": {
+    "name": "role",
+    "icon": "scroll",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string"
+    }
+  }
+}

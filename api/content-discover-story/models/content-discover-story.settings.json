@@ -19,6 +19,59 @@
     },
     "state": {
       "type": "string"
+    },
+    "profilepic": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "dob": {
+      "type": "string"
+    },
+    "career": {
+      "type": "component",
+      "repeatable": true,
+      "component": "general.career"
+    },
+    "rolesAtNwc": {
+      "type": "component",
+      "repeatable": true,
+      "component": "general.role"
+    },
+    "usertags": {
+      "type": "component",
+      "repeatable": true,
+      "component": "general.usertags"
+    },
+    "bigquote1": {
+      "type": "string"
+    },
+    "bigquote2": {
+      "type": "string"
+    },
+    "maintext": {
+      "type": "richtext"
+    },
+    "sources": {
+      "type": "component",
+      "repeatable": true,
+      "component": "general.source"
+    },
+    "featured": {
+      "type": "enumeration",
+      "enum": [
+        "true",
+        "false"
+      ]
+    },
+    "imgcaption": {
+      "type": "string"
     }
   }
 }

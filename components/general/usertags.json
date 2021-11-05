@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_general_usertags",
+  "info": {
+    "name": "usertags",
+    "icon": "tag",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string"
+    }
+  }
+}

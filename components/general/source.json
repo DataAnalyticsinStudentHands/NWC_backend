@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_general_sources",
+  "info": {
+    "name": "source",
+    "icon": "book-medical",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string"
+    }
+  }
+}
