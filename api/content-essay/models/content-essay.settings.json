@@ -1,0 +1,56 @@
+{
+  "kind": "collectionType",
+  "collectionName": "content_essays",
+  "info": {
+    "name": "CONTENT_Essay"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "MainImage": {
+      "type": "component",
+      "repeatable": false,
+      "component": "general.captioned-image"
+    },
+    "TallImage": {
+      "type": "component",
+      "repeatable": false,
+      "component": "general.captioned-image"
+    },
+    "Image1": {
+      "type": "component",
+      "repeatable": false,
+      "component": "general.captioned-image"
+    },
+    "Image2": {
+      "type": "component",
+      "repeatable": false,
+      "component": "general.captioned-image"
+    },
+    "Image3": {
+      "type": "component",
+      "repeatable": false,
+      "component": "general.captioned-image"
+    },
+    "Paragraph1": {
+      "type": "richtext"
+    },
+    "Paragraph2": {
+      "type": "richtext"
+    },
+    "Paragraph3": {
+      "type": "richtext"
+    },
+    "Sources": {
+      "type": "component",
+      "repeatable": true,
+      "component": "general.source"
+    }
+  }
+}

@@ -2,7 +2,7 @@
   "kind": "collectionType",
   "collectionName": "content_discover_stories",
   "info": {
-    "name": "CONTENT_Discover_StoryCard",
+    "name": "CONTENT_Discover_Story",
     "description": ""
   },
   "options": {

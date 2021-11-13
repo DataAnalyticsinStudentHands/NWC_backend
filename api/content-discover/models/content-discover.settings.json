@@ -1,0 +1,20 @@
+{
+  "kind": "collectionType",
+  "collectionName": "content_discovers",
+  "info": {
+    "name": "CONTENT_Discover"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "Section": {
+      "type": "string"
+    },
+    "Content": {
+      "type": "richtext"
+    }
+  }
+}
