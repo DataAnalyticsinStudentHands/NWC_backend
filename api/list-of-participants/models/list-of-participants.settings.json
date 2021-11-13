@@ -1,0 +1,20 @@
+{
+  "kind": "collectionType",
+  "collectionName": "list_of_participants",
+  "info": {
+    "name": "List_of_Participants"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "FirstName": {
+      "type": "string"
+    },
+    "LastName": {
+      "type": "string"
+    }
+  }
+}
