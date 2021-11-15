@@ -2,7 +2,8 @@
   "kind": "singleType",
   "collectionName": "featured_essays",
   "info": {
-    "name": "Featured_Essay"
+    "name": "Featured_Essay",
+    "description": ""
   },
   "options": {
     "increments": true,
@@ -11,6 +12,50 @@
   },
   "attributes": {
     "Title": {
+      "type": "string"
+    },
+    "Section1": {
+      "type": "component",
+      "repeatable": false,
+      "component": "general.section"
+    },
+    "MidpagePhotoCredit": {
+      "type": "string"
+    },
+    "AudioVersionAvalonUrl": {
+      "type": "string"
+    },
+    "Section2": {
+      "type": "component",
+      "repeatable": false,
+      "component": "general.section"
+    },
+    "Section2_Quote": {
+      "type": "string"
+    },
+    "Section2_ImgCitation1": {
+      "type": "string"
+    },
+    "Section2_ImgCitation2": {
+      "type": "string"
+    },
+    "Section3": {
+      "type": "component",
+      "repeatable": false,
+      "component": "general.section"
+    },
+    "Conclusion": {
+      "type": "richtext"
+    },
+    "Sources": {
+      "type": "component",
+      "repeatable": true,
+      "component": "general.source"
+    },
+    "AuthorCredit": {
+      "type": "string"
+    },
+    "PreferredCitation": {
       "type": "string"
     }
   }

@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_general_sections",
+  "info": {
+    "name": "Section",
+    "icon": "text-height"
+  },
+  "options": {},
+  "attributes": {
+    "SectionTitle": {
+      "type": "string"
+    },
+    "SectionText": {
+      "type": "richtext"
+    }
+  }
+}
