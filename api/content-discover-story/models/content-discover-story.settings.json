@@ -72,6 +72,12 @@
     },
     "imgcaption": {
       "type": "string"
+    },
+    "AvalonUrl": {
+      "type": "string"
+    },
+    "AvalonTitle": {
+      "type": "string"
     }
   }
 }
