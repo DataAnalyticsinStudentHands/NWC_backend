@@ -1,0 +1,38 @@
+{
+  "kind": "collectionType",
+  "collectionName": "content_how_to_contributes",
+  "info": {
+    "name": "CONTENT_HowToContribute"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "BannerText": {
+      "type": "richtext"
+    },
+    "BannerImageCredit": {
+      "type": "string"
+    },
+    "BannerImageCredit_more": {
+      "type": "string"
+    },
+    "ResearchersText": {
+      "type": "richtext"
+    },
+    "NwcParticipantsText": {
+      "type": "richtext"
+    },
+    "EducatorsText": {
+      "type": "richtext"
+    },
+    "StudentsText": {
+      "type": "richtext"
+    },
+    "SubmissionsText": {
+      "type": "richtext"
+    }
+  }
+}

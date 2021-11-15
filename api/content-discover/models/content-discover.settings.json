@@ -2,7 +2,8 @@
   "kind": "collectionType",
   "collectionName": "content_discovers",
   "info": {
-    "name": "CONTENT_Discover"
+    "name": "CONTENT_Discover",
+    "description": ""
   },
   "options": {
     "increments": true,
@@ -10,11 +11,14 @@
     "draftAndPublish": true
   },
   "attributes": {
-    "Section": {
+    "BannerText": {
+      "type": "richtext"
+    },
+    "BannerImageCredit": {
       "type": "string"
     },
-    "Content": {
-      "type": "richtext"
+    "BannerImageCredit_more": {
+      "type": "string"
     }
   }
 }

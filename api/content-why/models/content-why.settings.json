@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "content_whies",
+  "info": {
+    "name": "CONTENT_Why"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "HistoricalOverview": {
+      "type": "richtext"
+    },
+    "BannerPhotoCredit": {
+      "type": "string"
+    },
+    "BannerPhotoCredit_more": {
+      "type": "string"
+    },
+    "PrimaryDocuments": {
+      "type": "component",
+      "repeatable": true,
+      "component": "general.document"
+    },
+    "TimelineIframeSrc": {
+      "type": "string"
+    }
+  }
+}

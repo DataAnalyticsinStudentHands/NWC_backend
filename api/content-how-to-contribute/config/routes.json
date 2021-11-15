@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/content-how-to-contributes",
+      "handler": "content-how-to-contribute.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/content-how-to-contributes/count",
+      "handler": "content-how-to-contribute.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/content-how-to-contributes/:id",
+      "handler": "content-how-to-contribute.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/content-how-to-contributes",
+      "handler": "content-how-to-contribute.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/content-how-to-contributes/:id",
+      "handler": "content-how-to-contribute.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/content-how-to-contributes/:id",
+      "handler": "content-how-to-contribute.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
