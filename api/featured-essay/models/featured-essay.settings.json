@@ -1,0 +1,17 @@
+{
+  "kind": "singleType",
+  "collectionName": "featured_essays",
+  "info": {
+    "name": "Featured_Essay"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "Title": {
+      "type": "string"
+    }
+  }
+}

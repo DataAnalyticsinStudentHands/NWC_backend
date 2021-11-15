@@ -1,0 +1,28 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/featured-essay",
+      "handler": "featured-essay.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/featured-essay",
+      "handler": "featured-essay.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/featured-essay",
+      "handler": "featured-essay.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
