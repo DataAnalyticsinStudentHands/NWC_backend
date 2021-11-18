@@ -69,7 +69,7 @@
       "plugin": "upload",
       "required": false
     },
-    "MidPageImage": {
+    "LargeImageMap": {
       "model": "file",
       "via": "related",
       "allowedTypes": [
@@ -79,6 +79,9 @@
       ],
       "plugin": "upload",
       "required": false
+    },
+    "LargeImageMap_Citation": {
+      "type": "string"
     }
   }
 }
