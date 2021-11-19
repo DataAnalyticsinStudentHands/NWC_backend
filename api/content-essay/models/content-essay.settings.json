@@ -66,6 +66,12 @@
     },
     "VideoTitle": {
       "type": "string"
+    },
+    "PullQuote1": {
+      "type": "string"
+    },
+    "PullQuote2": {
+      "type": "string"
     }
   }
 }
