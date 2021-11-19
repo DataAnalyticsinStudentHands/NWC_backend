@@ -82,6 +82,9 @@
     },
     "LargeImageMap_Citation": {
       "type": "string"
+    },
+    "TimelineIframeSource": {
+      "type": "string"
     }
   }
 }

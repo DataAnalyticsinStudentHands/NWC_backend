@@ -60,6 +60,12 @@
         "Layout2",
         "Layout3"
       ]
+    },
+    "VideoURL": {
+      "type": "string"
+    },
+    "VideoTitle": {
+      "type": "string"
     }
   }
 }
