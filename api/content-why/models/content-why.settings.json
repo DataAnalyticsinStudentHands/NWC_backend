@@ -2,7 +2,8 @@
   "kind": "collectionType",
   "collectionName": "content_whies",
   "info": {
-    "name": "CONTENT_Why"
+    "name": "CONTENT_Why",
+    "description": ""
   },
   "options": {
     "increments": true,
@@ -25,6 +26,12 @@
       "component": "general.document"
     },
     "TimelineIframeSrc": {
+      "type": "string"
+    },
+    "VideoTitle": {
+      "type": "string"
+    },
+    "VideoURL": {
       "type": "string"
     }
   }
