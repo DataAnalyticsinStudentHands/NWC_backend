@@ -85,6 +85,15 @@
     },
     "TimelineIframeSource": {
       "type": "string"
+    },
+    "MidpagePhotoCredit_more": {
+      "type": "string"
+    },
+    "Author": {
+      "type": "richtext"
+    },
+    "PrefCitation": {
+      "type": "string"
     }
   }
 }
