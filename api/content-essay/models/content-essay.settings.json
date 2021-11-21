@@ -75,6 +75,9 @@
     },
     "PullQuote2": {
       "type": "string"
+    },
+    "AuthorCredit": {
+      "type": "richtext"
     }
   }
 }
