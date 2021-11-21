@@ -19,6 +19,9 @@
       "repeatable": false,
       "component": "general.section"
     },
+    "Section1_ImgCitation": {
+      "type": "string"
+    },
     "MidpagePhotoCredit": {
       "type": "string"
     },
@@ -43,6 +46,9 @@
       "type": "component",
       "repeatable": false,
       "component": "general.section"
+    },
+    "Section3_ImgCitation": {
+      "type": "string"
     },
     "Conclusion": {
       "type": "richtext"

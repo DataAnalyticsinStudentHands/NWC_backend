@@ -78,6 +78,9 @@
     },
     "AuthorCredit": {
       "type": "richtext"
+    },
+    "PreferredCitation": {
+      "type": "string"
     }
   }
 }
