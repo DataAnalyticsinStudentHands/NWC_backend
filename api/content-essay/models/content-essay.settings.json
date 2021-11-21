@@ -48,6 +48,9 @@
     "Paragraph3": {
       "type": "richtext"
     },
+    "Paragraph4": {
+      "type": "richtext"
+    },
     "Sources": {
       "type": "component",
       "repeatable": true,
