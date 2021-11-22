@@ -17,6 +17,17 @@
     "ShortTitle": {
       "type": "string"
     },
+    "Thumbnail": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "files",
+        "images",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": true
+    },
     "Section1": {
       "type": "component",
       "repeatable": false,

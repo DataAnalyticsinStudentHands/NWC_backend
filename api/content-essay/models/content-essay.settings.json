@@ -20,6 +20,17 @@
     "Featured": {
       "type": "boolean"
     },
+    "Thumbnail": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "files",
+        "images",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": true
+    },
     "MainImage": {
       "type": "component",
       "repeatable": false,
