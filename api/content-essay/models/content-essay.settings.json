@@ -14,6 +14,12 @@
     "Title": {
       "type": "string"
     },
+    "ShortTitle": {
+      "type": "string"
+    },
+    "Featured": {
+      "type": "boolean"
+    },
     "MainImage": {
       "type": "component",
       "repeatable": false,

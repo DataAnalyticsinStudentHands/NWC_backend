@@ -14,6 +14,9 @@
     "Title": {
       "type": "string"
     },
+    "ShortTitle": {
+      "type": "string"
+    },
     "Section1": {
       "type": "component",
       "repeatable": false,
