@@ -2,7 +2,8 @@
   "kind": "collectionType",
   "collectionName": "participants",
   "info": {
-    "name": "participants"
+    "name": "participants",
+    "description": ""
   },
   "options": {
     "increments": true,
@@ -72,6 +73,10 @@
     },
     "sources": {
       "type": "json"
+    },
+    "participant_id": {
+      "type": "integer",
+      "unique": true
     }
   }
 }
