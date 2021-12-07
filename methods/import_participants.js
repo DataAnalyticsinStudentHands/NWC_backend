@@ -1,6 +1,5 @@
 require('dotenv').config()
 
-
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
 const csvtojson = require("csvtojson");
@@ -9,7 +8,7 @@ const yargs = require('yargs');
 
 const url = process.env.DATABASE_URL //"mongodb://localhost:27017/";
 const dbName = process.env.DATABASE_NAME //"nwc";
-const collection = "participants";
+const collection =  process.env.DATABASE_COLLECTION //"participants";
 
 // Exceute MongoDB function
 function ExecuteDB(jsonBulk, logInfo) {
@@ -35,7 +34,7 @@ function ExecuteDB(jsonBulk, logInfo) {
 // basic information
 function createBasic() {
   csvtojson()
-    .fromFile("../data/sample/Basic Data.csv")
+    .fromFile(process.argv[3] + "/Basic Data.csv")
     .then(csvData => {
 
       // clean up keys
@@ -63,6 +62,9 @@ function createBasic() {
           } else if (startsWith(newkey, 'longitude') || startsWith(newkey, 'latitude')) {
             var numberValue = parseFloat(obj[key]);
             newobj[newkey] = numberValue;
+          // renaming id column to particpant_id key
+          } else if (startsWith(newkey, 'ID')) {
+            newobj[participant_id] = obj[key]
           } else {
             newobj[newkey] = obj[key];
           }
@@ -73,7 +75,7 @@ function createBasic() {
 
         var bulk = {
           updateOne: {
-            filter: { id: obj['ID'] },
+            filter: { participant_id: obj['ID'] },
             update: { $set: newobj },
             upsert: true
           }
@@ -88,7 +90,7 @@ function createBasic() {
 // race/ethnicity
 function updateRace() {
   csvtojson()
-    .fromFile("../data/sample/Racial and Ethnic Identifiers.csv")
+    .fromFile(process.argv[3] + "/Racial and Ethnic Identifiers.csv")
     .then(csvData => {
 
       // clean up keys
@@ -114,18 +116,19 @@ function updateRace() {
             obj[key] = 1;
           else if (obj[key] === "N/A")
             obj[key] = 0;
-          newobj[newkey] = obj[key];
         }
-        var bulk = {
-          updateOne: {
-            filter: { id: obj['ID'] },
-            update: { $set: { race: newobj } }
-          }
-        };
-        // remove Notes
+
+        // remove Notes and name as well as particpant ID
         delete newobj['notes'];
         delete newobj['id'];
         delete newobj['name'];
+
+        var bulk = {
+          updateOne: {
+            filter: { participant_id: obj['ID'] },
+            update: { $set: { race: newobj } }
+          }
+        };
 
         jsonBulk.push(bulk);
       }
@@ -137,7 +140,7 @@ function updateRace() {
 //ed and career
 function updateEdCareer() {
   csvtojson()
-    .fromFile("../data/sample/Ed & Career.csv")
+    .fromFile(process.argv[3] + "/Ed & Career.csv")
     .then(csvData => {
 
       // clean up keys and create array for query
@@ -194,7 +197,7 @@ function updateEdCareer() {
 //electoral politics
 function updateElectoralPolitics() {
   csvtojson()
-    .fromFile("../data/sample/Electoral Politics.csv")
+    .fromFile(process.argv[3] + "/Electoral Politics.csv")
     .then(csvData => {
 
       // clean up keys and create array for query
@@ -251,7 +254,7 @@ function updateElectoralPolitics() {
 //role at NWC
 function updateRoleNWC() {
   csvtojson()
-    .fromFile("../data/sample/Role at NWC.csv")
+    .fromFile(process.argv[3] + "/Role at NWC.csv")
     .then(csvData => {
 
       // clean up keys and create array for query
@@ -302,7 +305,7 @@ function updateRoleNWC() {
 //organizations
 function updateLeadership() {
   csvtojson()
-    .fromFile("../data/sample/Leadership in Org.csv")
+    .fromFile(process.argv[3] + "/Leadership in Org.csv")
     .then(csvData => {
 
       // clean up keys and create array for query
@@ -353,7 +356,7 @@ function updateLeadership() {
 //organizations
 function updateOrganizational() {
   csvtojson()
-    .fromFile("../data/sample/Organizational & Political.csv")
+    .fromFile(process.argv[3] + "/Organizational and Political.csv")
     .then(csvData => {
 
       // clean up keys and create array for query
@@ -403,7 +406,7 @@ function updateOrganizational() {
 //sources
 function updateSources() {
   csvtojson()
-    .fromFile("../data/sample/Sources.csv")
+    .fromFile(process.argv[3] + "/Sources.csv")
     .then(csvData => {
 
       // clean up keys and create array for query
@@ -452,6 +455,13 @@ function updateSources() {
 };
 
 const argv = yargs
+  .option('directory', {
+    alias: 'd',
+    description: 'Directory to read files to be merged/imported',
+    type: 'string',
+    demand: true,
+    demand: 'directory is required',
+  })
   .option('basic', {
     alias: 'b',
     description: 'Insert/Update new particpants',

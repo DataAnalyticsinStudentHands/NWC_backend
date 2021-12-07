@@ -1,5 +1,5 @@
 # This script will first convert all Excel files into separte folders with individual files for each sheet
-# Then it will import the separate sheets into a specified collection
+# Then it will import the separate sheets into a specified collection (set in .env file)
 import os
 import pandas as pd
 
