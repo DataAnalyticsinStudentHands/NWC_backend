@@ -1,0 +1,45 @@
+{
+  "kind": "collectionType",
+  "collectionName": "content_about_contributors",
+  "info": {
+    "name": "CONTENT_About_Contributors",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "Contributor_Type": {
+      "type": "enumeration",
+      "enum": [
+        "SteeringCommittee",
+        "StudentCollaborators",
+        "InternsResearchAssistants",
+        "EducatorCollaborators",
+        "ExternalAdvisoryCommittee",
+        "NWCParticipantCommittee",
+        "InternalAdvisoryBoard",
+        "DonorGrantingAgencies"
+      ]
+    },
+    "Name": {
+      "type": "string"
+    },
+    "Description": {
+      "type": "string"
+    },
+    "ProfilePicture": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    }
+  }
+}
