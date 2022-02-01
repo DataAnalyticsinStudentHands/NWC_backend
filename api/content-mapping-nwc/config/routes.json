@@ -1,0 +1,28 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/content-mapping-nwc",
+      "handler": "content-mapping-nwc.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/content-mapping-nwc",
+      "handler": "content-mapping-nwc.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/content-mapping-nwc",
+      "handler": "content-mapping-nwc.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
