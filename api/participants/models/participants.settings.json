@@ -17,20 +17,11 @@
     "gender": {
       "type": "string"
     },
-    "latitude_of_residence_in_1977": {
-      "type": "float"
-    },
-    "longitude_of_residence_in_1977": {
-      "type": "float"
-    },
     "marital_classification": {
       "type": "string"
     },
     "median_household_income_of_place_of_residence": {
       "type": "integer"
-    },
-    "name": {
-      "type": "string"
     },
     "name_of_spouse": {
       "type": "string"
@@ -71,12 +62,23 @@
     "orgs": {
       "type": "json"
     },
-    "sources": {
-      "type": "json"
+    "first_name": {
+      "type": "string"
+    },
+    "last_name": {
+      "type": "string"
     },
     "participant_id": {
-      "type": "integer",
-      "unique": true
+      "type": "string"
+    },
+    "location_of_residence_in1977": {
+      "type": "json"
+    },
+    "import_note": {
+      "type": "string"
+    },
+    "leadership": {
+      "type": "json"
     }
   }
 }
