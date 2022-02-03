@@ -58,20 +58,33 @@ function createBasic() {
           // making sure new objects have the correct type before import
           if(startsWith(newkey, 'age') || startsWith(newkey, 'total') || startsWith(newkey, 'median')) {
             var numberValue = parseInt(obj[key]);
-            newobj[newkey] = numberValue;
+            if (!Number.isNaN(numberValue))
+              newobj[newkey] = numberValue;
+            else
+              newobj[newkey] = obj[key]; 
           } else if (startsWith(newkey, 'longitude') || startsWith(newkey, 'latitude')) {
             var numberValue = parseFloat(obj[key]);
             newobj[newkey] = numberValue;
           // renaming id column to particpant_id key
-          } else if (startsWith(newkey, 'ID')) {
-            newobj[participant_id] = obj[key]
+          } else if (startsWith(newkey, 'id')) {
+            newobj['participant_id'] = obj[key]
+          // remove Notes
+          } else if(startsWith(newkey, 'notes') || startsWith(newkey, '...')) {
+            
           } else {
             newobj[newkey] = obj[key];
           }
         }
 
-        // remove Notes
-        delete newobj['notes'];
+        // add note about where data is coming from from mapping file
+        newobj['import_note'] = process.argv[5];
+
+        //convert lat/long into geospatial data type
+        newobj['location_of_residence_in1977'] = { type: "Point", coordinates: [ newobj['latitude_of_residence_in_1977'], newobj['longitude_of_residence_in_1977'] ] };
+
+        // remove Notes, id and first/last name
+        delete newobj['latitude_of_residence_in_1977'];
+        delete newobj['longitude_of_residence_in_1977'];
 
         var bulk = {
           updateOne: {
@@ -80,6 +93,7 @@ function createBasic() {
             upsert: true
           }
         };
+        
         jsonBulk.push(bulk);
       }
 
@@ -109,19 +123,28 @@ function updateRace() {
           // remove trailing underscore
           if (endsWith(newkey, '_'))
             newkey = newkey.slice(0, -1) //'abcde'
-          // remove unknown
+          // make into binary
           if (obj[key] === "unknown")
             obj[key] = "";
           else if (obj[key] === "Yes")
             obj[key] = 1;
           else if (obj[key] === "N/A")
             obj[key] = 0;
+
+          // making sure new objects have the correct type before import
+          if (newkey.includes('year')) {
+            var numberValue = parseInt(obj[key]);
+            newobj[newkey] = numberValue;
+          } else {
+            newobj[newkey] = obj[key];
+          }
         }
 
-        // remove Notes and name as well as particpant ID
+        // remove Notes, id and first/last name
         delete newobj['notes'];
         delete newobj['id'];
-        delete newobj['name'];
+        delete newobj['first_name'];
+        delete newobj['last_name'];
 
         var bulk = {
           updateOne: {
@@ -170,6 +193,9 @@ function updateEdCareer() {
           if (newkey.includes('year')) {
             var numberValue = parseInt(obj[key]);
             newobj[newkey] = numberValue;
+          // remove Notes
+          } else if(startsWith(newkey, 'notes') || startsWith(newkey, '...')) {
+           
           } else {
             newobj[newkey] = obj[key];
           }
@@ -182,7 +208,7 @@ function updateEdCareer() {
 
         var bulk = {
           updateOne: {
-            filter: { id: obj['ID'] },
+            filter: { participant_id: obj['ID'] },
             update: { $addToSet: { edc: newobj } }
           }
         }
@@ -226,23 +252,25 @@ function updateElectoralPolitics() {
           if (newkey.includes('year')) {
             var numberValue = parseInt(obj[key]);
             newobj[newkey] = numberValue;
+          // remove Notes
+          } else if(startsWith(newkey, 'notes') || startsWith(newkey, '...')) {
+           
           } else {
             newobj[newkey] = obj[key];
           }
         }
 
-        // remove Notes
+        // remove Notes etc.
         delete newobj['notes'];
         delete newobj['id'];
         delete newobj['name'];
 
         var bulk = {
           updateOne: {
-            filter: { id: obj['ID'] },
+            filter: { participant_id: obj['ID'] },
             update: { $addToSet: { poli: newobj } }
           }
         }
-
 
         jsonBulk.push(bulk);
       }
@@ -277,21 +305,33 @@ function updateRoleNWC() {
           // remove trailing underscore
           if (endsWith(newkey, '_'))
             newkey = newkey.slice(0, -1) //'abcde'
+          
           // remove unknown
+          // make into binary
           if (obj[key] === "unknown")
             obj[key] = "";
-          newobj[newkey] = obj[key];
+          else if (obj[key] === "yes")
+            obj[key] = 1;
+          else if (obj[key] === "no")
+            obj[key] = 0;
+          
+          // remove Notes
+          if(startsWith(newkey, 'notes') || startsWith(newkey, '...')) {
+          } else {
+            newobj[newkey] = obj[key];
+          }
+          
         }
 
-        // remove Notes
+        // remove Notes etc.
         delete newobj['notes'];
         delete newobj['id'];
         delete newobj['name'];
 
         var bulk = {
           updateOne: {
-            filter: { id: obj['ID'] },
-            update: { $set: { roles: newobj } }
+            filter: { participant_id: obj['ID'] },
+            update: { $addToSet: { roles: newobj } }
           }
         };
 
@@ -302,7 +342,7 @@ function updateRoleNWC() {
     });
 };
 
-//organizations
+//leadership
 function updateLeadership() {
   csvtojson()
     .fromFile(process.argv[3] + "/Leadership in Org.csv")
@@ -334,14 +374,16 @@ function updateLeadership() {
           newobj[newkey] = obj[key];
         }
 
-        // remove Notes
+        // remove Notes etc. 
         delete newobj['notes'];
         delete newobj['id'];
+        delete newobj['first_name'];
+        delete newobj['last_name'];
         delete newobj['name'];
 
         var bulk = {
           updateOne: {
-            filter: { id: obj['ID'] },
+            filter: { participant_id: obj['ID'] },
             update: { $addToSet: { leadership: newobj } }
           }
         };
@@ -384,14 +426,14 @@ function updateOrganizational() {
             newobj[newkey] = obj[key];
         }
 
-        // remove Notes
+        // remove Notes etc.
         delete newobj['notes'];
         delete newobj['id'];
         delete newobj['name'];
 
         var bulk = {
           updateOne: {
-            filter: { id: obj['ID'] },
+            filter: { participant_id: obj['ID'] },
             update: { $set: { orgs: newobj } }
           }
         };
@@ -442,7 +484,7 @@ function updateSources() {
 
         var bulk = {
           updateOne: {
-            filter: { id: obj['ID'] },
+            filter: { participant_id: obj['ID'] },
             update: { $set: { sources: newobj } }
           }
         };
@@ -461,6 +503,13 @@ const argv = yargs
     type: 'string',
     demand: true,
     demand: 'directory is required',
+  })
+  .option('note', {
+    alias: 'd',
+    description: 'Note to be used for teh records',
+    type: 'string',
+    demand: true,
+    demand: 'note is required',
   })
   .option('basic', {
     alias: 'b',
