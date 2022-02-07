@@ -1,8 +1,8 @@
 {
-  "kind": "collectionType",
+  "kind": "singleType",
   "collectionName": "content_how_to_contributes",
   "info": {
-    "name": "CONTENT_HowToContribute"
+    "name": "Content_HowToContribute"
   },
   "options": {
     "increments": true,
