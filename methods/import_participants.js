@@ -291,7 +291,9 @@ function updateRoleNWC() {
         var obj = csvData[i];
 
         var key, keys = Object.keys(obj);
-        var newobj = {}
+        var newobj = {};
+        var rolesObj = {};
+        var plankObj = {};
         for (var n = 0; n < keys.length; n++) {
           key = keys[n];
           // remove instructions (in parantheses)
@@ -309,29 +311,35 @@ function updateRoleNWC() {
           // remove unknown
           // make into binary
           if (obj[key] === "unknown")
-            obj[key] = "";
+            obj[key] = NaN;
           else if (obj[key] === "yes")
             obj[key] = 1;
           else if (obj[key] === "no")
             obj[key] = 0;
+          else if (obj[key] === "for")
+            obj[key] = 1;
+          else if (obj[key] === "against")
+            obj[key] = 0;
+          else if (obj[key] === "no known involvement")
+            obj[key] = NaN;
           
           // remove Notes
           if(startsWith(newkey, 'notes') || startsWith(newkey, '...')) {
+          } else if (!newkey.includes('plank')) { //slit into roles and plank issues
+            rolesObj[newkey] = obj[key];
           } else {
-            newobj[newkey] = obj[key];
+            plankObj[newkey] = obj[key];
           }
-          
         }
 
         // remove Notes etc.
-        delete newobj['notes'];
-        delete newobj['id'];
-        delete newobj['name'];
+        delete rolesObj['id'];
+        delete rolesObj['name'];
 
         var bulk = {
           updateOne: {
             filter: { participant_id: obj['ID'] },
-            update: { $addToSet: { roles: newobj } }
+            update: { $set: { roles: rolesObj, planks: plankObj } }
           }
         };
 
@@ -354,7 +362,7 @@ function updateLeadership() {
         var obj = csvData[i];
 
         var key, keys = Object.keys(obj);
-        var newobj = {}
+        var newobj;
         for (var n = 0; n < keys.length; n++) {
           key = keys[n];
           // remove instructions (in parantheses)
@@ -368,18 +376,11 @@ function updateLeadership() {
           // remove trailing underscore
           if (endsWith(newkey, '_'))
             newkey = newkey.slice(0, -1) //'abcde'
-          // remove unknown
-          if (obj[key] === "unknown")
-            obj[key] = "";
-          newobj[newkey] = obj[key];
+          // keep only info
+          if (key === "ID" || key === "First Name" || key === "Last Name" || key === "Name" || startsWith(newkey, 'notes') || startsWith(newkey, '...') || obj[key] === "unknown"){
+          } else
+            newobj  = obj[key];
         }
-
-        // remove Notes etc. 
-        delete newobj['notes'];
-        delete newobj['id'];
-        delete newobj['first_name'];
-        delete newobj['last_name'];
-        delete newobj['name'];
 
         var bulk = {
           updateOne: {
