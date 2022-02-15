@@ -5,4 +5,9 @@
  * to customize this controller
  */
 
-module.exports = {};
+module.exports = {
+    async findBasic(ctx)
+     {
+         console.log("findBasic ctx query" , ctx.query)
+     }
+};

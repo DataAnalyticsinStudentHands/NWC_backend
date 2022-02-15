@@ -10,6 +10,14 @@
     },
     {
       "method": "GET",
+      "path": "/participants/basic/",
+      "handler": "participants.findBasic",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/participants/count",
       "handler": "participants.count",
       "config": {
