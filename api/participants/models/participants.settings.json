@@ -79,6 +79,11 @@
     },
     "leadership": {
       "type": "json"
+    },
+    "nwc_roles": {
+      "via": "participants",
+      "collection": "roles",
+      "dominant": true
     }
   }
 }
