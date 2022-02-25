@@ -2,7 +2,8 @@
   "kind": "singleType",
   "collectionName": "content_how_to_contributes",
   "info": {
-    "name": "Content_HowToContribute"
+    "name": "Content_HowToContribute",
+    "description": ""
   },
   "options": {
     "increments": true,
@@ -32,6 +33,9 @@
       "type": "richtext"
     },
     "SubmissionsText": {
+      "type": "richtext"
+    },
+    "ArchivistsText": {
       "type": "richtext"
     }
   }

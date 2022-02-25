@@ -10,7 +10,7 @@
     },
     {
       "method": "GET",
-      "path": "/participants/basic/",
+      "path": "/participants/basic",
       "handler": "participants.findBasic",
       "config": {
         "policies": []
