@@ -78,6 +78,9 @@
     },
     "AvalonTitle": {
       "type": "string"
+    },
+    "VideoUrl": {
+      "type": "string"
     }
   }
 }
