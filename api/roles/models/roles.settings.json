@@ -12,8 +12,8 @@
   },
   "attributes": {
     "participants": {
-      "collection": "participants",
-      "via": "nwc_roles"
+      "via": "nwc_roles",
+      "collection": "participants"
     },
     "delegate_at_the_nwc": {
       "type": "string"

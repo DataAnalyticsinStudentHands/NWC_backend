@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "races",
+  "info": {
+    "name": "Race"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "white": {
+      "type": "string"
+    },
+    "black": {
+      "type": "string"
+    },
+    "hispanic": {
+      "type": "string"
+    },
+    "asian_americanpacific_islander": {
+      "type": "string"
+    },
+    "native_americanamerican_indian": {
+      "type": "string"
+    },
+    "participants": {
+      "via": "nwc_races",
+      "collection": "participants"
+    }
+  }
+}

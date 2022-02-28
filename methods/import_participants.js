@@ -68,8 +68,11 @@ function createBasic() {
           // renaming id column to particpant_id key
           } else if (startsWith(newkey, 'id')) {
             newobj['participant_id'] = obj[key]
+          // convert religion to lower case and one word only (as listed in enumeration)
+          } else if (startsWith(newkey, 'religion')) {
+            newobj[newkey] = (obj[key].replace(/\s+/g, '_').toLowerCase()).split('_')[0];       
           // remove Notes
-          } else if(startsWith(newkey, 'notes') || startsWith(newkey, '...')) {
+          } else if (startsWith(newkey, 'notes') || startsWith(newkey, '...')) {
             
           } else {
             newobj[newkey] = obj[key];
@@ -80,7 +83,7 @@ function createBasic() {
         newobj['import_note'] = process.argv[5];
 
         //convert lat/long into geospatial data type
-        newobj['location_of_residence_in1977'] = { type: "Point", coordinates: [ newobj['latitude_of_residence_in_1977'], newobj['longitude_of_residence_in_1977'] ] };
+        newobj['location_of_residence_in1977'] = { type: "Point", coordinates: [ newobj['longitude_of_residence_in_1977'], newobj['latitude_of_residence_in_1977'] ] };
 
         // remove Notes, id and first/last name
         delete newobj['latitude_of_residence_in_1977'];
@@ -107,12 +110,22 @@ function updateRace() {
     .fromFile(process.argv[3] + "/Racial and Ethnic Identifiers.csv")
     .then(csvData => {
 
+      //lookup table for basic race
+      let lookup = {
+        "white": mongodb.ObjectID("621cf611ced4cb1cddcc5edd"),
+        "asian_americanpacific_islander": mongodb.ObjectID("621cf64c1d48960351dafaf4"),
+        "black": mongodb.ObjectID("621cf6521d48960351dafaf5"),
+        "hispanic": mongodb.ObjectID("621cf6551d48960351dafaf6"),
+        "native_americanamerican_indian": mongodb.ObjectID("621cf6571d48960351dafaf7"),
+      }
+
       // clean up keys
       let jsonBulk = [];
       for (var i = 0; i < csvData.length; i++) {
         var obj = csvData[i];
 
         var key, keys = Object.keys(obj);
+        var nwcRacesObj = [];
         var newobj = {}
         for (var n = 0; n < keys.length; n++) {
           key = keys[n];
@@ -131,25 +144,20 @@ function updateRace() {
           else if (obj[key] === "N/A")
             obj[key] = 0;
 
-          // making sure new objects have the correct type before import
-          if (newkey.includes('year')) {
-            var numberValue = parseInt(obj[key]);
-            newobj[newkey] = numberValue;
+          // remove Notes
+          if(startsWith(newkey, 'notes') || startsWith(newkey, '...')) {
           } else {
-            newobj[newkey] = obj[key];
-          }
+              if (obj[key] === 1) {
+                let result =  lookup[newkey];
+                nwcRacesObj.push(result);
+              }
+            }
         }
-
-        // remove Notes, id and first/last name
-        delete newobj['notes'];
-        delete newobj['id'];
-        delete newobj['first_name'];
-        delete newobj['last_name'];
 
         var bulk = {
           updateOne: {
             filter: { participant_id: obj['ID'] },
-            update: { $set: { race: newobj } }
+            update: { $set: { nwc_races: nwcRacesObj } }
           }
         };
 
@@ -233,6 +241,7 @@ function updateElectoralPolitics() {
 
         var key, keys = Object.keys(obj);
         var newobj = {}
+        var partyObj
         for (var n = 0; n < keys.length; n++) {
           key = keys[n];
           // remove instructions (in parantheses)
@@ -245,16 +254,16 @@ function updateElectoralPolitics() {
           // remove trailing underscore
           if (endsWith(newkey, '_'))
             newkey = newkey.slice(0, -1) //'abcde'
-          // remove unknown
-          if (obj[key] === "unknown")
-            obj[key] = "";
+
           // making sure new objects have the correct type before import
           if (newkey.includes('year')) {
             var numberValue = parseInt(obj[key]);
             newobj[newkey] = numberValue;
           // remove Notes
-          } else if(startsWith(newkey, 'notes') || startsWith(newkey, '...')) {
-           
+          } else if (startsWith(newkey, 'notes') || startsWith(newkey, '...')) {
+          //encode political party separately
+          } else if (startsWith(newkey, 'political_party') && obj[key] !== "NA") {
+            partyObj = (obj[key].replace(/\s+/g, '_').toLowerCase()).split('_')[0]; 
           } else {
             newobj[newkey] = obj[key];
           }
@@ -268,7 +277,8 @@ function updateElectoralPolitics() {
         var bulk = {
           updateOne: {
             filter: { participant_id: obj['ID'] },
-            update: { $addToSet: { poli: newobj } }
+            update: { $addToSet: { poli: newobj }, 
+                      $set: {political_party: partyObj} }
           }
         }
 
@@ -285,15 +295,34 @@ function updateRoleNWC() {
     .fromFile(process.argv[3] + "/Role at NWC.csv")
     .then(csvData => {
 
+      //lookup table for roles
+      let lookup = {
+        "delegate_at_the_nwc": mongodb.ObjectID("6216879c5c79fee91893b9a6"),
+        "ford_national_commissioner": mongodb.ObjectID("62168f8e32e34deb93dc3421"),
+        "carter_national_commissioner": mongodb.ObjectID("62169094a14631ec129ca7a5"),
+        "international_dignitary": mongodb.ObjectID("6216a00792a101f2d552b8b4"),
+        "torch_relay_runner": mongodb.ObjectID("6216a02fa75a14636f3dcc74"),
+        "alternate_at_the_nwc": mongodb.ObjectID("6216a03aa75a14636f3dcc76"),
+        "delegate_at_large": mongodb.ObjectID("6216a043a75a14636f3dcc77"),
+        "official_observer": mongodb.ObjectID("6216b309a75a14636f3dcc8c"),
+        "volunteer": mongodb.ObjectID("6216b30ca75a14636f3dcc8d"),
+        "paid_staff_member": mongodb.ObjectID("6216b30ea75a14636f3dcc8e"),
+        "notable_speaker": mongodb.ObjectID("6216b310a75a14636f3dcc8f"),
+        "unofficial_observer": mongodb.ObjectID("6216b312a75a14636f3dcc90"),
+        "journalists_covering_the_nwc": mongodb.ObjectID("6216b314a75a14636f3dcc91"),
+        "state_delegation_chair": mongodb.ObjectID("6216b316a75a14636f3dcc92"),
+        "exhibitor": mongodb.ObjectID("6216b320a75a14636f3dcc94"),
+      }
+
       // clean up keys and create array for query
       let jsonBulk = [];
       for (var i = 0; i < csvData.length; i++) {
         var obj = csvData[i];
 
         var key, keys = Object.keys(obj);
-        var newobj = {};
-        var rolesObj = {};
+        var otherRole;
         var plankObj = {};
+        var nwcRolesObj = [];
         for (var n = 0; n < keys.length; n++) {
           key = keys[n];
           // remove instructions (in parantheses)
@@ -326,20 +355,24 @@ function updateRoleNWC() {
           // remove Notes
           if(startsWith(newkey, 'notes') || startsWith(newkey, '...')) {
           } else if (!newkey.includes('plank')) { //slit into roles and plank issues
-            rolesObj[newkey] = obj[key];
+            //filter roles and represent as ObjectIDs
+            if (startsWith(newkey, 'other'))
+              otherRole = obj[key];
+            else {
+              if (obj[key] === 1) {
+                let result =  lookup[newkey];
+                nwcRolesObj.push(result);
+              }
+            }
           } else {
             plankObj[newkey] = obj[key];
           }
         }
 
-        // remove Notes etc.
-        delete rolesObj['id'];
-        delete rolesObj['name'];
-
         var bulk = {
           updateOne: {
             filter: { participant_id: obj['ID'] },
-            update: { $set: { roles: rolesObj, planks: plankObj } }
+            update: { $set: { nwc_roles: nwcRolesObj, planks: plankObj, otherRole: otherRole } }
           }
         };
 

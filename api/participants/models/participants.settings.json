@@ -29,9 +29,6 @@
     "place_of_birth": {
       "type": "string"
     },
-    "religion": {
-      "type": "string"
-    },
     "residence_in_1977": {
       "type": "string"
     },
@@ -56,9 +53,6 @@
     "edc": {
       "type": "json"
     },
-    "roles": {
-      "type": "json"
-    },
     "orgs": {
       "type": "json"
     },
@@ -81,9 +75,38 @@
       "type": "json"
     },
     "nwc_roles": {
-      "via": "participants",
       "collection": "roles",
+      "via": "participants",
       "dominant": true
+    },
+    "nwc_races": {
+      "collection": "race",
+      "via": "participants",
+      "dominant": true
+    },
+    "religion": {
+      "type": "enumeration",
+      "enum": [
+        "agnostic",
+        "atheist",
+        "catholic",
+        "christian",
+        "eastern",
+        "jewish",
+        "mormon",
+        "muslim",
+        "unknown",
+        "none"
+      ]
+    },
+    "political_party": {
+      "type": "enumeration",
+      "enum": [
+        "democratic",
+        "republican",
+        "third",
+        "unknown"
+      ]
     }
   }
 }
