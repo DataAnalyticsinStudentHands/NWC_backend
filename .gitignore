@@ -124,3 +124,4 @@ build
 package-lock.json
 .env.atlas
 data
+.env.local
