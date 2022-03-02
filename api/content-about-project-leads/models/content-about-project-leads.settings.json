@@ -2,7 +2,8 @@
   "kind": "collectionType",
   "collectionName": "content_about_project_leads",
   "info": {
-    "name": "CONTENT_About_Project_Leads"
+    "name": "CONTENT_About_Project_Leads",
+    "description": ""
   },
   "options": {
     "increments": true,
@@ -31,6 +32,17 @@
       "required": false
     },
     "ProfilePicture": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "Illustration_hover": {
       "model": "file",
       "via": "related",
       "allowedTypes": [
