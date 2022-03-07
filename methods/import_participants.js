@@ -178,6 +178,7 @@ function updateEdCareer() {
 
         var key, keys = Object.keys(obj);
         var newobj = {}
+        var highestLevel
         for (var n = 0; n < keys.length; n++) {
           key = keys[n];
           // remove instructions (in parantheses)
@@ -198,6 +199,9 @@ function updateEdCareer() {
           if (newkey.includes('year')) {
             var numberValue = parseInt(obj[key]);
             newobj[newkey] = numberValue;
+          // storing higest level of eduction in separate field
+          } else if(startsWith(newkey, 'highest') & obj[key] !== "NA") {
+            highestLevel = obj[key];
           // remove Notes
           } else if(startsWith(newkey, 'notes') || startsWith(newkey, '...')) {
            
@@ -206,15 +210,15 @@ function updateEdCareer() {
           }
         }
 
-        // remove Notes etc.
-        delete newobj['notes'];
+        // remove original id column etc.
         delete newobj['id'];
         delete newobj['name'];
 
         var bulk = {
           updateOne: {
             filter: { participant_id: obj['ID'] },
-            update: { $addToSet: { edc: newobj } }
+            update: { $addToSet: { edc: newobj },
+                      $set: {highest_level_education: highestLevel} }
           }
         }
 
