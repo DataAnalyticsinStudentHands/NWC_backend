@@ -201,7 +201,8 @@ function updateEdCareer() {
             newobj[newkey] = numberValue;
           // storing higest level of eduction in separate field
           } else if(startsWith(newkey, 'highest') & obj[key] !== "NA") {
-            highestLevel = obj[key];
+            highestLevel = obj[key].replace(/\//g, '_');
+            highestLevel = highestLevel.replace(/\s+/g, '_').toLowerCase();
           // remove Notes
           } else if(startsWith(newkey, 'notes') || startsWith(newkey, '...')) {
            

@@ -107,6 +107,17 @@
         "third",
         "unknown"
       ]
+    },
+    "highest_level_education": {
+      "type": "enumeration",
+      "enum": [
+        "some_high_school",
+        "high_school_diploma",
+        "some_degree",
+        "college_degree",
+        "graduate_professional_degree",
+        "unknown"
+      ]
     }
   }
 }
