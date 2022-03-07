@@ -51,9 +51,6 @@ function createBasic() {
           // remove trailing underscore
           if (endsWith(newkey, '_'))
             newkey = newkey.slice(0, -1) //'abcde'
-          // remove unknown
-          if (obj[key] === "unknown")
-            obj[key] = "";
           
           // making sure new objects have the correct type before import
           if(startsWith(newkey, 'age') || startsWith(newkey, 'total') || startsWith(newkey, 'median')) {
