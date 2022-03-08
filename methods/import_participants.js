@@ -236,6 +236,27 @@ function updateElectoralPolitics() {
     .fromFile(process.argv[3] + "/Electoral Politics.csv")
     .then(csvData => {
 
+      //lookup table for political party membership
+      let lookup = {
+        "american_independent": mongodb.ObjectID("622672de02445175f503be33"),
+        "black_panther": mongodb.ObjectID("622672d602445175f503be2f"),
+        "cpusa": mongodb.ObjectID("622672e002445175f503be34"),
+        "conservative_party_of_new_york": mongodb.ObjectID("6226733502445175f503be39"),
+        "dc_statehood": mongodb.ObjectID("622672e602445175f503be37"),
+        "democratic": mongodb.ObjectID("622672b1e216fef1ca9da3c3"),
+        "liberal_party_of_new_york": mongodb.ObjectID("622672dc02445175f503be32"),
+        "libertarian": mongodb.ObjectID("6226735b02445175f503be3f"),
+        "minnesota_dfl": mongodb.ObjectID("622672d802445175f503be30"),
+        "north_dakota_dnl": mongodb.ObjectID("6226733802445175f503be3a"),
+        "peace_and_freedom": mongodb.ObjectID("622672db02445175f503be31"),
+        "raza_unida": mongodb.ObjectID("6226735902445175f503be3e"),
+        "republican": mongodb.ObjectID("6226733e02445175f503be3c"),
+        "socialist_party_usa": mongodb.ObjectID("6226735902445175f503be3d"),
+        "socialist_workers": mongodb.ObjectID("622672e202445175f503be35"),
+        "unknown": mongodb.ObjectID("6226733b02445175f503be3b"),
+        "other": mongodb.ObjectID("622672e302445175f503be36"),
+      }
+
       // clean up keys and create array for query
       let jsonBulk = [];
       for (var i = 0; i < csvData.length; i++) {
@@ -243,7 +264,7 @@ function updateElectoralPolitics() {
 
         var key, keys = Object.keys(obj);
         var newobj = {}
-        var partyObj
+        var partyObj = [];
         for (var n = 0; n < keys.length; n++) {
           key = keys[n];
           // remove instructions (in parantheses)
@@ -265,7 +286,9 @@ function updateElectoralPolitics() {
           } else if (startsWith(newkey, 'notes') || startsWith(newkey, '...')) {
           //encode political party separately
           } else if (startsWith(newkey, 'political_party') && obj[key] !== "NA") {
-            partyObj = (obj[key].replace(/\s+/g, '_').toLowerCase()).split('_')[0]; 
+              let result = (obj[key].replace(/\s+/g, '_').toLowerCase());
+              result =  lookup[result];
+              partyObj.push(result);
           } else {
             newobj[newkey] = obj[key];
           }
@@ -280,7 +303,7 @@ function updateElectoralPolitics() {
           updateOne: {
             filter: { participant_id: obj['ID'] },
             update: { $addToSet: { poli: newobj }, 
-                      $set: {political_party: partyObj} }
+                      $push: { political_parties: { $each: partyObj} } }
           }
         }
 

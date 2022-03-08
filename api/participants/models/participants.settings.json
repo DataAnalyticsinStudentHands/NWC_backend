@@ -99,15 +99,6 @@
         "none"
       ]
     },
-    "political_party": {
-      "type": "enumeration",
-      "enum": [
-        "democratic",
-        "republican",
-        "third",
-        "unknown"
-      ]
-    },
     "highest_level_education": {
       "type": "enumeration",
       "enum": [
@@ -118,6 +109,11 @@
         "graduate_professional_degree",
         "unknown"
       ]
+    },
+    "political_parties": {
+      "collection": "political-parties",
+      "via": "participants",
+      "dominant": true
     }
   }
 }

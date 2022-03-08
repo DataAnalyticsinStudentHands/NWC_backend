@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/political-parties",
+      "handler": "political-parties.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/political-parties/count",
+      "handler": "political-parties.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/political-parties/:id",
+      "handler": "political-parties.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/political-parties",
+      "handler": "political-parties.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/political-parties/:id",
+      "handler": "political-parties.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/political-parties/:id",
+      "handler": "political-parties.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
