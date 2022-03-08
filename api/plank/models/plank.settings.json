@@ -23,7 +23,7 @@
       "type": "string"
     },
     "participants": {
-      "via": "planks",
+      "via": "era_stance",
       "collection": "participants"
     }
   }

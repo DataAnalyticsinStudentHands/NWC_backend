@@ -367,7 +367,8 @@ function updateRoleNWC() {
 
         var key, keys = Object.keys(obj);
         var otherRole;
-        var plankObj = [];
+        var eraplankObj = [];
+        var planksObj = {};
         var nwcRolesObj = [];
         for (var n = 0; n < keys.length; n++) {
           key = keys[n];
@@ -404,17 +405,21 @@ function updateRoleNWC() {
                 nwcRolesObj.push(result);
               }
             }
+          } else if (newkey.includes('equal_rights')) {
+            let result = (obj[key].replace(/\s+/g, '_').toLowerCase());
+            result = planklookup[result];
+            eraplankObj.push(result);
           } else {
             let result = (obj[key].replace(/\s+/g, '_').toLowerCase());
             result = planklookup[result];
-            plankObj.push(result);
+            planksObj[newkey] = result;
           }
         }
 
         var bulk = {
           updateOne: {
             filter: { participant_id: obj['ID'] },
-            update: { $set: { nwc_roles: nwcRolesObj, planks: plankObj, otherRole: otherRole } }
+            update: { $set: { nwc_roles: nwcRolesObj,  otherRole: otherRole, era_stance: eraplankObj, planks: planksObj} }
           }
         };
 
