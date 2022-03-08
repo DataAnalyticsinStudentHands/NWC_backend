@@ -74,7 +74,10 @@ for (inputfile in files){
 
     # STEP 3: import into DB
     print("Call import.")
-    execute_import_command = paste0('node import_participants --directory \"', import_directory, '\"', ' --note \"', note, '\" -b -a -e -p -r -l -o')
+    execute_import_command = paste0('node import_participants --directory \"', import_directory, '\"', ' --note \"', note, '\" -b')
+    try(system(execute_import_command, intern = FALSE))
+    print("Call import non basic.")
+    execute_import_command = paste0('node import_participants --directory \"', import_directory, '\"', ' --note \"', note, '\" -a -e -p -r -l -o')
     try(system(execute_import_command, intern = FALSE))
 }
 

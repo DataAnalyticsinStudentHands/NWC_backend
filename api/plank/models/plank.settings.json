@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "planks",
+  "info": {
+    "name": "Plank"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "for": {
+      "type": "string"
+    },
+    "against": {
+      "type": "string"
+    },
+    "no_known_involvement": {
+      "type": "string"
+    },
+    "worked_on_with_position_unknown": {
+      "type": "string"
+    },
+    "participants": {
+      "via": "planks",
+      "collection": "participants"
+    }
+  }
+}

@@ -114,6 +114,16 @@
       "collection": "political-parties",
       "via": "participants",
       "dominant": true
+    },
+    "jurisdiction_level_politicals": {
+      "collection": "jurisdiction-level-political",
+      "via": "participants",
+      "dominant": true
+    },
+    "planks": {
+      "collection": "plank",
+      "via": "participants",
+      "dominant": true
     }
   }
 }

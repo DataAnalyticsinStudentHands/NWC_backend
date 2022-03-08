@@ -8,27 +8,22 @@ const yargs = require('yargs');
 
 const url = process.env.DATABASE_URL //"mongodb://localhost:27017/";
 const dbName = process.env.DATABASE_NAME //"nwc";
-const collection =  process.env.DATABASE_COLLECTION //"participants";
+const collection = process.env.DATABASE_COLLECTION //"participants";
 
-// Exceute MongoDB function
-function ExecuteDB(jsonBulk, logInfo) {
-  MongoClient.connect(
-    url,
-    { useNewUrlParser: true, useUnifiedTopology: true },
-    (err, client) => {
-      if (err) throw err;
+// Excecute MongoDB function
+async function ExecuteDB(jsonBulk, logInfo) {
+  let client, db;
 
-      client
-        .db(dbName)
-        .collection(collection)
-        .bulkWrite(jsonBulk, (err, res) => {
-          if (err) throw err;
-
-          console.log(`${logInfo}: ${JSON.stringify(res)}`);
-          client.close();
-        });
-    }
-  );
+  try {
+    client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+    db = client.db(dbName);
+    let dCollection = db.collection(collection);
+    let result = await dCollection.bulkWrite(jsonBulk);
+    console.log(`${logInfo}: ${JSON.stringify(result)}`)
+    return result;
+  }
+  catch (err) { console.error(err); } // catch any mongo error here
+  finally { client.close(); } // make sure to close your connection after
 };
 
 // basic information
@@ -36,7 +31,6 @@ function createBasic() {
   csvtojson()
     .fromFile(process.argv[3] + "/Basic Data.csv")
     .then(csvData => {
-
       // clean up keys
       let jsonBulk = [];
       for (var i = 0; i < csvData.length; i++) {
@@ -51,26 +45,26 @@ function createBasic() {
           // remove trailing underscore
           if (endsWith(newkey, '_'))
             newkey = newkey.slice(0, -1) //'abcde'
-          
+
           // making sure new objects have the correct type before import
-          if(startsWith(newkey, 'age') || startsWith(newkey, 'total') || startsWith(newkey, 'median')) {
+          if (startsWith(newkey, 'age') || startsWith(newkey, 'total') || startsWith(newkey, 'median')) {
             var numberValue = parseInt(obj[key]);
             if (!Number.isNaN(numberValue))
               newobj[newkey] = numberValue;
             else
-              newobj[newkey] = obj[key]; 
+              newobj[newkey] = obj[key];
           } else if (startsWith(newkey, 'longitude') || startsWith(newkey, 'latitude')) {
             var numberValue = parseFloat(obj[key]);
             newobj[newkey] = numberValue;
-          // renaming id column to particpant_id key
+            // renaming id column to particpant_id key
           } else if (startsWith(newkey, 'id')) {
             newobj['participant_id'] = obj[key]
-          // convert religion to lower case and one word only (as listed in enumeration)
+            // convert religion to lower case and one word only (as listed in enumeration)
           } else if (startsWith(newkey, 'religion')) {
-            newobj[newkey] = (obj[key].replace(/\s+/g, '_').toLowerCase()).split('_')[0];       
-          // remove Notes
+            newobj[newkey] = (obj[key].replace(/\s+/g, '_').toLowerCase()).split('_')[0];
+            // remove Notes
           } else if (startsWith(newkey, 'notes') || startsWith(newkey, '...')) {
-            
+
           } else {
             newobj[newkey] = obj[key];
           }
@@ -80,7 +74,7 @@ function createBasic() {
         newobj['import_note'] = process.argv[5];
 
         //convert lat/long into geospatial data type
-        newobj['location_of_residence_in1977'] = { type: "Point", coordinates: [ newobj['longitude_of_residence_in_1977'], newobj['latitude_of_residence_in_1977'] ] };
+        newobj['location_of_residence_in1977'] = { type: "Point", coordinates: [newobj['longitude_of_residence_in_1977'], newobj['latitude_of_residence_in_1977']] };
 
         // remove Notes, id and first/last name
         delete newobj['latitude_of_residence_in_1977'];
@@ -93,7 +87,7 @@ function createBasic() {
             upsert: true
           }
         };
-        
+
         jsonBulk.push(bulk);
       }
 
@@ -142,13 +136,13 @@ function updateRace() {
             obj[key] = 0;
 
           // remove Notes
-          if(startsWith(newkey, 'notes') || startsWith(newkey, '...')) {
+          if (startsWith(newkey, 'notes') || startsWith(newkey, '...')) {
           } else {
-              if (obj[key] === 1) {
-                let result =  lookup[newkey];
-                nwcRacesObj.push(result);
-              }
+            if (obj[key] === 1) {
+              let result = lookup[newkey];
+              nwcRacesObj.push(result);
             }
+          }
         }
 
         var bulk = {
@@ -199,13 +193,13 @@ function updateEdCareer() {
           if (newkey.includes('year')) {
             var numberValue = parseInt(obj[key]);
             newobj[newkey] = numberValue;
-          // storing higest level of eduction in separate field
-          } else if(startsWith(newkey, 'highest') & obj[key] !== "NA") {
+            // storing higest level of eduction in separate field
+          } else if (startsWith(newkey, 'highest') & obj[key] !== "NA") {
             highestLevel = obj[key].replace(/\//g, '_');
             highestLevel = highestLevel.replace(/\s+/g, '_').toLowerCase();
-          // remove Notes
-          } else if(startsWith(newkey, 'notes') || startsWith(newkey, '...')) {
-           
+            // remove Notes
+          } else if (startsWith(newkey, 'notes') || startsWith(newkey, '...')) {
+
           } else {
             newobj[newkey] = obj[key];
           }
@@ -218,8 +212,10 @@ function updateEdCareer() {
         var bulk = {
           updateOne: {
             filter: { participant_id: obj['ID'] },
-            update: { $addToSet: { edc: newobj },
-                      $set: {highest_level_education: highestLevel} }
+            update: {
+              $addToSet: { edc: newobj },
+              $set: { highest_level_education: highestLevel }
+            }
           }
         }
 
@@ -257,6 +253,16 @@ function updateElectoralPolitics() {
         "other": mongodb.ObjectID("622672e302445175f503be36"),
       }
 
+      //lookup table for jurisdiction level political offices held
+      let levelslookup = {
+        "city_level": mongodb.ObjectID("62275838e28fe7231d8a5afa"),
+        "state_level": mongodb.ObjectID("6227587902445175f503bedc"),
+        "none": mongodb.ObjectID("6227587c02445175f503bedd"),
+        "unknown": mongodb.ObjectID("6227587f02445175f503bede"),
+        "federal_level": mongodb.ObjectID("6227588102445175f503bedf"),
+        "county_level": mongodb.ObjectID("6227588302445175f503bee0"),
+      }
+
       // clean up keys and create array for query
       let jsonBulk = [];
       for (var i = 0; i < csvData.length; i++) {
@@ -265,6 +271,7 @@ function updateElectoralPolitics() {
         var key, keys = Object.keys(obj);
         var newobj = {}
         var partyObj = [];
+        var jurisdiction_levels = [];
         for (var n = 0; n < keys.length; n++) {
           key = keys[n];
           // remove instructions (in parantheses)
@@ -282,28 +289,34 @@ function updateElectoralPolitics() {
           if (newkey.includes('year')) {
             var numberValue = parseInt(obj[key]);
             newobj[newkey] = numberValue;
-          // remove Notes
+            // remove Notes
           } else if (startsWith(newkey, 'notes') || startsWith(newkey, '...')) {
-          //encode political party separately
+            //encode political party separately
           } else if (startsWith(newkey, 'political_party') && obj[key] !== "NA") {
-              let result = (obj[key].replace(/\s+/g, '_').toLowerCase());
-              result =  lookup[result];
-              partyObj.push(result);
-          } else {
+            let result = (obj[key].replace(/\s+/g, '_').toLowerCase());
+            result = lookup[result];
+            partyObj.push(result);
+          } else if (startsWith(newkey, 'jurisdiction_of_political_offices_held') && obj[key] !== "NA") {
+            let result = (obj[key].replace(/\s+/g, '_').toLowerCase());
+            result = levelslookup[result];
+            jurisdiction_levels.push(result);
+          }
+          else {
             newobj[newkey] = obj[key];
           }
         }
 
-        // remove Notes etc.
-        delete newobj['notes'];
+        // remove id etc.
         delete newobj['id'];
         delete newobj['name'];
 
         var bulk = {
           updateOne: {
             filter: { participant_id: obj['ID'] },
-            update: { $addToSet: { poli: newobj }, 
-                      $push: { political_parties: { $each: partyObj} } }
+            update: {
+              $addToSet: { poli: newobj },
+              $set: { political_parties: partyObj, jurisdiction_level_politicals: jurisdiction_levels }
+            }
           }
         }
 
@@ -339,6 +352,14 @@ function updateRoleNWC() {
         "exhibitor": mongodb.ObjectID("6216b320a75a14636f3dcc94"),
       }
 
+      //lookup table for political party membership
+      let planklookup = {
+        "for": mongodb.ObjectID("62275c7bd884e1248eefc18c"),
+        "against": mongodb.ObjectID("62275c9c02445175f503bf06"),
+        "no_known_involvement": mongodb.ObjectID("62275c9902445175f503bf05"),
+        "worked_on_with_position_unknown": mongodb.ObjectID("62275c9e02445175f503bf07"),
+      }
+
       // clean up keys and create array for query
       let jsonBulk = [];
       for (var i = 0; i < csvData.length; i++) {
@@ -346,7 +367,7 @@ function updateRoleNWC() {
 
         var key, keys = Object.keys(obj);
         var otherRole;
-        var plankObj = {};
+        var plankObj = [];
         var nwcRolesObj = [];
         for (var n = 0; n < keys.length; n++) {
           key = keys[n];
@@ -361,7 +382,7 @@ function updateRoleNWC() {
           // remove trailing underscore
           if (endsWith(newkey, '_'))
             newkey = newkey.slice(0, -1) //'abcde'
-          
+
           // remove unknown
           // make into binary
           if (obj[key] === "unknown")
@@ -370,27 +391,23 @@ function updateRoleNWC() {
             obj[key] = 1;
           else if (obj[key] === "no")
             obj[key] = 0;
-          else if (obj[key] === "for")
-            obj[key] = 1;
-          else if (obj[key] === "against")
-            obj[key] = 0;
-          else if (obj[key] === "no known involvement")
-            obj[key] = NaN;
-          
+
           // remove Notes
-          if(startsWith(newkey, 'notes') || startsWith(newkey, '...')) {
+          if (startsWith(newkey, 'notes') || startsWith(newkey, '...')) {
           } else if (!newkey.includes('plank')) { //slit into roles and plank issues
             //filter roles and represent as ObjectIDs
             if (startsWith(newkey, 'other'))
               otherRole = obj[key];
             else {
               if (obj[key] === 1) {
-                let result =  lookup[newkey];
+                let result = lookup[newkey];
                 nwcRolesObj.push(result);
               }
             }
           } else {
-            plankObj[newkey] = obj[key];
+            let result = (obj[key].replace(/\s+/g, '_').toLowerCase());
+            result = planklookup[result];
+            plankObj.push(result);
           }
         }
 
@@ -435,9 +452,9 @@ function updateLeadership() {
           if (endsWith(newkey, '_'))
             newkey = newkey.slice(0, -1) //'abcde'
           // keep only info
-          if (key === "ID" || key === "First Name" || key === "Last Name" || key === "Name" || startsWith(newkey, 'notes') || startsWith(newkey, '...') || obj[key] === "unknown"){
+          if (key === "ID" || key === "First Name" || key === "Last Name" || key === "Name" || startsWith(newkey, 'notes') || startsWith(newkey, '...') || obj[key] === "unknown") {
           } else
-            newobj  = obj[key];
+            newobj = obj[key];
         }
 
         var bulk = {
@@ -614,6 +631,7 @@ const argv = yargs
   .alias('help', 'h')
   .argv;
 
+
 if (argv.b) {
   createBasic();
 }
@@ -638,3 +656,5 @@ if (argv.o) {
 if (argv.s) {
   updateSources();
 }
+
+
