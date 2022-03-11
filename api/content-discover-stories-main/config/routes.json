@@ -1,0 +1,28 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/content-discover-stories-main",
+      "handler": "content-discover-stories-main.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/content-discover-stories-main",
+      "handler": "content-discover-stories-main.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/content-discover-stories-main",
+      "handler": "content-discover-stories-main.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
