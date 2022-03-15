@@ -25,7 +25,13 @@
         "FormerProjectLeads"
       ]
     },
-    "Name": {
+    "FirstName": {
+      "type": "string"
+    },
+    "LastName": {
+      "type": "string"
+    },
+    "Years": {
       "type": "string"
     },
     "Description": {
