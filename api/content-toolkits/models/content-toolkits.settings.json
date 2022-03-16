@@ -41,7 +41,7 @@
     "Video_Url_Educators": {
       "type": "string"
     },
-    "Pdf_How_to_Contribute_Oral_Histories": {
+    "Pdf_How_to_Contribute_Oral_Histories_Students_Researchers": {
       "model": "file",
       "via": "related",
       "allowedTypes": [
@@ -50,7 +50,43 @@
       "plugin": "upload",
       "required": false
     },
-    "Pdf_How_to_Contribute_Biographies": {
+    "Pdf_How_to_Contribute_Oral_Histories_Educators": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "files"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "Pdf_How_to_Contribute_Oral_Histories_NWCParticipants": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "files"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "Pdf_How_to_Contribute_Biographies_Students_Researchers": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "files"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "Pdf_How_to_Contribute_Biographies_Educators": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "files"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "Pdf_How_to_Contribute_Biographies_NWCParticipants": {
       "model": "file",
       "via": "related",
       "allowedTypes": [
@@ -60,6 +96,15 @@
       "required": false
     },
     "Pdf_Technical_Guidelines": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "files"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "Pdf_Technical_Guidelines_Archivists": {
       "model": "file",
       "via": "related",
       "allowedTypes": [
@@ -95,5 +140,6 @@
       "plugin": "upload",
       "required": false
     }
+    
   }
 }
