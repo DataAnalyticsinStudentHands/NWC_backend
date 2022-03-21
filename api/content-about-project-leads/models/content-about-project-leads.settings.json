@@ -52,6 +52,9 @@
       ],
       "plugin": "upload",
       "required": false
+    },
+    "Order": {
+      "type": "biginteger"
     }
   }
 }
