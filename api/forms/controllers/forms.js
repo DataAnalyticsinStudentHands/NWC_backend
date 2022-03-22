@@ -10,7 +10,7 @@ module.exports = {
       'webadmin@dash.cs.uh.edu', 
       'houstoncon17@gmail.com', 
       'NWC Form Submit ' + Date.now(), 
-      `${ctx.request.body}`
+      JSON.stringify(ctx.request.body)
     );
 
     // Send response to the server.
