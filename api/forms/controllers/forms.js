@@ -9,7 +9,7 @@ module.exports = {
     strapi.services.forms.send(
       'webadmin@dash.cs.uh.edu', 
       'houstoncon17@gmail.com', 
-      'NWC Form Submit', 
+      'NWC Form Submit ' + Date.now(), 
       `${ctx.request.body.data}`
     );
 
