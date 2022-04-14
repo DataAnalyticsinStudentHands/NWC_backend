@@ -2,7 +2,8 @@
   "collectionName": "components_general_captioned_images",
   "info": {
     "name": "CaptionedImage",
-    "icon": "image"
+    "icon": "image",
+    "description": ""
   },
   "options": {},
   "attributes": {
@@ -21,6 +22,12 @@
       "type": "string"
     },
     "ImgCredit": {
+      "type": "string"
+    },
+    "ImgCaption": {
+      "type": "string"
+    },
+    "ImgCreditMore": {
       "type": "string"
     }
   }

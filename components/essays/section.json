@@ -12,17 +12,6 @@
     },
     "SectionText": {
       "type": "richtext"
-    },
-    "Image": {
-      "model": "file",
-      "via": "related",
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos"
-      ],
-      "plugin": "upload",
-      "required": false
     }
   }
 }
