@@ -2,7 +2,8 @@
   "kind": "singleType",
   "collectionName": "content_why_the_nwc_matters",
   "info": {
-    "name": "Content_WhyTheNWCMatters"
+    "name": "Content_WhyTheNWCMatters",
+    "description": ""
   },
   "options": {
     "increments": true,
@@ -21,7 +22,7 @@
     },
     "PrimaryDocuments": {
       "type": "component",
-      "repeatable": false,
+      "repeatable": true,
       "component": "general.primary-documents"
     },
     "TimelineIframeSrc": {
