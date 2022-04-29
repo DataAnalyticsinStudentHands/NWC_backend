@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_general_video_audios",
+  "info": {
+    "name": "VideoAudio",
+    "icon": "closed-captioning"
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "VideoAudioURL": {
+      "type": "string"
+    }
+  }
+}

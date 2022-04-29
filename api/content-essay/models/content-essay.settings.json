@@ -11,14 +11,23 @@
     "draftAndPublish": true
   },
   "attributes": {
+    "LayoutChoice": {
+      "type": "enumeration",
+      "enum": [
+        "Layout1",
+        "Layout2",
+        "Layout3",
+        "TorchRelay"
+      ]
+    },
+    "Featured": {
+      "type": "boolean"
+    },
     "Title": {
       "type": "string"
     },
     "ShortTitle": {
       "type": "string"
-    },
-    "Featured": {
-      "type": "boolean"
     },
     "Thumbnail": {
       "model": "file",
@@ -31,61 +40,50 @@
       "plugin": "upload",
       "required": true
     },
-    "MainImage": {
+    "HeaderImage": {
       "type": "component",
       "repeatable": false,
-      "component": "general.captioned-image"
+      "component": "essays.captioned-image"
     },
-    "TallImage": {
+    "CaptionedImage1": {
       "type": "component",
       "repeatable": false,
-      "component": "general.captioned-image"
+      "component": "essays.captioned-image"
     },
-    "Image1": {
+    "CaptionedImage2": {
       "type": "component",
       "repeatable": false,
-      "component": "general.captioned-image"
+      "component": "essays.captioned-image"
     },
-    "Image2": {
+    "CaptionedImage3": {
       "type": "component",
       "repeatable": false,
-      "component": "general.captioned-image"
+      "component": "essays.captioned-image"
     },
-    "Image3": {
+    "CaptionedImage4": {
       "type": "component",
       "repeatable": false,
-      "component": "general.captioned-image"
+      "component": "essays.captioned-image"
     },
-    "Paragraph1": {
-      "type": "richtext"
-    },
-    "Paragraph2": {
-      "type": "richtext"
-    },
-    "Paragraph3": {
-      "type": "richtext"
-    },
-    "Paragraph4": {
-      "type": "richtext"
-    },
-    "Sources": {
+    "Section1": {
       "type": "component",
-      "repeatable": true,
-      "component": "general.source"
+      "repeatable": false,
+      "component": "essays.section"
     },
-    "LayoutChoice": {
-      "type": "enumeration",
-      "enum": [
-        "Layout1",
-        "Layout2",
-        "Layout3"
-      ]
+    "Section2": {
+      "type": "component",
+      "repeatable": false,
+      "component": "essays.section"
     },
-    "VideoURL": {
-      "type": "string"
+    "Section3": {
+      "type": "component",
+      "repeatable": false,
+      "component": "essays.section"
     },
-    "VideoTitle": {
-      "type": "string"
+    "Section4": {
+      "type": "component",
+      "repeatable": false,
+      "component": "essays.section"
     },
     "PullQuote1": {
       "type": "string"
@@ -96,19 +94,31 @@
     "AuthorCredit": {
       "type": "richtext"
     },
+    "Sources": {
+      "type": "component",
+      "repeatable": true,
+      "component": "general.source"
+    },
     "PreferredCitation": {
       "type": "string"
     },
-    "HeaderIllustration": {
-      "model": "file",
-      "via": "related",
-      "allowedTypes": [
-        "files",
-        "images",
-        "videos"
-      ],
-      "plugin": "upload",
-      "required": false
+    "VideoAudioComponent": {
+      "type": "component",
+      "repeatable": false,
+      "component": "general.video-audio"
+    },
+    "BigImage1": {
+      "type": "component",
+      "repeatable": false,
+      "component": "essays.captioned-image"
+    },
+    "BigImage2": {
+      "type": "component",
+      "repeatable": false,
+      "component": "essays.captioned-image"
+    },
+    "TimeLineURL": {
+      "type": "string"
     }
   }
 }
