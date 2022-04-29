@@ -1,0 +1,28 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/content-homes",
+      "handler": "content-homes.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/content-homes",
+      "handler": "content-homes.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/content-homes",
+      "handler": "content-homes.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

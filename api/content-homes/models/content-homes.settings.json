@@ -1,0 +1,84 @@
+{
+  "kind": "singleType",
+  "collectionName": "content_homes",
+  "info": {
+    "name": "Content_Homes",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "PhotoByExplore": {
+      "type": "string"
+    },
+    "PhotoByExplore_more": {
+      "type": "string"
+    },
+    "aboutImgCredit": {
+      "type": "string"
+    },
+    "aboutImgCredit_more": {
+      "type": "string"
+    },
+    "homeAbout_p": {
+      "type": "string"
+    },
+    "homeAbout_p1": {
+      "type": "string"
+    },
+    "homeAbout_p2": {
+      "type": "string"
+    },
+    "homeButton1_link": {
+      "type": "string"
+    },
+    "homeButton1_text": {
+      "type": "string"
+    },
+    "homeButton2_link": {
+      "type": "string"
+    },
+    "homeButton2_text": {
+      "type": "string"
+    },
+    "homeButton3_link": {
+      "type": "string"
+    },
+    "homeButton3_text": {
+      "type": "string"
+    },
+    "homeButton4_link": {
+      "type": "string"
+    },
+    "homeButton4_text": {
+      "type": "string"
+    },
+    "homeExplore_text": {
+      "type": "string"
+    },
+    "homeHighlights_content1": {
+      "type": "string"
+    },
+    "homeHighlights_content2": {
+      "type": "string"
+    },
+    "homeHighlights_content3": {
+      "type": "string"
+    },
+    "homeHighlights_header1": {
+      "type": "string"
+    },
+    "homeHighlights_header2": {
+      "type": "string"
+    },
+    "homeHighlights_header3": {
+      "type": "string"
+    },
+    "homeMap_text": {
+      "type": "string"
+    }
+  }
+}
