@@ -1,8 +1,8 @@
 {
-  "kind": "collectionType",
+  "kind": "singleType",
   "collectionName": "content_footers",
   "info": {
-    "name": "CONTENT_Footer"
+    "name": "Content_Footer"
   },
   "options": {
     "increments": true,
@@ -10,11 +10,23 @@
     "draftAndPublish": true
   },
   "attributes": {
-    "Section": {
+    "TwitterLink": {
       "type": "string"
     },
-    "Content": {
-      "type": "richtext"
+    "InstagramLink": {
+      "type": "string"
+    },
+    "FacebookLink": {
+      "type": "string"
+    },
+    "DonateLink": {
+      "type": "string"
+    },
+    "paragraph": {
+      "type": "string"
+    },
+    "contactEmail": {
+      "type": "email"
     }
   }
 }

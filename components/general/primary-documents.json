@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_general_primary_documents",
+  "info": {
+    "name": "PrimaryDocuments",
+    "icon": "id-card"
+  },
+  "options": {},
+  "attributes": {
+    "THUMBNAIL": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "PDF": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    }
+  }
+}

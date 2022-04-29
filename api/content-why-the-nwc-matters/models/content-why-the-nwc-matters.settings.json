@@ -1,8 +1,8 @@
 {
-  "kind": "collectionType",
-  "collectionName": "content_whies",
+  "kind": "singleType",
+  "collectionName": "content_why_the_nwc_matters",
   "info": {
-    "name": "CONTENT_Why",
+    "name": "Content_WhyTheNWCMatters",
     "description": ""
   },
   "options": {
@@ -23,7 +23,7 @@
     "PrimaryDocuments": {
       "type": "component",
       "repeatable": true,
-      "component": "general.document"
+      "component": "general.primary-documents"
     },
     "TimelineIframeSrc": {
       "type": "string"

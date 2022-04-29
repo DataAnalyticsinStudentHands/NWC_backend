@@ -2,24 +2,24 @@
   "routes": [
     {
       "method": "GET",
-      "path": "/content-footer",
-      "handler": "content-footer.find",
+      "path": "/content-homes",
+      "handler": "content-homes.find",
       "config": {
         "policies": []
       }
     },
     {
       "method": "PUT",
-      "path": "/content-footer",
-      "handler": "content-footer.update",
+      "path": "/content-homes",
+      "handler": "content-homes.update",
       "config": {
         "policies": []
       }
     },
     {
       "method": "DELETE",
-      "path": "/content-footer",
-      "handler": "content-footer.delete",
+      "path": "/content-homes",
+      "handler": "content-homes.delete",
       "config": {
         "policies": []
       }

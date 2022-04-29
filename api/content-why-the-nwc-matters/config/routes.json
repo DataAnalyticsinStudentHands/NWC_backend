@@ -1,0 +1,28 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/content-why-the-nwc-matters",
+      "handler": "content-why-the-nwc-matters.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/content-why-the-nwc-matters",
+      "handler": "content-why-the-nwc-matters.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/content-why-the-nwc-matters",
+      "handler": "content-why-the-nwc-matters.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
