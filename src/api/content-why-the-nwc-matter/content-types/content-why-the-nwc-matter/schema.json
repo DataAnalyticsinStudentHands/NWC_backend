@@ -1,0 +1,41 @@
+{
+  "kind": "singleType",
+  "collectionName": "content_why_the_nwc_matters",
+  "info": {
+    "singularName": "content-why-the-nwc-matter", 
+    "pluralName": "content-why-the-nwc-matters", 
+    "displayName": "content-why-the-nwc-matters",
+    "name": "Content_WhyTheNWCMatters",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "HistoricalOverview": {
+      "type": "richtext"
+    },
+    "BannerPhotoCredit": {
+      "type": "string"
+    },
+    "BannerPhotoCredit_more": {
+      "type": "string"
+    },
+    "PrimaryDocuments": {
+      "type": "component",
+      "repeatable": true,
+      "component": "general.primary-documents"
+    },
+    "TimelineIframeSrc": {
+      "type": "string"
+    },
+    "VideoTitle": {
+      "type": "string"
+    },
+    "VideoURL": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "races",
+  "info": {
+    "singularName": "race",
+    "pluralName": "races",
+    "displayName": "Race"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "white": {
+      "type": "string"
+    },
+    "black": {
+      "type": "string"
+    },
+    "hispanic": {
+      "type": "string"
+    },
+    "asian_americanpacific_islander": {
+      "type": "string"
+    },
+    "native_americanamerican_indian": {
+      "type": "string"
+    },
+    "participants": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::participant.participant",
+      "inversedBy": "nwc_races"
+    }
+  }
+}

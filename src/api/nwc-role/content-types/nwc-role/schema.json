@@ -1,0 +1,66 @@
+{
+  "kind": "collectionType",
+  "collectionName": "nwc_roles",
+  "info": {
+    "singularName": "nwc-role",
+    "pluralName": "nwc-roles",
+    "displayName": "nwc_role"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "delegate_at_the_nwc": {
+      "type": "string"
+    },
+    "ford_national_commissioner": {
+      "type": "string"
+    },
+    "carter_national_commissioner": {
+      "type": "string"
+    },
+    "international_dignitary": {
+      "type": "string"
+    },
+    "torch_relay_runner": {
+      "type": "string"
+    },
+    "alternate_at_the_nwc": {
+      "type": "string"
+    },
+    "official_observer": {
+      "type": "string"
+    },
+    "volunteer": {
+      "type": "string"
+    },
+    "paid_staff_member": {
+      "type": "string"
+    },
+    "notable_speaker": {
+      "type": "string"
+    },
+    "unofficial_observer": {
+      "type": "string"
+    },
+    "journalists_covering_the_nwc": {
+      "type": "string"
+    },
+    "state_delegation_chair": {
+      "type": "string"
+    },
+    "exhibitor": {
+      "type": "string"
+    },
+    "delegate_at_large": {
+      "type": "string"
+    },
+    "participants": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::participant.participant",
+      "inversedBy": "nwc_roles"
+    }
+  }
+}

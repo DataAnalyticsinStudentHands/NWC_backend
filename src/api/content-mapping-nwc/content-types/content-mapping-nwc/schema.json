@@ -1,0 +1,29 @@
+{
+  "kind": "singleType",
+  "collectionName": "content_mapping_nwcs",
+  "info": {
+    "singularName": "content-mapping-nwc", 
+    "pluralName": "content-mapping-nwcs", 
+    "displayName": "content-mapping-nwc",
+    "name": "Content_MappingNWC"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "BasicSearch_Text": {
+      "type": "richtext"
+    },
+    "Banner_text": {
+      "type": "richtext"
+    },
+    "BannerImage_Credit": {
+      "type": "string"
+    },
+    "BannerImageCredit_more": {
+      "type": "string"
+    }
+  }
+}

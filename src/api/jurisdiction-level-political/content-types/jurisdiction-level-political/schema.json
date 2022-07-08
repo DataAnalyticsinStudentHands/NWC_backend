@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "jurisdiction_level_politicals",
+  "info": {
+    "singularName": "jurisdiction-level-political",
+    "pluralName": "jurisdiction-level-politicals",
+    "displayName": "Jurisdiction_level_political"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "city_level": {
+      "type": "string"
+    },
+    "county_level": {
+      "type": "string"
+    },
+    "state_level": {
+      "type": "string"
+    },
+    "federal_level": {
+      "type": "string"
+    },
+    "none": {
+      "type": "string"
+    },
+    "unknown": {
+      "type": "string"
+    },
+    "participants": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::participant.participant",
+      "inversedBy": "jurisdiction_level_politicals"
+    }
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "kind": "collectionType",
+  "collectionName": "content_discover_stories",
+  "info": {
+    "singularName": "content-discover-story", 
+    "pluralName": "content-discover-stories", 
+    "displayName": "content-discover-story",
+    "name": "CONTENT_Discover_Story",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "profilepic": {
+      "type":"media",
+      "multiple":false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "required": false,
+      "pluginOptions": {}
+    },
+    "dob": {
+      "type": "string"
+    },
+    "career": {
+      "type": "component",
+      "repeatable": true,
+      "component": "general.career"
+    },
+    "rolesAtNwc": {
+      "type": "component",
+      "repeatable": true,
+      "component": "general.role"
+    },
+    "usertags": {
+      "type": "component",
+      "repeatable": true,
+      "component": "general.usertags"
+    },
+    "bigquote1": {
+      "type": "string"
+    },
+    "bigquote2": {
+      "type": "string"
+    },
+    "maintext": {
+      "type": "richtext"
+    },
+    "sources": {
+      "type": "component",
+      "repeatable": true,
+      "component": "general.source"
+    },
+    "featured": {
+      "type": "enumeration",
+      "enum": [
+        "true",
+        "false"
+      ]
+    },
+    "imgcaption": {
+      "type": "string"
+    },
+    "AvalonUrl": {
+      "type": "string"
+    },
+    "AvalonTitle": {
+      "type": "string"
+    },
+    "VideoUrl": {
+      "type": "string"
+    },
+    "firstname": {
+      "type": "string"
+    },
+    "lastname": {
+      "type": "string"
+    }
+  }
+}

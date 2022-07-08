@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_general_captioned_images",
+  "info": {
+    "name": "CaptionedImage",
+    "icon": "image",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "Image": {
+      "type":"media",
+      "multiple":false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "required": false
+    },
+    "ImageAlt": {
+      "type": "string"
+    },
+    "ImgCredit": {
+      "type": "string"
+    },
+    "ImgCaption": {
+      "type": "string"
+    },
+    "ImgCreditMore": {
+      "type": "string"
+    }
+  }
+}
