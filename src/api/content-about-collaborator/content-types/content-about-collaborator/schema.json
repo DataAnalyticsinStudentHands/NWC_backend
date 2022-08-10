@@ -1,0 +1,54 @@
+{
+  "kind": "collectionType",
+  "collectionName": "content_about_collaborators",
+  "info": {
+    "singularName": "content-about-collaborator", 
+    "pluralName": "content-about-collaborators", 
+    "displayName": "content-about-collaborators",
+    "name": "CONTENT_About_Collaborators",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "Contributor_Type": {
+      "type": "enumeration",
+      "enum": [
+        "SteeringCommittee",
+        "StudentCollaborators",
+        "InternsResearchAssistants",
+        "EducatorCollaborators",
+        "ExternalAdvisoryCommittee",
+        "NWCParticipantCommittee",
+        "InternalAdvisoryBoard",
+        "DonorGrantingAgencies",
+        "FormerProjectLeads"
+      ]
+    },
+    "FirstName": {
+      "type": "string"
+    },
+    "LastName": {
+      "type": "string"
+    },
+    "Years": {
+      "type": "string"
+    },
+    "Description": {
+      "type": "string"
+    },
+    "ProfilePicture": {
+      "type": "media",
+      "multiple":false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "required": false
+    }
+  }
+}

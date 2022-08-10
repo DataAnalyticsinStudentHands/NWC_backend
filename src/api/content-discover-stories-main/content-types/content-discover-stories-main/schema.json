@@ -1,0 +1,30 @@
+{
+  "kind": "singleType",
+  "collectionName": "content_discover_stories_mains",
+  "info": {
+  "singularName": "content-discover-stories-main", 
+  "pluralName": "content-discover-stories-mains", 
+  "displayName": "content-discover-stories-main",
+    "name": "Content_DiscoverStoriesMain",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "BannerText": {
+      "type": "richtext"
+    },
+    "BannerImageCredit": {
+      "type": "string"
+    },
+    "BannerImageCredit_more": {
+      "type": "string"
+    },
+    "IntroductionText": {
+      "type": "richtext"
+    }
+  }
+}

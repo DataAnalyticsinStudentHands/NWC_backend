@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_general_primary_documents",
+  "info": {
+    "name": "PrimaryDocuments",
+    "icon": "id-card"
+  },
+  "options": {},
+  "attributes": {
+    "THUMBNAIL": {
+      "type":"media",
+      "multiple":false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "required": false
+    },
+    "PDF": {
+      "type":"media",
+      "multiple":false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "required": false
+    }
+  }
+}

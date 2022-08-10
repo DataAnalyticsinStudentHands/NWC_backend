@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_general_documents",
+  "info": {
+    "name": "DOCUMENT",
+    "icon": "file-pdf"
+  },
+  "options": {},
+  "attributes": {
+    "THUMBNAIL": {
+      "type":"media",
+      "multiple":false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "required": false
+    },
+    "PDF": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    }
+  }
+}

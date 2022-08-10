@@ -1,0 +1,72 @@
+{
+  "kind": "collectionType",
+  "collectionName": "political_parties",
+  "info": {
+    "singularName": "political-party",
+    "pluralName": "political-parties",
+    "displayName": "political_party"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "american_independent": {
+      "type": "string"
+    },
+    "black_panther": {
+      "type": "string"
+    },
+    "cpusa": {
+      "type": "string"
+    },
+    "conservative_party_of_new_york": {
+      "type": "string"
+    },
+    "dc_statehood": {
+      "type": "string"
+    },
+    "democratic": {
+      "type": "string"
+    },
+    "liberal_party_of_new_york": {
+      "type": "string"
+    },
+    "libertarian": {
+      "type": "string"
+    },
+    "minnesota_dfl": {
+      "type": "string"
+    },
+    "north_dakota_dnl": {
+      "type": "string"
+    },
+    "peace_and_freedom": {
+      "type": "string"
+    },
+    "raza_unida": {
+      "type": "string"
+    },
+    "republican": {
+      "type": "string"
+    },
+    "socialist_party_usa": {
+      "type": "string"
+    },
+    "socialist_workers": {
+      "type": "string"
+    },
+    "unknown": {
+      "type": "string"
+    },
+    "other": {
+      "type": "string"
+    },
+    "participants": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::participant.participant",
+      "inversedBy": "political_parties"
+    }
+  }
+}

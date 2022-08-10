@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "content_home_carousels",
+  "info": {
+    "singularName": "content-home-carousel", 
+    "pluralName": "content-home-carousels", 
+    "displayName": "content-home-carousel",
+    "name": "CONTENT_Home_Carousel_Imgs",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "Section": {
+      "type": "string"
+    },
+    "Image": {
+      "type":"media",
+      "multiple":false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "required": false
+    }
+  }
+}

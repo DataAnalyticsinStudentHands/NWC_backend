@@ -1,0 +1,135 @@
+{
+  "kind": "collectionType",
+  "collectionName": "participants",
+  "info": {
+    "singularName": "participant",
+    "pluralName": "participants",
+    "displayName": "Participant",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "age_in_1977": {
+      "type": "integer"
+    },
+    "gender": {
+      "type": "string"
+    },
+    "marital_classification": {
+      "type": "string"
+    },
+    "median_household_income_of_place_of_residence": {
+      "type": "integer"
+    },
+    "name_of_spouse": {
+      "type": "string"
+    },
+    "place_of_birth": {
+      "type": "string"
+    },
+    "residence_in_1977": {
+      "type": "string"
+    },
+    "sexual_orientation": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "total_number_of_children": {
+      "type": "integer"
+    },
+    "total_population_of_place_of_residence": {
+      "type": "integer"
+    },
+    "race": {
+      "type": "json"
+    },
+    "poli": {
+      "type": "json"
+    },
+    "edc": {
+      "type": "json"
+    },
+    "orgs": {
+      "type": "json"
+    },
+    "first_name": {
+      "type": "string"
+    },
+    "last_name": {
+      "type": "string"
+    },
+    "participant_id": {
+      "type": "string"
+    },
+    "location_of_residence_in1977": {
+      "type": "json"
+    },
+    "import_note": {
+      "type": "text"
+    },
+    "leadership": {
+      "type": "json"
+    },
+    "religion": {
+      "type": "enumeration",
+      "enum": [
+        "agnostic",
+        "atheist",
+        "catholic",
+        "christian",
+        "eastern",
+        "jewish",
+        "mormon",
+        "muslim",
+        "unknown",
+        "none"
+      ]
+    },
+    "highest_level_education": {
+      "type": "enumeration",
+      "enum": [
+        "some_high_school",
+        "high_school_diploma",
+        "some_degree",
+        "college_degree",
+        "graduate_professional_degree",
+        "unknown"
+      ]
+    },
+    "nwc_roles": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::nwc-role.nwc-role",
+      "inversedBy": "participants"
+    },
+    "nwc_races": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::race.race",
+      "inversedBy": "participants"
+    },
+    "political_parties": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::political-party.political-party",
+      "inversedBy": "participants"
+    },
+    "jurisdiction_level_politicals": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::jurisdiction-level-political.jurisdiction-level-political",
+      "inversedBy": "participants"
+    },
+    "era_stance": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::plank.plank",
+      "inversedBy": "participants"
+    }
+  }
+}

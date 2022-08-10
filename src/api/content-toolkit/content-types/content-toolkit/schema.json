@@ -1,0 +1,137 @@
+{
+  "kind": "singleType",
+  "collectionName": "content_toolkits",
+  "info": {
+    "singularName": "content-toolkit", 
+    "pluralName": "content-toolkits", 
+    "displayName": "content-toolkits",
+    "name": "Content_Toolkits",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "Resources_for_Students_Text": {
+      "type": "richtext"
+    },
+    "Resources_for_Researchers_Text": {
+      "type": "richtext"
+    },
+    "Resources_for_Participants_Text": {
+      "type": "richtext"
+    },
+    "Resources_for_Archivists_Text": {
+      "type": "richtext"
+    },
+    "Resources_for_Educators_Text": {
+      "type": "richtext"
+    },
+    "Video_Url_Students": {
+      "type": "string"
+    },
+    "Video_Url_Researchers": {
+      "type": "string"
+    },
+    "Video_Url_Participants": {
+      "type": "string"
+    },
+    "Video_Url_Archivists": {
+      "type": "string"
+    },
+    "Video_Url_Educators": {
+      "type": "string"
+    },
+    "Pdf_How_to_Contribute_Oral_Histories_Students_Researchers": {
+      "type":"media",
+      "multiple":false,
+      "allowedTypes": [
+        "files"
+      ],
+      "required": false
+    },
+    "Pdf_How_to_Contribute_Oral_Histories_Educators": {
+      "type":"media",
+      "multiple":false,
+      "allowedTypes": [
+        "files"
+      ],
+      "required": false
+    },
+    "Pdf_How_to_Contribute_Oral_Histories_NWCParticipants": {
+      "type":"media",
+      "multiple":false,
+      "allowedTypes": [
+        "files"
+      ],
+      "required": false
+    },
+    "Pdf_How_to_Contribute_Biographies_Students_Researchers": {
+      "type":"media",
+      "multiple":false,
+      "allowedTypes": [
+        "files"
+      ],
+      "required": false
+    },
+    "Pdf_How_to_Contribute_Biographies_Educators": {
+      "type":"media",
+      "multiple":false,
+      "allowedTypes": [
+        "files"
+      ],
+      "required": false
+    },
+    "Pdf_How_to_Contribute_Biographies_NWCParticipants": {
+      "type":"media",
+      "multiple":false,
+      "allowedTypes": [
+        "files"
+      ],
+      "required": false
+    },
+    "Pdf_Technical_Guidelines": {
+      "type":"media",
+      "multiple":false,
+      "allowedTypes": [
+        "files"
+      ],
+      "required": false
+    },
+    "Pdf_Technical_Guidelines_Archivists": {
+      "type":"media",
+      "multiple":false,
+      "allowedTypes": [
+        "files"
+      ],
+      "required": false
+    },
+    "Pdf_Permission_Documents": {
+      "type":"media",
+      "multiple":false,
+      "allowedTypes": [
+        "files"
+      ],
+      "required": false
+    },
+    "Pdf_How_to_Donate_Your_Papers": {
+      "type":"media",
+      "multiple":false,
+      "allowedTypes": [
+        "files"
+      ],
+      "required": false
+    },
+    "Pdf_Classroom_Ideas": {
+      "type":"media",
+      "multiple":false,
+      "allowedTypes": [
+        "files"
+      ],
+      "required": false
+    }
+    
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "kind": "collectionType",
+  "collectionName": "forms",
+  "info": {
+    "singularName": "form", 
+    "pluralName": "forms", 
+    "displayName": "form",
+    "name": "Forms"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "Email": {
+      "type": "string"
+    }
+  }
+}

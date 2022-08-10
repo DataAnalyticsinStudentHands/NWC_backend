@@ -1,0 +1,35 @@
+{
+  "kind": "singleType",
+  "collectionName": "content_footers",
+  "info": {
+    "singularName": "content-footer", 
+    "pluralName": "content-footers", 
+    "displayName": "content-footer",
+    "name": "Content_Footer"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "TwitterLink": {
+      "type": "string"
+    },
+    "InstagramLink": {
+      "type": "string"
+    },
+    "FacebookLink": {
+      "type": "string"
+    },
+    "DonateLink": {
+      "type": "string"
+    },
+    "paragraph": {
+      "type": "string"
+    },
+    "contactEmail": {
+      "type": "email"
+    }
+  }
+}
