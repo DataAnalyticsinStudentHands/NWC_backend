@@ -126,3 +126,4 @@ package-lock.json
 data
 .env.local
 .env.sharkmongo
+.env.shark
