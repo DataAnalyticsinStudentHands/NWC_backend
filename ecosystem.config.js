@@ -2,7 +2,8 @@ module.exports = {
     apps: [
       {
         name: 'NWC Backend',
-        script: 'npm',
+        log_date_format: 'YYYY-MM-DD HH:mm:ss',
+	script: 'npm',
         args: 'start',
       },
     ],
