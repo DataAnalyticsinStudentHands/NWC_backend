@@ -125,3 +125,5 @@ package-lock.json
 .env.atlas
 data
 .env.local
+.env.sharkmongo
+.env.shark

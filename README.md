@@ -15,7 +15,10 @@ npm run develop
 ```
     
 ## Production/Deployment
+
+First built the admin interface and then start up the backend.
 ```
+npm run build --clean
 npm start
 ```
 
