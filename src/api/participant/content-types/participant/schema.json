@@ -124,12 +124,6 @@
       "relation": "manyToMany",
       "target": "api::jurisdiction-level-political.jurisdiction-level-political",
       "inversedBy": "participants"
-    },
-    "era_stance": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::plank.plank",
-      "inversedBy": "participants"
     }
   }
 }

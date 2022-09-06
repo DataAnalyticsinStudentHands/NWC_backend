@@ -2,8 +2,8 @@
   "kind": "singleType",
   "collectionName": "content_homes",
   "info": {
-    "singularName": "content-home", 
-    "pluralName": "content-homes", 
+    "singularName": "content-home",
+    "pluralName": "content-homes",
     "displayName": "content-home",
     "name": "Content_Homes",
     "description": ""
@@ -18,58 +18,58 @@
       "type": "string"
     },
     "PhotoByExplore_more": {
-      "type": "string"
+      "type": "richtext"
     },
     "aboutImgCredit": {
       "type": "string"
     },
     "aboutImgCredit_more": {
-      "type": "string"
+      "type": "richtext"
     },
     "homeAbout_p": {
-      "type": "string"
+      "type": "richtext"
     },
     "homeAbout_p1": {
-      "type": "string"
+      "type": "richtext"
     },
     "homeAbout_p2": {
-      "type": "string"
+      "type": "richtext"
     },
     "homeButton1_link": {
       "type": "string"
     },
     "homeButton1_text": {
-      "type": "string"
+      "type": "richtext"
     },
     "homeButton2_link": {
       "type": "string"
     },
     "homeButton2_text": {
-      "type": "string"
+      "type": "richtext"
     },
     "homeButton3_link": {
       "type": "string"
     },
     "homeButton3_text": {
-      "type": "string"
+      "type": "richtext"
     },
     "homeButton4_link": {
       "type": "string"
     },
     "homeButton4_text": {
-      "type": "string"
+      "type": "richtext"
     },
     "homeExplore_text": {
-      "type": "string"
+      "type": "richtext"
     },
     "homeHighlights_content1": {
-      "type": "string"
+      "type": "richtext"
     },
     "homeHighlights_content2": {
-      "type": "string"
+      "type": "richtext"
     },
     "homeHighlights_content3": {
-      "type": "string"
+      "type": "richtext"
     },
     "homeHighlights_header1": {
       "type": "string"
@@ -81,7 +81,7 @@
       "type": "string"
     },
     "homeMap_text": {
-      "type": "string"
+      "type": "richtext"
     }
   }
 }
