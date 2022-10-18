@@ -21,7 +21,7 @@
       "type": "string"
     },
     "Description": {
-      "type": "string"
+      "type": "richtext"
     },
     "Illustration": {
       "type":"media",
