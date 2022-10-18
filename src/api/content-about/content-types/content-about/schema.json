@@ -114,19 +114,19 @@
       "required": false
     },
     "aboutTimeline_1": {
-      "type": "string"
+      "type": "richtext"
     },
     "aboutTimeline_2": {
-      "type": "string"
+      "type": "richtext"
     },
     "aboutTimeline_3": {
-      "type": "string"
+      "type": "richtext"
     },
     "aboutTimeline_4": {
-      "type": "string"
+      "type": "richtext"
     },
     "aboutTimeline_5": {
-      "type": "string"
+      "type": "richtext"
     }
   }
 }
