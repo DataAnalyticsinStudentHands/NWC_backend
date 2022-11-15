@@ -53,10 +53,10 @@
       "component": "general.usertags"
     },
     "bigquote1": {
-      "type": "string"
+      "type": "richtext"
     },
     "bigquote2": {
-      "type": "string"
+      "type": "richtext"
     },
     "maintext": {
       "type": "richtext"
