@@ -38,7 +38,7 @@
       "type": "string"
     },
     "Description": {
-      "type": "string"
+      "type": "richtext"
     },
     "ProfilePicture": {
       "type": "media",
