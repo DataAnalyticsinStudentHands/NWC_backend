@@ -2,18 +2,38 @@
   "kind": "collectionType",
   "collectionName": "forms",
   "info": {
-    "singularName": "form", 
-    "pluralName": "forms", 
-    "displayName": "form",
-    "name": "Forms"
+    "singularName": "form",
+    "pluralName": "forms",
+    "displayName": "form-corrections",
+    "name": "Forms",
+    "description": ""
   },
   "options": {
     "increments": true,
     "timestamps": true,
     "draftAndPublish": true
   },
+  "pluginOptions": {},
   "attributes": {
     "Email": {
+      "type": "string"
+    },
+    "Name": {
+      "type": "string"
+    },
+    "Affiliation": {
+      "type": "string"
+    },
+    "Page": {
+      "type": "string"
+    },
+    "Feature": {
+      "type": "string"
+    },
+    "Corrections": {
+      "type": "text"
+    },
+    "Source": {
       "type": "string"
     }
   }
