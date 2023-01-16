@@ -1,6 +1,6 @@
 const { createCoreController } = require('@strapi/strapi').factories;
 
-module.exports = createCoreController('api::form.form', ({strapi})=>({
+module.exports = createCoreController('api::contact.contact', ({strapi})=>({
     async sendEmail(ctx) {
         try {
             const emailconfig = await strapi.service('plugin::email-service.emailservice').find();
@@ -23,15 +23,13 @@ module.exports = createCoreController('api::form.form', ({strapi})=>({
                 message
               );
 
-              strapi.db.query('api::form.form').create({
+              strapi.db.query('api::contact.contact').create({
                 data: {
                   Name: ctx.request.body.data.Name,
                   Email: ctx.request.body.data.Email,
-                  Affiliation: ctx.request.body.data.Affiliation,
-                  Page: ctx.request.body.data.Page,
-                  Feature: ctx.request.body.data.Feature,
-                  Corrections: ctx.request.body.data.Corrections,
-                  Source: ctx.request.body.data.Source,
+                  Subject: ctx.request.body.data.Subject,
+                  Phone: ctx.request.body.data.Phone,
+                  Message: ctx.request.body.data.Message,
                   publishedAt: new Date().getTime()
                 },
               });

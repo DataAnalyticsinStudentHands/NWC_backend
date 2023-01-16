@@ -2,8 +2,8 @@ module.exports = {
     routes: [
       {
         method: 'POST',
-        path: '/forms', 
-        handler: 'form.sendEmail',
+        path: '/contact', 
+        handler: 'contact.sendEmail',
       },
     ]
   }
