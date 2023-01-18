@@ -38,7 +38,7 @@ module.exports = createCoreController('api::form-moreidea.form-moreidea', ({stra
                   Phone: ctx.request.body.data.Phone,
                   Email: ctx.request.body.data.Email,
                   Comments: ctx.request.body.data.Comments,
-                  publishedAt: new Date().getTime()
+                  //publishedAt: new Date().getTime()
                 },
               });
 
