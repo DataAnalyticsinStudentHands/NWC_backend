@@ -32,11 +32,22 @@
     "emailBCC": {
       "type": "string"
     },
-
-    "emailSubject": {
+    "emailCorrectionsSubject": {
       "type": "string"
     },
-    "emailText": {
+    "emailCorrectionsText": {
+      "type": "richtext"
+    },
+    "emailContactUsSubject": {
+      "type": "string"
+    },
+    "emailContactUsText": {
+      "type": "richtext"
+    },
+    "emailMoreIdeasSubject": {
+      "type": "string"
+    },
+    "emailMoreIdeasText": {
       "type": "richtext"
     }
   }

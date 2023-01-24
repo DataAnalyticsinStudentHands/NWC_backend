@@ -7,12 +7,12 @@ module.exports = createCoreController('api::form.form', ({strapi})=>({
             var emailFrom = emailconfig.emailFrom ?? 'webadmin@dash.cs.uh.edu'
             var emailCC = emailconfig.emailCC ?? ""
             var emailBCC= emailconfig.emailBCC   ?? ""
-            var emailSubject = emailconfig.emailSubject ?? "No Subject"
-            var emailText = emailconfig.emailText ?? "No Text"
+            var emailCorrectionsSubject = emailconfig.emailCorrectionsSubject ?? "No Subject"
+            var emailCorrectionsText = emailconfig.emailCorrectionsText ?? "No Text"
             var message = 
     `Dear ${ctx.request.body.data.Name},
 
-    ${emailText}
+    ${emailCorrectionsText}
 
     Name: ${ctx.request.body.data.Name}
     Affiliation/Occupation: ${ctx.request.body.data.Affiliation}
@@ -27,7 +27,7 @@ module.exports = createCoreController('api::form.form', ({strapi})=>({
                 ctx.request.body.data.Email,
                 emailCC ,   
                 emailBCC,   
-                emailSubject,
+                emailCorrectionsSubject,
                 message
               );
 
@@ -40,7 +40,6 @@ module.exports = createCoreController('api::form.form', ({strapi})=>({
                   Feature: ctx.request.body.data.Feature,
                   Corrections: ctx.request.body.data.Corrections,
                   Source: ctx.request.body.data.Source,
-                  //publishedAt: new Date().getTime()
                 },
               });
 

@@ -7,12 +7,12 @@ module.exports = createCoreController('api::contact.contact', ({strapi})=>({
             var emailFrom = emailconfig.emailFrom ?? 'webadmin@dash.cs.uh.edu'
             var emailCC = emailconfig.emailCC ?? ""
             var emailBCC= emailconfig.emailBCC   ?? ""
-            var emailSubject = emailconfig.emailSubject ?? "No Subject"
-            var emailText = emailconfig.emailText ?? "No Text"
+            var emailContactUsSubject = emailconfig.emailContactUsSubject ?? "No Subject"
+            var emailContactUsText = emailconfig.emailContactUsText ?? "No Text"
             var message = 
     `Dear ${ctx.request.body.data.Name},
 
-    ${emailText}
+    ${emailContactUsText}
 
     Name: ${ctx.request.body.data.Name}
     Email: ${ctx.request.body.data.Email}
@@ -24,7 +24,7 @@ module.exports = createCoreController('api::contact.contact', ({strapi})=>({
                 ctx.request.body.data.Email,
                 emailCC ,   
                 emailBCC,   
-                emailSubject,
+                emailContactUsSubject,
                 message
               );
 
@@ -32,10 +32,8 @@ module.exports = createCoreController('api::contact.contact', ({strapi})=>({
                 data: {
                   Name: ctx.request.body.data.Name,
                   Email: ctx.request.body.data.Email,
-                  Subject: ctx.request.body.data.Subject,
                   Phone: ctx.request.body.data.Phone,
                   Message: ctx.request.body.data.Message,
-                  //publishedAt: new Date().getTime()
                 },
               });
 

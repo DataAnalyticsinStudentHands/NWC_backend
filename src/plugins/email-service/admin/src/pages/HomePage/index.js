@@ -23,8 +23,14 @@ const HomePage = () => {
   const [emailTo, setEmailTo] = useState("")
   const [emailCC, setEmailCC] = useState("")
   const [emailBCC, setEmailBCC] = useState("")
-  const [emailSubject, setEmailSubject] = useState("")
-  const [emailText, setEmailText] = useState("")
+
+  const [emailCorrectionsSubject, setEmailCorrectionsSubject] = useState("")
+  const [emailCorrectionsText, setEmailCorrectionsText] = useState("")
+  const [emailContactUsSubject, setEmailContactUsSubject] = useState("")
+  const [emailContactUsText, setEmailContactUsText] = useState("")
+  const [emailMoreIdeasSubject, setEmailMoreIdeasSubject] = useState("")
+  const [emailMoreIdeasText, setEmailMoreIdeasText] = useState("")
+  
 
   const fetchData = async () =>{
     if (isLoading === false ) setIsLoading(true)
@@ -35,9 +41,12 @@ const HomePage = () => {
     setEmailCC(emailData.data.attributes.emailCC)
     setEmailBCC(emailData.data.attributes.emailBCC)
 
-    setEmailSubject(emailData.data.attributes.emailSubject)
-    setEmailText(emailData.data.attributes.emailText)
-
+    setEmailCorrectionsSubject(emailData.data.attributes.emailCorrectionsSubject)
+    setEmailCorrectionsText(emailData.data.attributes.emailCorrectionsText)
+    setEmailContactUsSubject(emailData.data.attributes.emailContactUsSubject)
+    setEmailContactUsText(emailData.data.attributes.emailContactUsText)
+    setEmailMoreIdeasSubject(emailData.data.attributes.emailMoreIdeasSubject)
+    setEmailMoreIdeasText(emailData.data.attributes.emailMoreIdeasText)
 
     setIsLoading(false)
   }
@@ -91,29 +100,20 @@ const HomePage = () => {
         <Box paddingTop={5}>
           <TabGroup label="Some stuff for the label" id="tabs" onTabChange={selected =>setTagInt(selected)} initialSelectedTabIndex={tagInt}>
             <Tabs>
-              <Tab>Email Content</Tab>
+              <Tab>Corrections</Tab>
+              <Tab>Contact Us</Tab>
+              <Tab>Have More Ideas?</Tab>
             </Tabs>
             <TabPanels>
-              <TabPanel>
+            <TabPanel>
                 <Box color="neutral800" padding={4} background="neutral0">
-                  <Field name="emailSubject">
+                  <Field name="emailCorrectionsSubject">
                     <Stack spacing={1}>
                       <FieldLabel>Subject</FieldLabel>
-                      <FieldInput type="text" value={emailSubject} onChange={(e)=>{setEmailSubject(e.target.value)}}/>
+                      <FieldInput type="text" value={emailCorrectionsSubject} onChange={(e)=>{setEmailCorrectionsSubject(e.target.value)}}/>
                     </Stack>
                   </Field>
-                  <Textarea label="Text" name="emailText" value={emailText} onChange={(e) => {setEmailText(e.target.value)}} />
-                </Box>
-              </TabPanel>
-              {/* <TabPanel>
-                <Box color="neutral800" padding={4} background="neutral0">
-                  <Field name="emailDownlaodSubject">
-                    <Stack spacing={1}>
-                      <FieldLabel>Subject</FieldLabel>
-                      <FieldInput type="text" value={emailDownlaodSubject} onChange={(e)=>{setEmailDownlaodSubject(e.target.value)}}/>
-                    </Stack>
-                  </Field>
-                  <Textarea label="Email Text" name="emailDownlaodText" value={emailDownlaodText} onChange={(e) => {setEmailDownlaodText(e.target.value)}} />
+                  <Textarea label="Text" name="emailCorrectionsText" value={emailCorrectionsText} onChange={(e) => {setEmailCorrectionsText(e.target.value)}} />
                 </Box>
               </TabPanel>
               <TabPanel>
@@ -124,9 +124,20 @@ const HomePage = () => {
                       <FieldInput type="text" value={emailContactUsSubject} onChange={(e)=>{setEmailContactUsSubject(e.target.value)}}/>
                     </Stack>
                   </Field>
-                  <Textarea label="Email Text" name="emailContactUsText" value={emailContactUsText} onChange={(e) => {setEmailContactUsText(e.target.value)}} />
+                  <Textarea label="Text" name="emailContactUsText" value={emailContactUsText} onChange={(e) => {setEmailContactUsText(e.target.value)}} />
                 </Box>
-              </TabPanel> */}
+              </TabPanel>
+              <TabPanel>
+                <Box color="neutral800" padding={4} background="neutral0">
+                  <Field name="emailMoreIdeasSubject">
+                    <Stack spacing={1}>
+                      <FieldLabel>Subject</FieldLabel>
+                      <FieldInput type="text" value={emailMoreIdeasSubject} onChange={(e)=>{setEmailMoreIdeasSubject(e.target.value)}}/>
+                    </Stack>
+                  </Field>
+                  <Textarea label="Text" name="emailMoreIdeasText" value={emailMoreIdeasText} onChange={(e) => {setEmailMoreIdeasText(e.target.value)}} />
+                </Box>
+              </TabPanel>
             </TabPanels>
           </TabGroup>
         </Box>
@@ -139,8 +150,12 @@ const HomePage = () => {
               data.emailTo = emailTo
               data.emailCC = emailCC
               data.emailBCC = emailBCC
-              data.emailSubject = emailSubject
-              data.emailText = emailText
+              data.emailCorrectionsSubject = emailCorrectionsSubject
+              data.emailCorrectionsText = emailCorrectionsText
+              data.emailContactUsSubject = emailContactUsSubject
+              data.emailContactUsText = emailContactUsText
+              data.emailMoreIdeasSubject = emailMoreIdeasSubject
+              data.emailMoreIdeasText = emailMoreIdeasText
 
               updateEmail(data)
             }}>Save</Button>
@@ -156,3 +171,4 @@ const HomePage = () => {
 };
 
 export default memo(HomePage);
+

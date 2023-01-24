@@ -7,12 +7,12 @@ module.exports = createCoreController('api::form-moreidea.form-moreidea', ({stra
             var emailFrom = emailconfig.emailFrom ?? 'webadmin@dash.cs.uh.edu'
             var emailCC = emailconfig.emailCC ?? ""
             var emailBCC= emailconfig.emailBCC   ?? ""
-            var emailSubject = emailconfig.emailSubject ?? "No Subject"
-            var emailText = emailconfig.emailText ?? "No Text"
+            var emailMoreIdeasSubject = emailconfig.emailMoreIdeasSubject ?? "No Subject"
+            var emailMoreIdeasText = emailconfig.emailMoreIdeasText ?? "No Text"
             var message = 
     `Dear ${ctx.request.body.data.Name},
 
-    ${emailText}
+    ${emailMoreIdeasText}
 
     Name: ${ctx.request.body.data.Name}
     Affiliation: ${ctx.request.body.data.Affiliation}
@@ -26,7 +26,7 @@ module.exports = createCoreController('api::form-moreidea.form-moreidea', ({stra
                 ctx.request.body.data.Email,
                 emailCC ,   
                 emailBCC,   
-                emailSubject,
+                emailMoreIdeasSubject,
                 message
               );
 
@@ -38,7 +38,6 @@ module.exports = createCoreController('api::form-moreidea.form-moreidea', ({stra
                   Phone: ctx.request.body.data.Phone,
                   Email: ctx.request.body.data.Email,
                   Comments: ctx.request.body.data.Comments,
-                  //publishedAt: new Date().getTime()
                 },
               });
 
