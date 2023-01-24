@@ -18,9 +18,6 @@
     "Email": {
       "type": "email"
     },
-    "Subject": {
-      "type": "string"
-    },
     "Phone": {
       "type": "string"
     },
