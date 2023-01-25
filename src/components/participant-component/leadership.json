@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_participant_component_leaderships",
+  "info": {
+    "displayName": "leadership",
+    "icon": "air-freshener"
+  },
+  "options": {},
+  "attributes": {
+    "leadership_position": {
+      "type": "text"
+    }
+  }
+}

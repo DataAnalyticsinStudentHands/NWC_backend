@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_participant_component_supose_careers",
+  "info": {
+    "displayName": "supose-career",
+    "icon": "address-card"
+  },
+  "options": {},
+  "attributes": {
+    "spouse_profession": {
+      "type": "string"
+    }
+  }
+}

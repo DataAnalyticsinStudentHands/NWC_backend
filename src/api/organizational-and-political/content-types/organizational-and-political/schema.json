@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "nwc_roles",
+  "collectionName": "organizational_and_politicals",
   "info": {
-    "singularName": "nwc-role",
-    "pluralName": "nwc-roles",
-    "displayName": "nwc_role",
+    "singularName": "organizational-and-political",
+    "pluralName": "organizational-and-politicals",
+    "displayName": "organizational_and_political",
     "description": ""
   },
   "options": {
@@ -12,14 +12,14 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "role": {
+    "name": {
       "type": "string"
     },
     "nwc_participants": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::nwc-participant.nwc-participant",
-      "inversedBy": "nwc_role"
+      "mappedBy": "organizational_and_politicals"
     }
   }
 }

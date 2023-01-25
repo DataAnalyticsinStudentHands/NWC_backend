@@ -1,25 +1,24 @@
 {
   "kind": "collectionType",
-  "collectionName": "races",
+  "collectionName": "religions",
   "info": {
-    "singularName": "race",
-    "pluralName": "races",
-    "displayName": "Race",
-    "description": ""
+    "singularName": "religion",
+    "pluralName": "religions",
+    "displayName": "religion"
   },
   "options": {
-    "draftAndPublish": false
+    "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
-    "race": {
+    "religion": {
       "type": "string"
     },
-    "nwc_participants": {
+    "participants": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::nwc-participant.nwc-participant",
-      "mappedBy": "race"
+      "mappedBy": "religion"
     }
   }
 }

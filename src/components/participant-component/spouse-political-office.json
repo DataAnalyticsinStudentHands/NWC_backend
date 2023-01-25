@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_participant_component_spouse_political_offices",
+  "info": {
+    "displayName": "spouse_political_office",
+    "icon": "adjust"
+  },
+  "options": {},
+  "attributes": {
+    "political_office": {
+      "type": "text"
+    }
+  }
+}

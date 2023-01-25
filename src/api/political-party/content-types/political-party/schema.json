@@ -4,69 +4,22 @@
   "info": {
     "singularName": "political-party",
     "pluralName": "political-parties",
-    "displayName": "political_party"
+    "displayName": "political_party",
+    "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
-    "american_independent": {
+    "name": {
       "type": "string"
     },
-    "black_panther": {
-      "type": "string"
-    },
-    "cpusa": {
-      "type": "string"
-    },
-    "conservative_party_of_new_york": {
-      "type": "string"
-    },
-    "dc_statehood": {
-      "type": "string"
-    },
-    "democratic": {
-      "type": "string"
-    },
-    "liberal_party_of_new_york": {
-      "type": "string"
-    },
-    "libertarian": {
-      "type": "string"
-    },
-    "minnesota_dfl": {
-      "type": "string"
-    },
-    "north_dakota_dnl": {
-      "type": "string"
-    },
-    "peace_and_freedom": {
-      "type": "string"
-    },
-    "raza_unida": {
-      "type": "string"
-    },
-    "republican": {
-      "type": "string"
-    },
-    "socialist_party_usa": {
-      "type": "string"
-    },
-    "socialist_workers": {
-      "type": "string"
-    },
-    "unknown": {
-      "type": "string"
-    },
-    "other": {
-      "type": "string"
-    },
-    "participants": {
+    "nwc_participants": {
       "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::participant.participant",
-      "inversedBy": "political_parties"
+      "relation": "oneToMany",
+      "target": "api::nwc-participant.nwc-participant",
+      "mappedBy": "political_party"
     }
   }
 }

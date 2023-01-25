@@ -33,7 +33,7 @@
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::participant.participant",
-      "inversedBy": "jurisdiction_level_politicals"
+      "mappedBy": "jurisdiction_level_politicals"
     }
   }
 }

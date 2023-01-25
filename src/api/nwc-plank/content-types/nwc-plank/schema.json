@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "nwc_planks",
+  "info": {
+    "singularName": "nwc-plank",
+    "pluralName": "nwc-planks",
+    "displayName": "nwc_plank",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "plank": {
+      "type": "string"
+    },
+    "nwc_participants_for": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::nwc-participant.nwc-participant",
+      "mappedBy": "nwc_planks_for"
+    },
+    "nwc_participants_against": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::nwc-participant.nwc-participant",
+      "mappedBy": "nwc_planks_against"
+    },
+    "nwc_participants_spoke_for": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::nwc-participant.nwc-participant",
+      "mappedBy": "nwc_planks_spoke_for"
+    }
+  }
+}
