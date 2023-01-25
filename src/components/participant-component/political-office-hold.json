@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_participant_component_political_office_holds",
+  "info": {
+    "displayName": "political_office_hold",
+    "icon": "chevron-circle-down"
+  },
+  "options": {},
+  "attributes": {
+    "level": {
+      "type": "string"
+    },
+    "jurisdiction_of_political_offices_held": {
+      "type": "text"
+    },
+    "start_year": {
+      "type": "biginteger",
+      "max": "9999",
+      "min": "1000"
+    },
+    "end_year": {
+      "type": "biginteger"
+    }
+  }
+}

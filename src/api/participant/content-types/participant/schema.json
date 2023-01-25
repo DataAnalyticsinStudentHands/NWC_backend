@@ -4,7 +4,7 @@
   "info": {
     "singularName": "participant",
     "pluralName": "participants",
-    "displayName": "Participant",
+    "displayName": "old_participant",
     "description": ""
   },
   "options": {
@@ -100,24 +100,6 @@
         "graduate_professional_degree",
         "unknown"
       ]
-    },
-    "nwc_roles": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::nwc-role.nwc-role",
-      "inversedBy": "participants"
-    },
-    "nwc_races": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::race.race",
-      "inversedBy": "participants"
-    },
-    "political_parties": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::political-party.political-party",
-      "inversedBy": "participants"
     },
     "jurisdiction_level_politicals": {
       "type": "relation",

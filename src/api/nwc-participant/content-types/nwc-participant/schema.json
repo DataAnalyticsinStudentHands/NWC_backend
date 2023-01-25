@@ -1,0 +1,222 @@
+{
+  "kind": "collectionType",
+  "collectionName": "nwc_participants",
+  "info": {
+    "singularName": "nwc-participant",
+    "pluralName": "nwc-participants",
+    "displayName": "nwc-participant",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "last_name": {
+      "type": "string"
+    },
+    "first_name": {
+      "type": "string"
+    },
+    "middle_name_initial": {
+      "type": "string"
+    },
+    "nickname": {
+      "type": "string"
+    },
+    "gender": {
+      "type": "string"
+    },
+    "birth_day": {
+      "type": "integer",
+      "max": 31,
+      "min": 1
+    },
+    "birth_month": {
+      "type": "integer",
+      "max": 12,
+      "min": 1
+    },
+    "birth_year": {
+      "type": "integer"
+    },
+    "death_day": {
+      "type": "integer",
+      "max": 31,
+      "min": 1
+    },
+    "death_month": {
+      "type": "integer",
+      "max": 12,
+      "min": 1
+    },
+    "death_year": {
+      "type": "integer"
+    },
+    "address": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "zip_code": {
+      "type": "integer"
+    },
+    "place_of_birth": {
+      "type": "string"
+    },
+    "age_in_1977": {
+      "type": "integer"
+    },
+    "age_range_in_1977": {
+      "type": "string"
+    },
+    "marital_classification": {
+      "type": "string"
+    },
+    "name_of_spouse": {
+      "type": "string"
+    },
+    "sexual_orientation": {
+      "type": "string"
+    },
+    "total_number_of_children": {
+      "type": "integer"
+    },
+    "income_level": {
+      "type": "string"
+    },
+    "specific_dollar": {
+      "type": "decimal"
+    },
+    "military_service": {
+      "type": "boolean"
+    },
+    "union_member": {
+      "type": "boolean"
+    },
+    "feminist": {
+      "type": "boolean"
+    },
+    "religion": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::religion.religion",
+      "inversedBy": "participants"
+    },
+    "race": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::race.race",
+      "inversedBy": "nwc_participants"
+    },
+    "education": {
+      "displayName": "eudcation",
+      "type": "component",
+      "repeatable": true,
+      "component": "participant-component.eudcation"
+    },
+    "career": {
+      "displayName": "career",
+      "type": "component",
+      "repeatable": true,
+      "component": "participant-component.career"
+    },
+    "spouse_profession": {
+      "displayName": "supose-career",
+      "type": "component",
+      "repeatable": false,
+      "component": "participant-component.supose-career"
+    },
+    "political_office_hold": {
+      "displayName": "political_office_hold",
+      "type": "component",
+      "repeatable": true,
+      "component": "participant-component.political-office-hold"
+    },
+    "political_offices_lost": {
+      "displayName": "political_office_lost",
+      "type": "component",
+      "repeatable": true,
+      "component": "participant-component.political-office-lost"
+    },
+    "political_party": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::political-party.political-party",
+      "inversedBy": "nwc_participants"
+    },
+    "suppose_political_office": {
+      "displayName": "spouse_political_office",
+      "type": "component",
+      "repeatable": true,
+      "component": "participant-component.spouse-political-office"
+    },
+    "commission_of_women": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::commission-of-women.commission-of-women",
+      "inversedBy": "nwc_participants"
+    },
+    "leaderships_in_organization": {
+      "displayName": "leadership",
+      "type": "component",
+      "repeatable": true,
+      "component": "participant-component.leadership"
+    },
+    "organizational_and_politicals": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::organizational-and-political.organizational-and-political",
+      "inversedBy": "nwc_participants"
+    },
+    "nwc_role": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::nwc-role.nwc-role",
+      "mappedBy": "nwc_participants"
+    },
+    "exhibitor": {
+      "type": "boolean"
+    },
+    "torch_relay_runner": {
+      "type": "boolean"
+    },
+    "member_of_state_level_IWY_coordinating_committee": {
+      "type": "boolean"
+    },
+    "other_nwc_role": {
+      "type": "text"
+    },
+    "nwc_planks_for": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::nwc-plank.nwc-plank",
+      "inversedBy": "nwc_participants_for"
+    },
+    "nwc_planks_against": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::nwc-plank.nwc-plank",
+      "inversedBy": "nwc_participants_against"
+    },
+    "nwc_planks_spoke_for": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::nwc-plank.nwc-plank",
+      "inversedBy": "nwc_participants_spoke_for"
+    },
+    "heighest_level_of_education": {
+      "type": "string"
+    },
+    "high_school": {
+      "type": "string"
+    },
+    "resident_in_1977": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::resident-in-1977.resident-in-1977",
+      "inversedBy": "nwc_participants"
+    }
+  }
+}

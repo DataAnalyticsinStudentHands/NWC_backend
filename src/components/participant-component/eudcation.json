@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_participant_component_eudcations",
+  "info": {
+    "displayName": "eudcation",
+    "icon": "window-maximize"
+  },
+  "options": {},
+  "attributes": {
+    "degree": {
+      "type": "string"
+    },
+    "college": {
+      "type": "string"
+    },
+    "year": {
+      "type": "integer"
+    }
+  }
+}

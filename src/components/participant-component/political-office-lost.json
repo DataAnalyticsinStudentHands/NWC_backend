@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_participant_component_political_office_losts",
+  "info": {
+    "displayName": "political_office_lost",
+    "icon": "ad"
+  },
+  "options": {},
+  "attributes": {
+    "level": {
+      "type": "string"
+    },
+    "political_offices_name": {
+      "type": "string"
+    },
+    "year": {
+      "type": "biginteger"
+    }
+  }
+}

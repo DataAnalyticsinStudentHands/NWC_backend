@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "nwc_roles",
+  "collectionName": "commission_of_womens",
   "info": {
-    "singularName": "nwc-role",
-    "pluralName": "nwc-roles",
-    "displayName": "nwc_role",
+    "singularName": "commission-of-women",
+    "pluralName": "commission-of-womens",
+    "displayName": "commission_of_women",
     "description": ""
   },
   "options": {
@@ -12,14 +12,14 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "role": {
+    "level_of_commission": {
       "type": "string"
     },
     "nwc_participants": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::nwc-participant.nwc-participant",
-      "inversedBy": "nwc_role"
+      "mappedBy": "commission_of_women"
     }
   }
 }
