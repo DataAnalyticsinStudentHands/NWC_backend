@@ -125,7 +125,7 @@
     "spouse_profession": {
       "displayName": "supose-career",
       "type": "component",
-      "repeatable": false,
+      "repeatable": true,
       "component": "participant-component.supose-career"
     },
     "political_office_hold": {
