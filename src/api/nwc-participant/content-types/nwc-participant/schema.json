@@ -146,7 +146,7 @@
       "target": "api::political-party.political-party",
       "inversedBy": "nwc_participants"
     },
-    "suppose_political_office": {
+    "spouse_political_office": {
       "displayName": "spouse_political_office",
       "type": "component",
       "repeatable": true,
@@ -216,6 +216,12 @@
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::resident-in-1977.resident-in-1977",
+      "inversedBy": "nwc_participants"
+    },
+    "state": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::state.state",
       "inversedBy": "nwc_participants"
     }
   }
