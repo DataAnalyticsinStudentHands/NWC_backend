@@ -12,7 +12,7 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "name": {
+    "organizational_and_political": {
       "type": "string"
     },
     "nwc_participants": {
