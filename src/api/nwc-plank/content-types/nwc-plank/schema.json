@@ -15,23 +15,23 @@
     "plank": {
       "type": "string"
     },
-    "nwc_participants_for": {
+    "participants_for": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::nwc-participant.nwc-participant",
-      "mappedBy": "nwc_planks_for"
+      "mappedBy": "planks_for"
     },
-    "nwc_participants_against": {
+    "participants_against": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::nwc-participant.nwc-participant",
-      "mappedBy": "nwc_planks_against"
+      "mappedBy": "planks_against"
     },
-    "nwc_participants_spoke_for": {
+    "participants_spoke_for": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::nwc-participant.nwc-participant",
-      "mappedBy": "nwc_planks_spoke_for"
+      "mappedBy": "planks_spoke_for"
     }
   }
 }

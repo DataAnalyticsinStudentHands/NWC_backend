@@ -104,12 +104,6 @@
       "target": "api::religion.religion",
       "inversedBy": "participants"
     },
-    "race": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::race.race",
-      "inversedBy": "nwc_participants"
-    },
     "education": {
       "displayName": "eudcation",
       "type": "component",
@@ -140,41 +134,17 @@
       "repeatable": true,
       "component": "participant-component.political-office-lost"
     },
-    "political_party": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::political-party.political-party",
-      "inversedBy": "nwc_participants"
-    },
     "spouse_political_office": {
       "displayName": "spouse_political_office",
       "type": "component",
       "repeatable": true,
       "component": "participant-component.spouse-political-office"
     },
-    "commission_of_women": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::commission-of-women.commission-of-women",
-      "inversedBy": "nwc_participants"
-    },
     "leaderships_in_organization": {
       "displayName": "leadership",
       "type": "component",
       "repeatable": true,
       "component": "participant-component.leadership"
-    },
-    "organizational_and_politicals": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::organizational-and-political.organizational-and-political",
-      "inversedBy": "nwc_participants"
-    },
-    "nwc_role": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::nwc-role.nwc-role",
-      "mappedBy": "nwc_participants"
     },
     "exhibitor": {
       "type": "boolean"
@@ -185,44 +155,77 @@
     "member_of_state_level_IWY_coordinating_committee": {
       "type": "boolean"
     },
-    "other_nwc_role": {
-      "type": "text"
-    },
-    "nwc_planks_for": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::nwc-plank.nwc-plank",
-      "inversedBy": "nwc_participants_for"
-    },
-    "nwc_planks_against": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::nwc-plank.nwc-plank",
-      "inversedBy": "nwc_participants_against"
-    },
-    "nwc_planks_spoke_for": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::nwc-plank.nwc-plank",
-      "inversedBy": "nwc_participants_spoke_for"
-    },
     "heighest_level_of_education": {
       "type": "string"
     },
     "high_school": {
       "type": "string"
     },
-    "resident_in_1977": {
+    "commission_of_women": {
       "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::resident-in-1977.resident-in-1977",
-      "inversedBy": "nwc_participants"
+      "relation": "manyToMany",
+      "target": "api::commission-of-women.commission-of-women",
+      "inversedBy": "participants"
     },
     "state": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::state.state",
-      "inversedBy": "nwc_participants"
+      "inversedBy": "participants"
+    },
+    "planks_for": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::nwc-plank.nwc-plank",
+      "inversedBy": "participants_for"
+    },
+    "planks_against": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::nwc-plank.nwc-plank",
+      "inversedBy": "participants_against"
+    },
+    "planks_spoke_for": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::nwc-plank.nwc-plank",
+      "inversedBy": "participants_spoke_for"
+    },
+    "role": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::nwc-role.nwc-role",
+      "inversedBy": "participants"
+    },
+    "organizational_and_politicals": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::organizational-and-political.organizational-and-political",
+      "inversedBy": "participants"
+    },
+    "political_party": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::political-party.political-party",
+      "inversedBy": "participants"
+    },
+    "resident_in_1977": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::resident-in-1977.resident-in-1977",
+      "inversedBy": "participants"
+    },
+    "race": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::race.race",
+      "inversedBy": "participants"
+    },
+    "other_role": {
+      "displayName": "other_role",
+      "type": "component",
+      "repeatable": true,
+      "component": "participant-component.other-role"
     }
   }
 }
