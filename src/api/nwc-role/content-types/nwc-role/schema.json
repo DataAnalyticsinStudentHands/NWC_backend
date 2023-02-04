@@ -15,11 +15,11 @@
     "role": {
       "type": "string"
     },
-    "nwc_participants": {
+    "participants": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::nwc-participant.nwc-participant",
-      "inversedBy": "nwc_role"
+      "mappedBy": "role"
     }
   }
 }

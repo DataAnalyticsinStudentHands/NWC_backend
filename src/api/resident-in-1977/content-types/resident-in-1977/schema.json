@@ -24,7 +24,7 @@
     "classification": {
       "type": "string"
     },
-    "nwc_participants": {
+    "participants": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::nwc-participant.nwc-participant",

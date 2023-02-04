@@ -2,7 +2,8 @@
   "collectionName": "components_participant_component_political_office_holds",
   "info": {
     "displayName": "political_office_hold",
-    "icon": "chevron-circle-down"
+    "icon": "chevron-circle-down",
+    "description": ""
   },
   "options": {},
   "attributes": {
@@ -13,12 +14,10 @@
       "type": "text"
     },
     "start_year": {
-      "type": "biginteger",
-      "max": "9999",
-      "min": "1000"
+      "type": "string"
     },
     "end_year": {
-      "type": "biginteger"
+      "type": "string"
     }
   }
 }

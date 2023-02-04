@@ -15,7 +15,7 @@
     "organizational_and_political": {
       "type": "string"
     },
-    "nwc_participants": {
+    "participants": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::nwc-participant.nwc-participant",
