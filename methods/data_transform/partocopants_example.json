@@ -1,0 +1,23 @@
+{
+	"version": 2,
+	"data": {
+		"api::nwc-participant.nwc-participant": {},
+		"api::state.state": {},
+		"api::resident-in-1977.resident-in-1977": {},
+		"api::nwc-plank.nwc-plank": {},
+		"api::nwc-role.nwc-role": {},
+		"api::organizational-and-political.organizational-and-political": {},
+		"api::commission-of-women.commission-of-women": {},
+		"api::political-party.political-party": {},
+		"api::race.race": {},
+		"api::religion.religion": {},
+		"participant-component.other-role":{},
+		"participant-component.leadership": {},
+		"participant-component.spouse-political-office": {},
+		"participant-component.political-office-lost": {},
+		"participant-component.political-office-hold": {},
+		"participant-component.supose-career": {},
+		"participant-component.career": {},
+		"participant-component.eudcation": {}
+	}
+}
