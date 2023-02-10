@@ -1,16 +1,12 @@
 const CSVToJSON = require("csvtojson");
 const { startsWith } = require("lodash");
 const _sth = require("./utility.js");
-
 const fs = require("fs");
 var participants = JSON.parse(fs.readFileSync("participants.json", "utf-8"));
 
-
 async function get_electoral_politices() {
 	try {
-		const csvData = await CSVToJSON().fromFile(
-			"./data/Electoral Politics.csv"
-		);
+		const csvData = await CSVToJSON().fromFile("./data/Electoral Politics.csv");
 		let party_data = []; let commission_data = []; let suppose_party_data = [];
         let office_hold_data = []; let office_lost_data = [];
 		csvData.forEach((e) => {
@@ -30,24 +26,24 @@ async function get_electoral_politices() {
                     office_hold_data.push(_sth.removeNullUndefined({
                         participant_id: parseInt(e.ID),
                         level: e['Jurisdiction of Political Offices Held (if true for more than one category, create a new row for each)'] == 'NA' ? null : e['Jurisdiction of Political Offices Held (if true for more than one category, create a new row for each)'],
-                        start_year: e['Start Year for Political Office'] == "NA"? null : e['Start Year for Political Office'],
-                        end_year: e['End Year for Political Office'] == 'NA' ? null : e['End Year for Political Office'],
-                        jurisdiction_of_political_offices_held: e['Name of Political Offices Held (if more than one, list all but create new row for each)']
+                        start_year: e['Start Year for Political Office'] == "NA"? null : parseInt(e['Start Year for Political Office']),
+                        end_year: e['End Year for Political Office'] == 'NA' ? null : parseInt(e['End Year for Political Office']),
+                        jurisdiction_of_political_offices_held: e[key]
                     }))
                 } else if (startsWith(key, "Name of Political Offices Sought but Lost")) {
                     office_lost_data.push(_sth.removeNullUndefined({
                         participant_id: parseInt(e.ID),
-                        level: e['Jurisdiction of Political Offices Sought but Lost'] == 'NA' || e['Jurisdiction of Political Offices Sought but Lost'] ==  'none' ? null : e['Jurisdiction of Political Offices Held (if true for more than one category, create a new row for each)'],
-                        year: e['Year of Race that was Lost'] == "NA"? null : e['Year of Race that was Lost'],
-                        political_offices_name: e['Name of Political Offices Sought but Lost (if more than one, list all but create new row for each)']
+                        level: ['NA','none'].includes(e['Jurisdiction of Political Offices Sought but Lost']) ? null : e['Jurisdiction of Political Offices Held (if true for more than one category, create a new row for each)'],
+                        year: e['Year of Race that was Lost'] == "NA"? null : parseInt(e['Year of Race that was Lost']),
+                        political_offices_name: e[key]
                     }))
                 } 
 			});
 		});
-        // API party
-        participants = _sth.handleAPI(party_data, participants, 'political_party', Object.keys(participants.data)[7])
         // // API commission
         participants = _sth.handleAPI(commission_data, participants, 'level_of_commission', Object.keys(participants.data)[6])
+        // API party
+        participants = _sth.handleAPI(party_data, participants, 'political_party', Object.keys(participants.data)[7])
         // Component suppose party
         participants = _sth.handleComponent(suppose_party_data, participants, Object.keys(participants.data)[12])
         participants = _sth.pushComonent(suppose_party_data, participants, "spouse_political_office")

@@ -1,6 +1,5 @@
 const CSVToJSON = require("csvtojson");
 const _sth = require('./utility.js');
-
 const fs = require("fs");
 var participants = JSON.parse(fs.readFileSync("participants.json", "utf-8"));
 
@@ -29,5 +28,4 @@ async function get_race_and_ethnicity() {
 		console.log(err);
 	}
 }
-
 get_race_and_ethnicity()

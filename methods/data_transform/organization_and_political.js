@@ -1,5 +1,4 @@
 const CSVToJSON = require("csvtojson");
-const { startsWith } = require("lodash");
 const _sth = require("./utility.js");
 const fs = require("fs");
 var participants = JSON.parse(fs.readFileSync("participants.json", "utf-8"));
