@@ -1,5 +1,4 @@
 const CSVToJSON = require("csvtojson");
-const { startsWith, merge } = require("lodash");
 const _sth = require("./utility.js");
 const fs = require("fs");
 
@@ -7,15 +6,16 @@ var participants = JSON.parse(fs.readFileSync("participants.json", "utf-8"));
 
 async function get_leadership_in_org() {
 	try {
-		const csvData = await CSVToJSON().fromFile(
-			"./data/Leadership in Org.csv"
-		);
+		const csvData = await CSVToJSON().fromFile("./data/Leadership in Org.csv");
         let leadership_in_org_data = [];
-		csvData.forEach((e) => {
-			let keys = Object.keys(e);
-			keys.forEach((key) => {
-                startsWith(key, "Leadership") && e[key]!= "NA" ? leadership_in_org_data.push({leadership_position: e[key],participant_id: parseInt(e.ID)}) : null;
-			});
+        csvData.forEach((e) => {
+            let values = Object.values(e);
+            leadership_in_org_data.push(_sth.removeNullUndefined({
+                participant_id: parseInt(values[0]),
+                general_name: values[2] == "NA" ? null : values[2],
+                specific_name: values[3] == "NA" ? null : values[3],
+                name_of_organization: values[4] == "NA" ? null : values[4],
+            }))
 		});
         // Components 
         participants = _sth.handleComponent(leadership_in_org_data, participants, Object.keys(participants.data)[11])

@@ -2,12 +2,19 @@
   "collectionName": "components_participant_component_leaderships",
   "info": {
     "displayName": "leadership",
-    "icon": "air-freshener"
+    "icon": "air-freshener",
+    "description": ""
   },
   "options": {},
   "attributes": {
-    "leadership_position": {
-      "type": "text"
+    "name_of_organization": {
+      "type": "string"
+    },
+    "general_name": {
+      "type": "string"
+    },
+    "specific_name": {
+      "type": "string"
     }
   }
 }
