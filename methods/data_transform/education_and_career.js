@@ -35,11 +35,11 @@ async function education_and_career() {
                 participant_id: parseInt(e.ID),
                 military_service: true
             }) : null;
-            values[11] !== "NA" || values[12] !=='NA' ? career_data.push({
+            values[11] !== "NA" || values[12] !=='NA' ? career_data.push(_sth.removeNullUndefined({
                 participant_id: parseInt(e.ID),
                 category_of_employment: values[11] == "NA" ? null : values[11],
                 job_profession: values[12] == "NA" ? null : values[12],
-            }) : null;
+            })) : null;
             values[13] == "yes" ? participant_data.push({
                 participant_id: parseInt(e.ID),
                 union_member: true,

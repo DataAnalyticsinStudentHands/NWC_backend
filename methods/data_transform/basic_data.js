@@ -36,7 +36,7 @@ async function getBasicData() {
 				first_name: values[2],
 				middle_name_initial: values[3] == "NA" ? null : values[3],
 				middle_name_initial_2: values[4] == "NA" ? null : values[4],
-				nick_name: values[5] == "NA" ? null : values[5],
+				nickname: values[5] == "NA" ? null : values[5],
 				birth_month: !Number.isNaN(parseInt(values[7])) ? parseInt(values[7]) : null,
 				birth_day: !Number.isNaN(parseInt(values[8])) ? parseInt(values[10]) : null,
 				birth_co: values[9] == "ca." ? true : null,

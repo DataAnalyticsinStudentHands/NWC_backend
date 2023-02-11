@@ -8,7 +8,7 @@
     "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
@@ -21,49 +21,27 @@
     "middle_name_initial": {
       "type": "string"
     },
+    "middle_name_initial_2": {
+      "type": "string"
+    },
     "nickname": {
       "type": "string"
-    },
-    "gender": {
-      "type": "string"
-    },
-    "birth_day": {
-      "type": "integer",
-      "max": 31,
-      "min": 1
     },
     "birth_month": {
       "type": "integer",
       "max": 12,
       "min": 1
     },
-    "birth_year": {
-      "type": "integer"
-    },
-    "death_day": {
+    "birth_day": {
       "type": "integer",
       "max": 31,
       "min": 1
     },
-    "death_month": {
-      "type": "integer",
-      "max": 12,
-      "min": 1
+    "birth_co": {
+      "type": "boolean"
     },
-    "death_year": {
+    "birth_year": {
       "type": "integer"
-    },
-    "address": {
-      "type": "string"
-    },
-    "city": {
-      "type": "string"
-    },
-    "zip_code": {
-      "type": "integer"
-    },
-    "place_of_birth": {
-      "type": "string"
     },
     "age_in_1977": {
       "type": "integer"
@@ -71,10 +49,30 @@
     "age_range_in_1977": {
       "type": "string"
     },
+
+    "death_month": {
+      "type": "integer",
+      "max": 12,
+      "min": 1
+    },
+    "death_day": {
+      "type": "integer",
+      "max": 31,
+      "min": 1
+    },
+    "death_year": {
+      "type": "integer"
+    },
+    "place_of_birth": {
+      "type": "string"
+    },
     "marital_classification": {
       "type": "string"
     },
     "name_of_spouse": {
+      "type": "string"
+    },
+    "gender": {
       "type": "string"
     },
     "sexual_orientation": {
@@ -93,9 +91,6 @@
       "type": "boolean"
     },
     "union_member": {
-      "type": "boolean"
-    },
-    "feminist": {
       "type": "boolean"
     },
     "religion": {
