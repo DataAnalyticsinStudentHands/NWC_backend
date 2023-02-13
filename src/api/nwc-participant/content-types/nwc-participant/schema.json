@@ -49,7 +49,6 @@
     "age_range_in_1977": {
       "type": "string"
     },
-
     "death_month": {
       "type": "integer",
       "max": 12,
@@ -221,6 +220,9 @@
       "type": "component",
       "repeatable": true,
       "component": "participant-component.other-role"
+    },
+    "feminist": {
+      "type": "boolean"
     }
   }
 }
