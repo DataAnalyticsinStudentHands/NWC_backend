@@ -1,4 +1,4 @@
-// Convert an array of objects to a single object
+// Convert an array of objects to a single object with the key as the value of the key passed as the second argument
 const toObject = (arr, key) => arr.reduce((a, b) => ({ ...a, [b[key]]: b }), {});
 // toObject(
 // 	[
@@ -15,6 +15,51 @@ const toObject = (arr, key) => arr.reduce((a, b) => ({ ...a, [b[key]]: b }), {})
 // 	"3": { id: '3', name: "Jack", age: 30 }
 // }
 
+// Get unique values from an array of objects
+function getUniqueListBy(arr, key) {
+	return [...new Map(arr.map((item) => [item[key], item])).values()];
+}
+
+// Group an array of objects by a key
+const groupBy = (arr, key) => arr.reduce((acc, item) => ((acc[item[key]] = [...(acc[item[key]] || []), item]), acc), {});
+// groupBy(
+//     [
+//         { branch: 'audi', model: 'q8', year: '2019' },
+//         { branch: 'audi', model: 'rs7', year: '2020' },
+//         { branch: 'ford', model: 'mustang', year: '2019' },
+//         { branch: 'ford', model: 'explorer', year: '2020' },
+//         { branch: 'bmw', model: 'x7', year: '2020' },
+//     ],
+//     'branch'
+// );
+// 					Transfer To
+// {
+//     audi: [
+//         { branch: 'audi', model: 'q8', year: '2019' },
+//         { branch: 'audi', model: 'rs7', year: '2020' }
+//     ],
+//     bmw: [
+//         { branch: 'bmw', model: 'x7', year: '2020' }
+//     ],
+//     ford: [
+//         { branch: 'ford', model: 'mustang', year: '2019' },
+//         { branch: 'ford', model: 'explorer', year: '2020' }
+//     ],
+// }
+
+
+// Extract values of a property from an array of objects
+const pluck = (objs, property) => objs.map((obj) => obj[property]);
+// pluck(
+//     [
+//         { name: 'John', age: 20 },
+//         { name: 'Smith', age: 25 },
+//         { name: 'Peter', age: 30 },
+//     ],
+//     'name'
+// ); 
+// 					Transfer To
+// ['John', 'Smith', 'Peter']
 
 // Merge and remove the duplications
 const merge = (a, b) => [...new Set(a.concat(b))];
@@ -22,15 +67,11 @@ const merge = (a, b) => [...new Set(a.concat(b))];
 // 					Transfer To
 // [1, 2, 3, 4]
 
-
-// Remove all null and undefined properties from an object
+// Remove null and undefined values from an object
 const removeNullUndefined = (obj) => Object.entries(obj).reduce((a, [k, v]) => (v == null ? a : ((a[k] = v), a)), {});
 // removeNullUndefined({ a: 1, b: null, c: undefined, d: 2 })
 // 					Transfer To
 // { a: 1, d: 2 }
-
-const fs = require("fs");
-var participants = JSON.parse(fs.readFileSync("participants.json", "utf-8"));
 
 function handleAPI(data,participantsData, attribute, apiName){
 	let obj = {};	let newObj = {};
@@ -44,7 +85,7 @@ function handleAPI(data,participantsData, attribute, apiName){
 			delete obj[e[attribute]].participant_id
 		}
 	})
-	obj = Object.assign(obj, participants.data[`${apiName}`]);
+	obj = Object.assign(obj, participantsData.data[`${apiName}`]);
 	Object.values(obj).forEach((e) => {
 		if(newObj[e[attribute]]){
 			merge(newObj[e[attribute]].participants, e.participants)
@@ -72,12 +113,17 @@ function pushComonent(data, participantsData, attribute){
 		: participantsData.data["api::nwc-participant.nwc-participant"][`${e.participant_id}`][`${attribute}`].push(e.id)
     })
     return participantsData
+
 }
 
 module.exports = {
     handleAPI,
     handleComponent,
     pushComonent,
+    toObject,
+    getUniqueListBy,
+    groupBy,
+    pluck,
     merge,
 	removeNullUndefined
 }

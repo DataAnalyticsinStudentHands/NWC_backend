@@ -1,11 +1,9 @@
 const CSVToJSON = require("csvtojson");
 const _sth = require("./utility.js");
-const fs = require("fs");
-var participants = JSON.parse(fs.readFileSync("participants.json", "utf-8"));
 
-async function get_electoral_politices() {
+async function get_electoral_politices(participants, path) {
 	try {
-		const csvData = await CSVToJSON().fromFile("./data/Electoral Politics.csv");
+		const csvData = await CSVToJSON().fromFile(path);
 		let party_data = []; let commission_data = []; let suppose_party_data = [];
         let office_hold_data = []; let office_lost_data = []; feminist_data = [];
         csvData.forEach((e) => {
@@ -55,16 +53,13 @@ async function get_electoral_politices() {
         participants = _sth.handleComponent(office_lost_data, participants,Object.keys(participants.data)[13])
         participants = _sth.pushComonent(office_lost_data, participants, "political_offices_lost")
 
-        var jsonContent = JSON.stringify(participants);
-        fs.writeFile("participants.json", jsonContent, 'utf8', function (err) {
-            if (err) {
-                console.log("An error occured while writing JSON Object to File.");
-                return console.log(err);
-            }
-            console.log("participants.json has been saved.");
-        });
+        return participants
+
 	} catch (err) {
 		console.log(err);
 	}
 }
-get_electoral_politices();
+
+module.exports = {
+    get_electoral_politices
+}

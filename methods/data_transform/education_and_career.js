@@ -1,12 +1,9 @@
 const CSVToJSON = require("csvtojson");
-const { startsWith } = require("lodash");
 const _sth = require("./utility.js");
-const fs = require("fs");
-var participants = JSON.parse(fs.readFileSync("participants.json", "utf-8"));
 
-async function education_and_career() {
+async function education_and_career(participants, path) {
     try{
-        const csvData = await CSVToJSON().fromFile("./data/Ed & Career.csv");
+        const csvData = await CSVToJSON().fromFile(path);
         let education_data = []; let career_data = []; let spouse_profession_data = [];
         let participant_data = [];
 
@@ -73,18 +70,13 @@ async function education_and_career() {
             participants.data[Object.keys(participants.data)[0]][`${e.participant_id}`][keys[1]] = e[keys[1]]; 
         })
 
-        var jsonContent = JSON.stringify(participants);
-        fs.writeFile("participants.json", jsonContent, 'utf8', function (err) {
-            if (err) {
-                console.log("An error occured while writing JSON Object to File.");
-                return console.log(err);
-            }
-            console.log("participants.json has been saved.");
-        });
+        return participants
 
     } catch (error) {
         console.log(error);
     }
 }
 
-education_and_career()
+module.exports = {
+    education_and_career
+}
