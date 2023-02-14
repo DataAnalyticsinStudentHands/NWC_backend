@@ -1,15 +1,33 @@
+// Convert an array of objects to a single object
 const toObject = (arr, key) => arr.reduce((a, b) => ({ ...a, [b[key]]: b }), {});
+// toObject(
+// 	[
+// 		{ id: 1, name: "John", age: 20 },
+// 		{ id: 2, name: "Jane", age: 24 },
+// 		{ id: 3, name: "Jack", age: 30 },
+// 	], 
+//  'id'
+// )
+// 					Transfer To
+// {
+// 	"1": { id: '1', name: "John", age: 20 },
+// 	"2": { id: '2', name: "Jane", age: 24 },
+// 	"3": { id: '3', name: "Jack", age: 30 }
+// }
 
-function getUniqueListBy(arr, key) {
-	return [...new Map(arr.map((item) => [item[key], item])).values()];
-}
 
-const groupBy = (arr, key) => arr.reduce((acc, item) => ((acc[item[key]] = [...(acc[item[key]] || []), item]), acc), {});
-
-const pluck = (objs, property) => objs.map((obj) => obj[property]);
-
+// Merge and remove the duplications
 const merge = (a, b) => [...new Set(a.concat(b))];
+// merge([1, 2, 3], [2, 3, 4])
+// 					Transfer To
+// [1, 2, 3, 4]
+
+
+// Remove all null and undefined properties from an object
 const removeNullUndefined = (obj) => Object.entries(obj).reduce((a, [k, v]) => (v == null ? a : ((a[k] = v), a)), {});
+// removeNullUndefined({ a: 1, b: null, c: undefined, d: 2 })
+// 					Transfer To
+// { a: 1, d: 2 }
 
 const fs = require("fs");
 var participants = JSON.parse(fs.readFileSync("participants.json", "utf-8"));
@@ -54,17 +72,12 @@ function pushComonent(data, participantsData, attribute){
 		: participantsData.data["api::nwc-participant.nwc-participant"][`${e.participant_id}`][`${attribute}`].push(e.id)
     })
     return participantsData
-
 }
 
 module.exports = {
     handleAPI,
     handleComponent,
     pushComonent,
-    toObject,
-    getUniqueListBy,
-    groupBy,
-    pluck,
     merge,
 	removeNullUndefined
 }
