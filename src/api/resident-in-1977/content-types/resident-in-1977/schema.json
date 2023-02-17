@@ -4,7 +4,7 @@
   "info": {
     "singularName": "resident-in-1977",
     "pluralName": "resident-in-1977s",
-    "displayName": "resident_in_1977",
+    "displayName": "residence_in_1977",
     "description": ""
   },
   "options": {
@@ -21,14 +21,11 @@
     "median_household_income": {
       "type": "biginteger"
     },
-    "classification": {
-      "type": "string"
-    },
     "participants": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::nwc-participant.nwc-participant",
-      "mappedBy": "resident_in_1977"
+      "mappedBy": "residence_in_1977"
     }
   }
 }

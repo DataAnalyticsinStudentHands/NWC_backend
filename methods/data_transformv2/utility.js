@@ -1,25 +1,19 @@
-// Convert an array of objects to a single object with the key as the value of the key passed as the second argument
 const toObject = (arr, key) => arr.reduce((a, b) => ({ ...a, [b[key]]: b }), {});
 
-// Get unique values from an array of objects
 function getUniqueListBy(arr, key) {
 	return [...new Map(arr.map((item) => [item[key], item])).values()];
 }
 
-// Group an array of objects by a key
 const groupBy = (arr, key) => arr.reduce((acc, item) => ((acc[item[key]] = [...(acc[item[key]] || []), item]), acc), {});
 
-// Extract values of a property from an array of objects
 const pluck = (objs, property) => objs.map((obj) => obj[property]);
 
-// Merge and remove the duplications
 const merge = (a, b) => [...new Set(a.concat(b))];
-
-// Remove null and undefined values from an object
 const removeNullUndefined = (obj) => Object.entries(obj).reduce((a, [k, v]) => (v == null ? a : ((a[k] = v), a)), {});
 
 function handleAPI(data,participantsData, attribute, apiName){
-	let obj = {};	let newObj = {};
+	let obj = {}, newObj = {};
+	// Save new data to obj, use attribute instead of id as key. So we can remove duplicates
 	Object.values(data).forEach((e) => {
 		e.participants = []
 		if(obj[e[attribute]]){
@@ -30,11 +24,15 @@ function handleAPI(data,participantsData, attribute, apiName){
 			delete obj[e[attribute]].participant_id
 		}
 	})
+	// Merge new data with old data
 	obj = Object.assign(obj, participantsData.data[`${apiName}`]);
+	// Save new data to newObj
 	Object.values(obj).forEach((e) => {
 		if(newObj[e[attribute]]){
+			// Merge participants, remove duplicates
 			merge(newObj[e[attribute]].participants, e.participants)
 		} else {
+			// if not exist, create new and give id
 			e.id ? null : e.id = Object.keys(newObj).length+1
 			newObj[e[attribute]] = e
 		}
@@ -43,7 +41,9 @@ function handleAPI(data,participantsData, attribute, apiName){
 	return participantsData
 }
 
+
 function handleComponent(data,participantsData, apiName){
+	// Push Component data to API 
     let component_data = []
 	Object.values(participantsData.data[`${apiName}`]).forEach((e) => {delete e.id;component_data.push(e)})
     data = merge(data, component_data)

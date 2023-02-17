@@ -7,14 +7,16 @@
   },
   "options": {},
   "attributes": {
-    "name_of_organization": {
-      "type": "string"
-    },
-    "general_name": {
+    "organization": {
       "type": "string"
     },
     "specific_name": {
       "type": "string"
+    },
+    "role": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::organizational-role.organizational-role"
     }
   }
 }

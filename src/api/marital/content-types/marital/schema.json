@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "maritals",
+  "info": {
+    "singularName": "marital",
+    "pluralName": "maritals",
+    "displayName": "marital"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "marital": {
+      "type": "string"
+    },
+    "participants": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::nwc-participant.nwc-participant",
+      "mappedBy": "marital"
+    }
+  }
+}

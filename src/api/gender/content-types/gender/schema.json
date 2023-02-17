@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "genders",
+  "info": {
+    "singularName": "gender",
+    "pluralName": "genders",
+    "displayName": "gender",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "gender": {
+      "type": "string"
+    },
+    "participants": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::nwc-participant.nwc-participant",
+      "mappedBy": "gender"
+    }
+  }
+}

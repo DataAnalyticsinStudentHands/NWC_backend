@@ -2,18 +2,21 @@
   "collectionName": "components_participant_component_careers",
   "info": {
     "displayName": "career",
-    "icon": "clipboard"
+    "icon": "clipboard",
+    "description": ""
   },
   "options": {},
   "attributes": {
-    "category": {
-      "type": "string"
-    },
     "job_profession": {
       "type": "text"
     },
     "union_member": {
       "type": "boolean"
+    },
+    "category": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::career-category.career-category"
     }
   }
 }

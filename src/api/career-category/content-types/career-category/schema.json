@@ -1,0 +1,19 @@
+{
+  "kind": "collectionType",
+  "collectionName": "career_categories",
+  "info": {
+    "singularName": "career-category",
+    "pluralName": "career-categories",
+    "displayName": "career_category",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "career_category": {
+      "type": "string"
+    }
+  }
+}

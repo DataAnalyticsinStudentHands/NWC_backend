@@ -1,8 +1,8 @@
 {
-  "collectionName": "components_participant_component_eudcations",
+  "collectionName": "components_participant_component_educations",
   "info": {
-    "displayName": "eudcation",
-    "icon": "window-maximize"
+    "displayName": "educations",
+    "icon": "align-justify"
   },
   "options": {},
   "attributes": {
