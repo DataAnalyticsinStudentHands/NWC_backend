@@ -1,0 +1,103 @@
+{
+  "version": 2,
+  "data": {
+    "api::career-category.career-category": {
+      "1": {
+        "id": 1,
+        "career_category": "Agriculture"
+      },
+      "2": {
+        "id": 2,
+        "career_category": "Architecture and Engineering"
+      },
+      "3": {
+        "id": 3,
+        "career_category": "Arts and Entertainment"
+      },
+      "4": {
+        "id": 4,
+        "career_category": "Clergy/Religious-Related Employment"
+      },
+      "5": {
+        "id": 5,
+        "career_category": "Construction and Trade"
+      },
+      "6": {
+        "id": 6,
+        "career_category": "Corporate and Management"
+      },
+      "7": {
+        "id": 7,
+        "career_category": "Education and Libraries"
+      },
+      "8": {
+        "id": 8,
+        "career_category": "Finance, Insurance, and Real Estate"
+      },
+      "9": {
+        "id": 9,
+        "career_category": "Food, Retail, and Hospitality"
+      },
+      "10": {
+        "id": 10,
+        "career_category": "Government/Public Sector/Nonprofit"
+      },
+      "11": {
+        "id": 11,
+        "career_category": "Homemaker"
+      },
+      "12": {
+        "id": 12,
+        "career_category": "Law and Legal Employment"
+      },
+      "13": {
+        "id": 13,
+        "career_category": "Law Enforcement and Criminal Justice"
+      },
+      "14": {
+        "id": 14,
+        "career_category": "Manufacturing and Industrial Production"
+      },
+      "15": {
+        "id": 15,
+        "career_category": "Media and Communications"
+      },
+      "16": {
+        "id": 16,
+        "career_category": "Medical/Health Care/Social Work"
+      },
+      "17": {
+        "id": 17,
+        "career_category": "Office and Administrative Support"
+      },
+      "18": {
+        "id": 18,
+        "career_category": "Science and Technology"
+      },
+      "19": {
+        "id": 19,
+        "career_category": "Service Sector"
+      },
+      "20": {
+        "id": 20,
+        "career_category": "Small Business Owner"
+      },
+      "21": {
+        "id": 21,
+        "career_category": "Student"
+      },
+      "22": {
+        "id": 22,
+        "career_category": "Transportation and Public Utilities"
+      },
+      "23": {
+        "id": 23,
+        "career_category": "Unemployed"
+      },
+      "24": {
+        "id": 24,
+        "career_category": "Wholesale and Retail"
+      }
+    }
+  }
+}

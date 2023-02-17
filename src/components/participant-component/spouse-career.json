@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_participant_component_spouse_careers",
+  "info": {
+    "displayName": "spouse_career",
+    "icon": "ambulance"
+  },
+  "options": {},
+  "attributes": {
+    "spouse_career": {
+      "type": "string"
+    }
+  }
+}

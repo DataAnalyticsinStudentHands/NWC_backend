@@ -1,11 +1,9 @@
 const CSVToJSON = require("csvtojson");
 const _sth = require('./utility.js');
-const fs = require("fs");
-var participants = JSON.parse(fs.readFileSync("participants.json", "utf-8"));
 
-async function get_race_and_ethnicity() {
+async function get_race_and_ethnicity(participants, path) {
 	try {
-		const csvData = await CSVToJSON().fromFile("./data/Race & Ethnicity--Expanded.csv");
+		const csvData = await CSVToJSON().fromFile(path);
 		let race_data = [];
 		csvData.forEach((e) => {
 			let keys = Object.keys(e)
@@ -15,17 +13,12 @@ async function get_race_and_ethnicity() {
 		})
 		participants = _sth.handleAPI(race_data, participants, 'race', Object.keys(participants.data)[8])
 		
-        var jsonContent = JSON.stringify(participants);
-        fs.writeFile("participants.json", jsonContent, 'utf8', function (err) {
-            if (err) {
-                console.log("An error occured while writing JSON Object to File.");
-                return console.log(err);
-            }
-            console.log("participants.json has been saved.");
-        });
+		return participants;
 
 	} catch (err) {
 		console.log(err);
 	}
 }
-get_race_and_ethnicity()
+module.exports = {
+	get_race_and_ethnicity
+}

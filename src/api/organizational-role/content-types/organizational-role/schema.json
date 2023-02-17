@@ -1,0 +1,19 @@
+{
+  "kind": "collectionType",
+  "collectionName": "organizational_roles",
+  "info": {
+    "singularName": "organizational-role",
+    "pluralName": "organizational-roles",
+    "displayName": "organizational_role",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "organization_role": {
+      "type": "string"
+    }
+  }
+}

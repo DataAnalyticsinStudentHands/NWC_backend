@@ -1,18 +1,22 @@
+// Convert an array of objects to a single object with the key as the value of the key passed as the second argument
 const toObject = (arr, key) => arr.reduce((a, b) => ({ ...a, [b[key]]: b }), {});
 
+// Get unique values from an array of objects
 function getUniqueListBy(arr, key) {
 	return [...new Map(arr.map((item) => [item[key], item])).values()];
 }
 
+// Group an array of objects by a key
 const groupBy = (arr, key) => arr.reduce((acc, item) => ((acc[item[key]] = [...(acc[item[key]] || []), item]), acc), {});
 
+// Extract values of a property from an array of objects
 const pluck = (objs, property) => objs.map((obj) => obj[property]);
 
+// Merge and remove the duplications
 const merge = (a, b) => [...new Set(a.concat(b))];
-const removeNullUndefined = (obj) => Object.entries(obj).reduce((a, [k, v]) => (v == null ? a : ((a[k] = v), a)), {});
 
-const fs = require("fs");
-var participants = JSON.parse(fs.readFileSync("participants.json", "utf-8"));
+// Remove null and undefined values from an object
+const removeNullUndefined = (obj) => Object.entries(obj).reduce((a, [k, v]) => (v == null ? a : ((a[k] = v), a)), {});
 
 function handleAPI(data,participantsData, attribute, apiName){
 	let obj = {};	let newObj = {};
@@ -26,7 +30,7 @@ function handleAPI(data,participantsData, attribute, apiName){
 			delete obj[e[attribute]].participant_id
 		}
 	})
-	obj = Object.assign(obj, participants.data[`${apiName}`]);
+	obj = Object.assign(obj, participantsData.data[`${apiName}`]);
 	Object.values(obj).forEach((e) => {
 		if(newObj[e[attribute]]){
 			merge(newObj[e[attribute]].participants, e.participants)

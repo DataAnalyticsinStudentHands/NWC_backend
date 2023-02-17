@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "education_levels",
+  "info": {
+    "singularName": "education-level",
+    "pluralName": "education-levels",
+    "displayName": "education_level",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "education_level": {
+      "type": "string"
+    },
+    "participants": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::nwc-participant.nwc-participant",
+      "mappedBy": "education_level"
+    }
+  }
+}

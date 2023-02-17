@@ -1,12 +1,9 @@
 const CSVToJSON = require("csvtojson");
 const _sth = require("./utility.js");
-const fs = require("fs");
 
-var participants = JSON.parse(fs.readFileSync("participants.json", "utf-8"));
-
-async function get_leadership_in_org() {
+async function get_leadership_in_org(participants, path) {
 	try {
-		const csvData = await CSVToJSON().fromFile("./data/Leadership in Org.csv");
+		const csvData = await CSVToJSON().fromFile(path);
         let leadership_in_org_data = [];
         csvData.forEach((e) => {
             let values = Object.values(e);
@@ -20,18 +17,13 @@ async function get_leadership_in_org() {
         // Components 
         participants = _sth.handleComponent(leadership_in_org_data, participants, Object.keys(participants.data)[11])
         participants = _sth.pushComonent(leadership_in_org_data, participants, "leaderships_in_organization")
-		
-        var jsonContent = JSON.stringify(participants);
-        fs.writeFile("participants.json", jsonContent, 'utf8', function (err) {
-            if (err) {
-                console.log("An error occured while writing JSON Object to File.");
-                return console.log(err);
-            }
-            console.log("participants.json has been saved.");
-        });
+        return participants;
 
 	} catch (err) {
 		console.log(err);
 	}
 }
-get_leadership_in_org();
+
+module.exports = {
+    get_leadership_in_org
+}

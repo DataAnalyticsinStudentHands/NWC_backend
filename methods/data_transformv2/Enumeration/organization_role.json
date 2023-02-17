@@ -1,0 +1,43 @@
+{
+  "version": 2,
+  "data": {
+    "api::organizational-role.organizational-role": {
+      "1": {
+        "id": 1,
+        "organization_role": "Administrator"
+      },
+      "2": {
+        "id": 2,
+        "organization_role": "Board Member"
+      },
+      "3": {
+        "id": 3,
+        "organization_role": "Chair/President"
+      },
+      "4": {
+        "id": 4,
+        "organization_role": "Founder/Co-founder"
+      },
+      "5": {
+        "id": 5,
+        "organization_role": "Member"
+      },
+      "6": {
+        "id": 6,
+        "organization_role": "Representative"
+      },
+      "7": {
+        "id": 7,
+        "organization_role": "Other Community Leadership"
+      },
+      "8": {
+        "id": 8,
+        "organization_role": "Other Officer"
+      },
+      "9": {
+        "id": 9,
+        "organization_role": "Vice-chair/Vice-president"
+      }
+    }
+  }
+}

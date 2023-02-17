@@ -37,7 +37,7 @@
       "max": 31,
       "min": 1
     },
-    "birth_co": {
+    "birth_ca": {
       "type": "boolean"
     },
     "birth_year": {
@@ -45,9 +45,6 @@
     },
     "age_in_1977": {
       "type": "integer"
-    },
-    "age_range_in_1977": {
-      "type": "string"
     },
     "death_month": {
       "type": "integer",
@@ -65,23 +62,11 @@
     "place_of_birth": {
       "type": "string"
     },
-    "marital_classification": {
-      "type": "string"
-    },
     "name_of_spouse": {
-      "type": "string"
-    },
-    "gender": {
-      "type": "string"
-    },
-    "sexual_orientation": {
       "type": "string"
     },
     "total_number_of_children": {
       "type": "integer"
-    },
-    "income_level": {
-      "type": "string"
     },
     "specific_dollar": {
       "type": "decimal"
@@ -98,23 +83,11 @@
       "target": "api::religion.religion",
       "inversedBy": "participants"
     },
-    "education": {
-      "displayName": "eudcation",
-      "type": "component",
-      "repeatable": true,
-      "component": "participant-component.eudcation"
-    },
     "career": {
       "displayName": "career",
       "type": "component",
       "repeatable": true,
       "component": "participant-component.career"
-    },
-    "spouse_profession": {
-      "displayName": "supose-career",
-      "type": "component",
-      "repeatable": true,
-      "component": "participant-component.supose-career"
     },
     "political_office_hold": {
       "displayName": "political_office_hold",
@@ -139,21 +112,6 @@
       "type": "component",
       "repeatable": true,
       "component": "participant-component.leadership"
-    },
-    "exhibitor": {
-      "type": "boolean"
-    },
-    "torch_relay_runner": {
-      "type": "boolean"
-    },
-    "member_of_state_level_IWY_coordinating_committee": {
-      "type": "boolean"
-    },
-    "heighest_level_of_education": {
-      "type": "string"
-    },
-    "high_school": {
-      "type": "string"
     },
     "commission_of_women": {
       "type": "relation",
@@ -203,26 +161,78 @@
       "target": "api::political-party.political-party",
       "inversedBy": "participants"
     },
-    "resident_in_1977": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::resident-in-1977.resident-in-1977",
-      "inversedBy": "participants"
-    },
     "race": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::race.race",
       "inversedBy": "participants"
     },
-    "other_role": {
-      "displayName": "other_role",
-      "type": "component",
-      "repeatable": true,
-      "component": "participant-component.other-role"
-    },
     "feminist": {
       "type": "boolean"
+    },
+    "address": {
+      "type": "string"
+    },
+    "zip_code": {
+      "type": "string",
+      "maxLength": 5,
+      "minLength": 5
+    },
+    "city": {
+      "type": "string"
+    },
+    "lat": {
+      "type": "float"
+    },
+    "lon": {
+      "type": "float"
+    },
+    "boundingbox": {
+      "type": "json"
+    },
+    "residence_in_1977": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::resident-in-1977.resident-in-1977",
+      "inversedBy": "participants"
+    },
+    "education_level": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::education-level.education-level",
+      "inversedBy": "participants"
+    },
+    "marital": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::marital.marital",
+      "inversedBy": "participants"
+    },
+    "sexual_orientation": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::sexual-orientation.sexual-orientation",
+      "inversedBy": "participants"
+    },
+    "gender": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::gender.gender",
+      "inversedBy": "participants"
+    },
+    "high_school": {
+      "type": "string"
+    },
+    "educations": {
+      "displayName": "educations",
+      "type": "component",
+      "repeatable": true,
+      "component": "participant-component.educations"
+    },
+    "spouse_careers": {
+      "type": "component",
+      "repeatable": true,
+      "component": "participant-component.spouse-career"
     }
   }
 }

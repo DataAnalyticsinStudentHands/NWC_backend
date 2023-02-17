@@ -10,14 +10,17 @@
     "level": {
       "type": "string"
     },
-    "jurisdiction_of_political_offices_held": {
+    "political_office": {
       "type": "text"
     },
     "start_year": {
-      "type": "string"
+      "type": "biginteger"
+    },
+    "present": {
+      "type": "boolean"
     },
     "end_year": {
-      "type": "string"
+      "type": "biginteger"
     }
   }
 }
