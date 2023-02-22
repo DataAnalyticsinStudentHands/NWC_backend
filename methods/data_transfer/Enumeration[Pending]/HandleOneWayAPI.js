@@ -1,14 +1,14 @@
 const fs = require("fs");
-const _sth = require("../utility.js");
-var apiObj = JSON.parse(fs.readFileSync("../data/api.json", "utf-8"));
+const _sth = require("../utility/utility.js");
+const apiObj = JSON.parse(fs.readFileSync("../utility/api.json", "utf-8"));
+var dataContent = JSON.parse(fs.readFileSync(`${process.argv[2]}`, "utf-8"));
 
-async function handleOneWayAPI(strValues,apiName, attributes, path, spliterator ){
+async function handleOneWayAPI(strValues,participantsData, apiName, attributes, spliterator ){
     spliterator = spliterator ? spliterator : ',';
-    let currentData = JSON.parse(fs.readFileSync(path, "utf-8"));
 	let newValues = strValues.split(spliterator)
 	let newData = {};
 
-	Object.values(currentData.data[apiName]).forEach((e) => {
+	Object.values(participantsData.data[apiName]).forEach((e) => {
 		newData[`${e[attributes]}`] ? null : newData[e[attributes]] = _sth.removeNullUndefined({
 			id: e.id ,
 			[attributes]: e[attributes]
@@ -20,24 +20,17 @@ async function handleOneWayAPI(strValues,apiName, attributes, path, spliterator 
 			[attributes]: e
 		};
 	});
-	let lookup = {}
-	Object.values(newData).map((e) => {
-		lookup[e[attributes]] = e.id
-	});
-	console.log(`Update the following code to corresponding file:`);
-	console.log(lookup);
-	
-	newData = {
-		"version": 2,
-		"data":{
-			[apiName]: _sth.toObject(Object.values(newData), 'id')
-		}
-	};
-	fs.writeFileSync(`${attributes}.json`, JSON.stringify(newData, null, 2), "utf-8", (err) => {
-		if(err)console.log(err);
-		console.log('Finsihed');
-	});
+	// let lookup = {}
+	// Object.values(newData).map((e) => {
+	// 	lookup[e[attributes]] = e.id
+	// });
+	participantsData.data[apiName] = _sth.toObject(Object.values(newData), 'id')
 
+	return participantsData
+	// Save to the main json file
+	// fs.writeFileSync(`${process.argv[2]}`, JSON.stringify(dataContent, null, 2), "utf-8");
+	// Save the lookup file
+	// fs.writeFileSync(`${attributes}.json`, JSON.stringify(lookup, null, 2), "utf-8");
 }
 
 handleOneWayAPI(

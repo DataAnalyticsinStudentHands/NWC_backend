@@ -1,8 +1,5 @@
 const CSVToJSON = require("csvtojson");
-const _sth = require("./utility.js");
-const fs = require("fs");
-var apiObj = JSON.parse(fs.readFileSync("./data/api.json", "utf-8"));
-var participants = JSON.parse(fs.readFileSync("participants.json", "utf-8"));
+const _sth = require("../utility/utility.js");
 
 var categoryLookup = {
     Agriculture: { id: 1, value: 'Agriculture' },
@@ -30,9 +27,10 @@ var categoryLookup = {
     Unemployed: { id: 23, value: 'Unemployed' },
     Wholesal: { id: 24, value: 'Wholesale and Retail' }
   }
-async function education_and_career() {
+
+async function education_and_career(participants, path, apiObj) {
     try{
-        const csvData = await CSVToJSON().fromFile("./data/Ed & Career.csv");
+        const csvData = await CSVToJSON().fromFile(path);
         let participant_data = [];
         //Component data
         let education_data = [], career_data = [], spouse_profession_data = []; 
@@ -67,7 +65,7 @@ async function education_and_career() {
             }) : null;
             values[11] !== "NA" || values[12] !=='NA' ? career_data.push(_sth.removeNullUndefined({
                 participant_id: parseInt(e.ID),
-                category:categoryLookup[values[11]] ? categoryLookup[values[11]].id : null,
+                category: categoryLookup[values[11]] ? categoryLookup[values[11]].id : null,
                 job_profession: values[12] == "NA" ? null : values[12],
                 union_member: values[13] == "yes" ? true ? values[13] == "no" : false : null,
             })) : null;
@@ -97,20 +95,15 @@ async function education_and_career() {
             participants.data[Object.keys(participants.data)[0]][`${e.participant_id}`][keys[1]] = e[keys[1]]; 
         })
 
-        var jsonContent = JSON.stringify(participants);
-        fs.writeFile("participants.json", jsonContent, 'utf8', function (err) {
-            if (err) {
-                console.log("An error occured while writing JSON Object to File.");
-                return console.log(err);
-            }
-            console.log("participants.json has been saved.");
-        });
+        return participants;
 
     } catch (error) {
         console.log(error);
     }
 }
 
-education_and_career()
-
+// education_and_career()
+module.exports = {
+	education_and_career
+}
 

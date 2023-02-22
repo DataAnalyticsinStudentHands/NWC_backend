@@ -1,7 +1,19 @@
 const CSVToJSON = require("csvtojson");
-const _sth = require("./utility.js");
+const _sth = require("../utility/utility.js");
+const fs = require("fs");
 
-async function get_leadership_in_org(participants, path) {
+const roleLookup = {
+    administrator: 1,
+    'board member': 2,
+    'Chair/President': 3,
+    'Founder/Co-founder': 4,
+    member: 5,
+    Representative: 6,
+    'Other Community Leadership': 7,
+    'Other Officer': 8,
+    'Vice-chair/Vice-president': 9
+  }
+async function leadership_in_org(participants, path, apiObj) {
 	try {
 		const csvData = await CSVToJSON().fromFile(path);
         let leadership_in_org_data = [];
@@ -9,21 +21,21 @@ async function get_leadership_in_org(participants, path) {
             let values = Object.values(e);
             leadership_in_org_data.push(_sth.removeNullUndefined({
                 participant_id: parseInt(values[0]),
-                general_name: values[2] == "NA" ? null : values[2],
+                role: roleLookup[values[2]],
                 specific_name: values[3] == "NA" ? null : values[3],
-                name_of_organization: values[4] == "NA" ? null : values[4],
+                organization: values[4] == "NA" ? null : values[4],
             }))
 		});
         // Components 
-        participants = _sth.handleComponent(leadership_in_org_data, participants, Object.keys(participants.data)[11])
+        participants = _sth.handleComponent(leadership_in_org_data, participants, apiObj.leadership)
         participants = _sth.pushComonent(leadership_in_org_data, participants, "leaderships_in_organization")
+		
         return participants;
 
 	} catch (err) {
 		console.log(err);
 	}
 }
-
 module.exports = {
-    get_leadership_in_org
+	leadership_in_org
 }

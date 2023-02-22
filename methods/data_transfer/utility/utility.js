@@ -1,22 +1,17 @@
-// Convert an array of objects to a single object with the key as the value of the key passed as the second argument
 const toObject = (arr, key) => arr.reduce((a, b) => ({ ...a, [b[key]]: b }), {});
 
-// Get unique values from an array of objects
 function getUniqueListBy(arr, key) {
 	return [...new Map(arr.map((item) => [item[key], item])).values()];
 }
 
-// Group an array of objects by a key
 const groupBy = (arr, key) => arr.reduce((acc, item) => ((acc[item[key]] = [...(acc[item[key]] || []), item]), acc), {});
 
-// Extract values of a property from an array of objects
 const pluck = (objs, property) => objs.map((obj) => obj[property]);
 
-// Merge and remove the duplications
 const merge = (a, b) => [...new Set(a.concat(b))];
-
-// Remove null and undefined values from an object
 const removeNullUndefined = (obj) => Object.entries(obj).reduce((a, [k, v]) => (v == null ? a : ((a[k] = v), a)), {});
+
+
 
 function handleAPI(data,participantsData, attribute, apiName){
 	let obj = {};	let newObj = {};
@@ -43,6 +38,7 @@ function handleAPI(data,participantsData, attribute, apiName){
 	return participantsData
 }
 
+
 function handleComponent(data,participantsData, apiName){
     let component_data = []
 	Object.values(participantsData.data[`${apiName}`]).forEach((e) => {delete e.id;component_data.push(e)})
@@ -61,8 +57,32 @@ function pushComonent(data, participantsData, attribute){
 
 }
 
+function handleOneWayAPI(strValues,participantsData,apiName, attributes, spliterator ){
+    spliterator = spliterator ? spliterator : ',';
+	let newValues = strValues.split(spliterator)
+	let newData = {};
+	Object.values(participantsData.data[apiName]).forEach((e) => {
+		newData[`${e[attributes]}`] ? null : newData[e[attributes]] = removeNullUndefined({
+			id: e.id ,
+			[attributes]: e[attributes]
+		});
+	});
+	newValues.forEach((e) => {
+		newData[e] ? null : newData[e] = {
+			id: Object.keys(newData).length+1,
+			[attributes]: e
+		};
+	});
+	participantsData.data[apiName] = toObject(Object.values(newData), 'id')
+
+	return participantsData
+	
+
+}
+
 module.exports = {
     handleAPI,
+	handleOneWayAPI,
     handleComponent,
     pushComonent,
     toObject,

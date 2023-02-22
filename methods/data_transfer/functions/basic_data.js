@@ -1,12 +1,12 @@
 const CSVToJSON = require("csvtojson");
-const _sth = require('./utility.js');
+const _sth = require("../utility/utility.js");
 const fs = require("fs");
-var participants = JSON.parse(fs.readFileSync("participants.json", "utf-8"));
-var apiObj = JSON.parse(fs.readFileSync("./data/api.json", "utf-8"));
+// var participants = JSON.parse(fs.readFileSync("participants.json", "utf-8"));
+var apiObj = JSON.parse(fs.readFileSync("utility/api.json", "utf-8"));
 
-async function getBasicData() {
+async function getBasicData(participants, path) {
 	try {
-		let csvData = await CSVToJSON().fromFile("./data/Basic Data.csv");
+		let csvData = await CSVToJSON().fromFile(path);
 		let participant_data = []; 
 		//APIs
 		let religion_data = [], residence_in_1977_data = [], state_data = [], 
@@ -72,7 +72,7 @@ async function getBasicData() {
 			}))
 		});
 		// API Participant Data
-		participants.data[apiObj.participant] = _sth.toObject(participant_data,'id')
+		participants.data[`${apiObj.participant}`] = _sth.toObject(participant_data,'id')
 		// API State Data
 		participants = _sth.handleAPI(state_data, participants, 'state',apiObj.state)
 		// API Marital Data
@@ -86,18 +86,22 @@ async function getBasicData() {
 		// API Religion Data
 		participants =_sth.handleAPI(religion_data, participants, 'religion',apiObj.religion)
 		// Save participants as JSON file
-		var jsonContent = JSON.stringify(participants);
-        fs.writeFile("participants.json", jsonContent, 'utf8', function (err) {
-            if (err) {
-                console.log("An error occured while writing JSON Object to File.");
-                return console.log(err);
-            }
-            console.log("Basic Data file is added into participants.json");
-        });
+		// var jsonContent = JSON.stringify(participants);
+        // fs.writeFile("participants.json", jsonContent, 'utf8', function (err) {
+        //     if (err) {
+        //         console.log("An error occured while writing JSON Object to File.");
+        //         return console.log(err);
+        //     }
+        //     console.log("Basic Data file is added into participants.json");
+        // });
+		return participants;
 
 	} catch (err) {
 		console.log(err);
 	}
 }
 
-getBasicData()
+// getBasicData()
+module.exports = {
+	getBasicData
+}
