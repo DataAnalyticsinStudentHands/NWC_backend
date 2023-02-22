@@ -1,7 +1,7 @@
 const CSVToJSON = require("csvtojson");
-const _sth = require('./utility.js');
+const _sth = require("../utility/utility.js");
 
-async function get_race_and_ethnicity(participants, path) {
+async function race_and_ethnicity(participants, path, apiObj) {
 	try {
 		const csvData = await CSVToJSON().fromFile(path);
 		let race_data = [];
@@ -11,14 +11,14 @@ async function get_race_and_ethnicity(participants, path) {
 				e[key] == 'yes' ? race_data.push({participant_id: parseInt(e.ID),race:key}) : null;
 			})
 		})
-		participants = _sth.handleAPI(race_data, participants, 'race', Object.keys(participants.data)[8])
+		participants = _sth.handleAPI(race_data, participants, 'race', apiObj.race)
 		
 		return participants;
-
+		
 	} catch (err) {
 		console.log(err);
 	}
 }
 module.exports = {
-	get_race_and_ethnicity
+	race_and_ethnicity
 }
