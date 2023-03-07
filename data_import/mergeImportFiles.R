@@ -1,5 +1,4 @@
-# This script will first convert all Excel files into separte folders with individual files for each sheet
-# Then it will import the separate sheets into a specified collection (set in .env file)
+# This script will convert all Excel files into separate folders with individual files for each sheet. It can also be used to convert a single Excel file into individual csv files for each sheet.
 library(readr)
 suppressWarnings(suppressMessages(library(dplyr)))
 library(readxl)
@@ -27,7 +26,7 @@ getdata_mapped <- function(inputfile, id1, id2) {
       df2 <- df1
     }
 
-    filename <- file.path(name, paste0(x, ".csv"))
+    filename <- paste0("data/", x, ".csv")
     write_csv(df2, filename)
   }
   return(name)
@@ -43,13 +42,20 @@ if (length(args) == 0) {
   print(paste("Number of arguments parsed:", length(args)))
 }
 
-# assign directory from args e.g. '/Users/plindner/Development/NWC_backend/data/single_sample'
+# assign directory from args e.g. '/Users/plindner/importdata'
 directory <- args[1]
 print(paste("Read files in directory: ", directory))
 
 # iterate over files in input directory
 files <- list.files(path = directory, pattern = "xlsx", full.names = TRUE)
 mapping <- list.files(path = directory, pattern = "csv", full.names = TRUE)
+
+#create directory for csv files if not exists already
+sub_dir <- "data"
+
+if (!dir.exists(sub_dir)) {
+  dir.create(sub_dir)
+}
 
 for (inputfile in files) {
   print(paste("Starting import for file: ", inputfile))
@@ -70,12 +76,4 @@ for (inputfile in files) {
     print("Not using a mapping file")
     import_directory <- getdata_mapped(inputfile)
   }
-
-  # STEP 3: import into DB
-  # print("Call import.")
-  # execute_import_command = paste0('node import_participants --directory \"', import_directory, '\"', ' --note \"', note, '\" -b')
-  # try(system(execute_import_command, intern = FALSE))
-  # print("Call import non basic.")
-  # execute_import_command = paste0('node import_participants --directory \"', import_directory, '\"', ' --note \"', note, '\" -a -e -p -r -l -o')
-  # try(system(execute_import_command, intern = FALSE))
 }
