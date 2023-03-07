@@ -4,7 +4,8 @@
   "info": {
     "singularName": "home-highlight",
     "pluralName": "home-highlights",
-    "displayName": "Home-highlights"
+    "displayName": "Home-highlights",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -15,16 +16,20 @@
       "type": "boolean"
     },
     "Thumbnail": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     },
     "ShortTitle": {
+      "type": "string"
+    },
+    "home_highlights_link": {
       "type": "string"
     }
   }
