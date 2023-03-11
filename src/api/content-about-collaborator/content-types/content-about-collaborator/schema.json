@@ -2,8 +2,8 @@
   "kind": "collectionType",
   "collectionName": "content_about_collaborators",
   "info": {
-    "singularName": "content-about-collaborator", 
-    "pluralName": "content-about-collaborators", 
+    "singularName": "content-about-collaborator",
+    "pluralName": "content-about-collaborators",
     "displayName": "content-about-collaborators",
     "name": "CONTENT_About_Collaborators",
     "description": ""
@@ -25,7 +25,8 @@
         "NWCParticipantCommittee",
         "InternalAdvisoryBoard",
         "DonorGrantingAgencies",
-        "FormerProjectLeads"
+        "FormerProjectLeads",
+        "Alumni"
       ]
     },
     "FirstName": {
@@ -42,13 +43,13 @@
     },
     "ProfilePicture": {
       "type": "media",
-      "multiple":false,
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos"
-      ],
-      "required": false
+      ]
     }
   }
 }
