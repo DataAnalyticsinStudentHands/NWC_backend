@@ -2,9 +2,9 @@
   "kind": "singleType",
   "collectionName": "content_abouts",
   "info": {
-  "singularName": "content-about", 
-  "pluralName": "content-abouts", 
-  "displayName": "content-about",
+    "singularName": "content-about",
+    "pluralName": "content-abouts",
+    "displayName": "content-about",
     "name": "Content_About",
     "description": ""
   },
@@ -24,8 +24,8 @@
       "type": "string"
     },
     "aboutDocuments_aplink": {
-      "type":"media",
-      "multiple":false,
+      "type": "media",
+      "multiple": false,
       "required": false,
       "allowedTypes": [
         "images",
@@ -35,83 +35,83 @@
     },
     "aboutDocuments_ddlink": {
       "type": "media",
-      "multiple":false,
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos"
-      ],
-      "required": false
+      ]
     },
     "aboutDocuments_cblink": {
       "type": "media",
-      "multiple":false,
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos"
-      ],
-      "required": false
+      ]
     },
     "aboutDocuments_frlink": {
       "type": "media",
-      "multiple":false,
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos"
-      ],
-      "required": false
+      ]
     },
     "aboutDocuments_eclink": {
       "type": "media",
-      "multiple":false,
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos"
-      ],
-      "required": false
+      ]
     },
     "aboutDocuments_fmlink": {
       "type": "media",
-      "multiple":false,
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos"
-      ],
-      "required": false
+      ]
     },
     "aboutDocuments_tblink": {
       "type": "media",
-      "multiple":false,
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos"
-      ],
-      "required": false
+      ]
     },
     "aboutDocuments_tdlink": {
       "type": "media",
-      "multiple":false,
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos"
-      ],
-      "required": false
+      ]
     },
     "aboutDocuments_edlink": {
       "type": "media",
-      "multiple":false,
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos"
-      ],
-      "required": false
+      ]
     },
     "aboutTimeline_1": {
       "type": "richtext"
@@ -127,6 +127,16 @@
     },
     "aboutTimeline_5": {
       "type": "richtext"
+    },
+    "aboutDocuments_collectionsGuide": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
     }
   }
 }
