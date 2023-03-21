@@ -14,10 +14,8 @@ import { Box } from '@strapi/design-system/Box';
 import { Button } from '@strapi/design-system/Button';
 import { Tabs, Tab, TabGroup, TabPanels, TabPanel } from '@strapi/design-system/Tabs';
 
-import { LoadingIndicatorPage } from "@strapi/helper-plugin";
 import emailRequests from '../../api/emailservice';
 const HomePage = () => {
-  const [isLoading, setIsLoading] = useState(true)
   const [tagInt, setTagInt] = useState(0)
   const [emailFrom, setEmailFrom] = useState("")
   const [emailTo, setEmailTo] = useState("")
@@ -33,7 +31,6 @@ const HomePage = () => {
   
 
   const fetchData = async () =>{
-    if (isLoading === false ) setIsLoading(true)
 
     const emailData = await emailRequests.findEmail()
     setEmailFrom(emailData.data.attributes.emailFrom)
@@ -48,7 +45,6 @@ const HomePage = () => {
     setEmailMoreIdeasSubject(emailData.data.attributes.emailMoreIdeasSubject)
     setEmailMoreIdeasText(emailData.data.attributes.emailMoreIdeasText)
 
-    setIsLoading(false)
   }
 
   useEffect(async ()=>{
@@ -64,7 +60,6 @@ const HomePage = () => {
     await emailRequests.sendEmail();
   }
 
-  if(isLoading) return <LoadingIndicatorPage/>;
   return (
     <Layout>
       <BaseHeaderLayout title='Emails' subtitle='Email configuration' as='h2'/>
