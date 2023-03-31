@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "data_careers",
+  "info": {
+    "singularName": "data-career",
+    "pluralName": "data-careers",
+    "displayName": "data-career",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "category_of_employment": {
+      "type": "string"
+    },
+    "job_profession": {
+      "type": "text"
+    },
+    "participant": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::nwc-participant.nwc-participant",
+      "inversedBy": "careers"
+    }
+  }
+}

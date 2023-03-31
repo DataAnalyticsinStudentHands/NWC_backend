@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "data_leadership_in_organizations",
+  "info": {
+    "singularName": "data-leadership-in-organization",
+    "pluralName": "data-leadership-in-organizations",
+    "displayName": "data-leadership-in-organization",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "role": {
+      "type": "string"
+    },
+    "specific_role": {
+      "type": "string"
+    },
+    "organization": {
+      "type": "string"
+    },
+    "participant": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::nwc-participant.nwc-participant",
+      "inversedBy": "leadership_in_organizations"
+    }
+  }
+}

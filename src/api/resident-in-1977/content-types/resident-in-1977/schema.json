@@ -4,7 +4,7 @@
   "info": {
     "singularName": "resident-in-1977",
     "pluralName": "resident-in-1977s",
-    "displayName": "residence_in_1977",
+    "displayName": "data-residence-in-1977",
     "description": ""
   },
   "options": {
@@ -12,7 +12,7 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "city_state": {
+    "residence_in_1977": {
       "type": "string"
     },
     "total_population": {

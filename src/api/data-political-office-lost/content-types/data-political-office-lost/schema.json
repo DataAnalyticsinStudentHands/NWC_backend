@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "data_political_office_losts",
+  "info": {
+    "singularName": "data-political-office-lost",
+    "pluralName": "data-political-office-losts",
+    "displayName": "data-political-office-lost",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "jurisdiction": {
+      "type": "string"
+    },
+    "political_office": {
+      "type": "string"
+    },
+    "year": {
+      "type": "biginteger"
+    },
+    "participant": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::nwc-participant.nwc-participant",
+      "inversedBy": "political_office_losts"
+    }
+  }
+}

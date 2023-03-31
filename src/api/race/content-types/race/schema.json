@@ -4,7 +4,7 @@
   "info": {
     "singularName": "race",
     "pluralName": "races",
-    "displayName": "Race",
+    "displayName": "data-race",
     "description": ""
   },
   "options": {
@@ -17,9 +17,9 @@
     },
     "participants": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToMany",
       "target": "api::nwc-participant.nwc-participant",
-      "mappedBy": "race"
+      "mappedBy": "races"
     }
   }
 }

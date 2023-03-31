@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "data_political_office_helds",
+  "info": {
+    "singularName": "data-political-office-held",
+    "pluralName": "data-political-office-helds",
+    "displayName": "data-political-office-held",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "jurisdiction": {
+      "type": "string"
+    },
+    "political_office": {
+      "type": "string"
+    },
+    "start_year": {
+      "type": "biginteger"
+    },
+    "end_year": {
+      "type": "biginteger"
+    },
+    "present": {
+      "type": "boolean"
+    },
+    "participant": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::nwc-participant.nwc-participant",
+      "inversedBy": "political_office_helds"
+    }
+  }
+}

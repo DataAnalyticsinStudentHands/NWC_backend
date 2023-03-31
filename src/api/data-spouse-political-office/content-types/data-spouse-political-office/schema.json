@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "data_spouse_political_offices",
+  "info": {
+    "singularName": "data-spouse-political-office",
+    "pluralName": "data-spouse-political-offices",
+    "displayName": "data-spouse-political-office"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "political_office": {
+      "type": "string"
+    },
+    "participant": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::nwc-participant.nwc-participant",
+      "inversedBy": "spouse_political_offices"
+    }
+  }
+}

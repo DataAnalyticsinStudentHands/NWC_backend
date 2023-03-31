@@ -4,7 +4,7 @@
   "info": {
     "singularName": "nwc-participant",
     "pluralName": "nwc-participants",
-    "displayName": "nwc-participant",
+    "displayName": "data-participant",
     "description": ""
   },
   "options": {
@@ -68,7 +68,7 @@
     "total_number_of_children": {
       "type": "integer"
     },
-    "specific_dollar": {
+    "income_level_dollar_amount": {
       "type": "decimal"
     },
     "military_service": {
@@ -77,67 +77,19 @@
     "union_member": {
       "type": "boolean"
     },
-    "religion": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::religion.religion",
-      "inversedBy": "participants"
-    },
-    "career": {
-      "displayName": "career",
-      "type": "component",
-      "repeatable": true,
-      "component": "participant-component.career"
-    },
-    "political_office_hold": {
-      "displayName": "political_office_hold",
-      "type": "component",
-      "repeatable": true,
-      "component": "participant-component.political-office-hold"
-    },
-    "political_offices_lost": {
-      "displayName": "political_office_lost",
-      "type": "component",
-      "repeatable": true,
-      "component": "participant-component.political-office-lost"
-    },
-    "spouse_political_office": {
-      "displayName": "spouse_political_office",
-      "type": "component",
-      "repeatable": true,
-      "component": "participant-component.spouse-political-office"
-    },
-    "leaderships_in_organization": {
-      "displayName": "leadership",
-      "type": "component",
-      "repeatable": true,
-      "component": "participant-component.leadership"
-    },
-    "commission_of_women": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::commission-of-women.commission-of-women",
-      "inversedBy": "participants"
-    },
-    "state": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::state.state",
-      "inversedBy": "participants"
-    },
-    "planks_for": {
+    "planks_fors": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::nwc-plank.nwc-plank",
       "inversedBy": "participants_for"
     },
-    "planks_against": {
+    "planks_againsts": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::nwc-plank.nwc-plank",
       "inversedBy": "participants_against"
     },
-    "planks_spoke_for": {
+    "planks_spoke_fors": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::nwc-plank.nwc-plank",
@@ -155,19 +107,7 @@
       "target": "api::organizational-and-political.organizational-and-political",
       "inversedBy": "participants"
     },
-    "political_party": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::political-party.political-party",
-      "inversedBy": "participants"
-    },
-    "race": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::race.race",
-      "inversedBy": "participants"
-    },
-    "feminist": {
+    "self_identified_feminist": {
       "type": "boolean"
     },
     "address": {
@@ -196,43 +136,92 @@
       "target": "api::resident-in-1977.resident-in-1977",
       "inversedBy": "participants"
     },
-    "education_level": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::education-level.education-level",
-      "inversedBy": "participants"
-    },
-    "marital": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::marital.marital",
-      "inversedBy": "participants"
-    },
-    "sexual_orientation": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::sexual-orientation.sexual-orientation",
-      "inversedBy": "participants"
-    },
-    "gender": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::gender.gender",
-      "inversedBy": "participants"
-    },
     "high_school": {
       "type": "string"
     },
+    "sexual_orientation": {
+      "type": "string"
+    },
+    "gender": {
+      "type": "string"
+    },
+    "marital_classification": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "age_range": {
+      "type": "string"
+    },
+    "religion": {
+      "type": "string"
+    },
+    "races": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::race.race",
+      "inversedBy": "participants"
+    },
+    "highest_level_of_education_attained": {
+      "type": "string"
+    },
+    "income_level": {
+      "type": "string"
+    },
+    "political_party_membership": {
+      "type": "string"
+    },
+    "votes_received_at_state_meeting_for_nwc_delegate_alternate": {
+      "type": "biginteger"
+    },
+    "basic_races": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::basic-race.basic-race",
+      "mappedBy": "participants"
+    },
     "educations": {
-      "displayName": "educations",
-      "type": "component",
-      "repeatable": true,
-      "component": "participant-component.educations"
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::data-education.data-education",
+      "mappedBy": "participant"
+    },
+    "careers": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::data-career.data-career",
+      "mappedBy": "participant"
     },
     "spouse_careers": {
-      "type": "component",
-      "repeatable": true,
-      "component": "participant-component.spouse-career"
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::data-spouse-career.data-spouse-career",
+      "mappedBy": "participant"
+    },
+    "political_office_helds": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::data-political-office-held.data-political-office-held",
+      "mappedBy": "participant"
+    },
+    "political_office_losts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::data-political-office-lost.data-political-office-lost",
+      "mappedBy": "participant"
+    },
+    "spouse_political_offices": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::data-spouse-political-office.data-spouse-political-office",
+      "mappedBy": "participant"
+    },
+    "leadership_in_organizations": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::data-leadership-in-organization.data-leadership-in-organization",
+      "mappedBy": "participant"
     }
   }
 }
