@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "organizational_and_politicals",
+  "collectionName": "basic_races",
   "info": {
-    "singularName": "organizational-and-political",
-    "pluralName": "organizational-and-politicals",
-    "displayName": "data-organizational-and-political",
+    "singularName": "basic-race",
+    "pluralName": "basic-races",
+    "displayName": "data-race-basic",
     "description": ""
   },
   "options": {
@@ -12,14 +12,14 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "organizational_and_political": {
+    "basic_race": {
       "type": "string"
     },
     "participants": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::nwc-participant.nwc-participant",
-      "mappedBy": "organizational_and_politicals"
+      "inversedBy": "basic_races"
     }
   }
 }

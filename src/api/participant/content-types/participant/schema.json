@@ -100,12 +100,6 @@
         "graduate_professional_degree",
         "unknown"
       ]
-    },
-    "jurisdiction_level_politicals": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::jurisdiction-level-political.jurisdiction-level-political",
-      "inversedBy": "participants"
     }
   }
 }

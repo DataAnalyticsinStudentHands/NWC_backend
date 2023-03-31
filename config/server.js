@@ -6,10 +6,4 @@ module.exports = ({ env }) => (
     app:{
       keys:env.array('APP_KEYS')
     }
-    //v3
-    // admin: {
-    //   auth: {
-    //     secret: env('ADMIN_JWT_SECRET', process.env.ADMIN_JWT_SECRET),
-    //   },
-    // },
   });

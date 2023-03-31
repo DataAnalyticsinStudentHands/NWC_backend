@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "nwc_roles",
+  "collectionName": "data_spouse_careers",
   "info": {
-    "singularName": "nwc-role",
-    "pluralName": "nwc-roles",
-    "displayName": "data-role",
+    "singularName": "data-spouse-career",
+    "pluralName": "data-spouse-careers",
+    "displayName": "data-spouse-career",
     "description": ""
   },
   "options": {
@@ -12,14 +12,14 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "role": {
+    "spouse_profession": {
       "type": "string"
     },
-    "participants": {
+    "participant": {
       "type": "relation",
-      "relation": "manyToMany",
+      "relation": "manyToOne",
       "target": "api::nwc-participant.nwc-participant",
-      "mappedBy": "role"
+      "inversedBy": "spouse_careers"
     }
   }
 }

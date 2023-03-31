@@ -4,7 +4,7 @@
   "info": {
     "singularName": "nwc-plank",
     "pluralName": "nwc-planks",
-    "displayName": "nwc_plank",
+    "displayName": "data-plank",
     "description": ""
   },
   "options": {
@@ -19,19 +19,19 @@
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::nwc-participant.nwc-participant",
-      "mappedBy": "planks_for"
+      "mappedBy": "planks_fors"
     },
     "participants_against": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::nwc-participant.nwc-participant",
-      "mappedBy": "planks_against"
+      "mappedBy": "planks_againsts"
     },
     "participants_spoke_for": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::nwc-participant.nwc-participant",
-      "mappedBy": "planks_spoke_for"
+      "mappedBy": "planks_spoke_fors"
     }
   }
 }

@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "data_educations",
+  "info": {
+    "singularName": "data-education",
+    "pluralName": "data-educations",
+    "displayName": "data-education",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "degree": {
+      "type": "string"
+    },
+    "institution": {
+      "type": "string"
+    },
+    "year": {
+      "type": "biginteger"
+    },
+    "participant": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::nwc-participant.nwc-participant",
+      "inversedBy": "educations"
+    }
+  }
+}
