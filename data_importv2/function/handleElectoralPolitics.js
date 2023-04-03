@@ -144,6 +144,12 @@ async function handleElectoralPoliticsData (data, participants,
         }
     }), 'utf-8');
 
+    return{
+        "api::nwc-participant.nwc-participant": toObject(participantDifference, 'id'),
+        "api::data-political-office-held.data-political-office-held": newHeldInput,
+        "api::data-political-office-lost.data-political-office-lost": newLostInput,
+        "api::data-spouse-political-office.data-spouse-political-office": newSpouseInput
+    }
 }
 module.exports = {
     handleElectoralPoliticsData

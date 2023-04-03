@@ -69,7 +69,10 @@ async function handleNWCRoleData(data, participants, roles){
             "api::nwc-role.nwc-role": newRoleInput
         }
     }))
-    
+    return{
+        "api::nwc-participant.nwc-participant": toObject(participantDifference, 'id'),
+        "api::nwc-role.nwc-role": newRoleInput
+    }
 }
 module.exports = {
     handleNWCRoleData

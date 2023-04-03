@@ -52,6 +52,9 @@ async function handleOrganizationalData(data, organizations){
         }
     }))
 
+    return {
+        "api::organizational-and-political.organizational-and-political": toObject(Object.values(newOrganizationInput), 'id')
+    }
 }
 module.exports = {
     handleOrganizationalData

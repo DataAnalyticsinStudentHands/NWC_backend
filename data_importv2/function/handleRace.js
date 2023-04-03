@@ -109,6 +109,9 @@ async function handleRaceData(data, races){
         }
     }), 'utf-8');
 
+    return {
+        "api::race.race": newRaceInput
+    };
 }
 module.exports = {
     handleRaceData

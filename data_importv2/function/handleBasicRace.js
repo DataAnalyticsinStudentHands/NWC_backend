@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require("fs");
 const { toObject, onlyInLeft, merge } = require('../utility/utility');
 
 const raceObj = {
@@ -11,13 +11,10 @@ const raceObj = {
 
 async function handleBasicRaceData (data, basicRace) {
 
-    let basicRaceData = []
-    Object.values(basicRace).forEach((row) => {
-        basicRaceData.push({
-            basic_race: row.basic_race,
-            participants: row.participants
-        })
-    });
+    let basicRaceData = Object.values(basicRace).map((row) => ({
+        basic_race: row.basic_race,
+        participants: row.participants
+    }));
 
     let newBasicRaceData = {};
     data.forEach((row) => {
@@ -58,6 +55,9 @@ async function handleBasicRaceData (data, basicRace) {
            "api::basic-race.basic-race": newBasicRaceInput,
         }
     }), 'utf-8');
+    return {
+        "api::basic-race.basic-race": newBasicRaceInput,
+    };
 }
 module.exports = {
     handleBasicRaceData

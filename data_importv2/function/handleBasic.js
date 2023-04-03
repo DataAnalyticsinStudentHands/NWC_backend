@@ -35,7 +35,7 @@ const residenceIn1977Lookup = {
 
 async function handleBasicData(data, participants, residences){
 
-    let participantData = [], residenceData = [];
+    let participantData = []; 
     Object.values(participants).forEach((participant) => {
         let participantDataObj = {};
         Object.keys(participant).forEach((key) => {
@@ -43,13 +43,14 @@ async function handleBasicData(data, participants, residences){
         });
         participantData.push(removeNullUndefined(participantDataObj));
     });
-    Object.values(residences).forEach((residence) => {
-        residenceData.push({
+
+    let residenceData = Object.values(residences).map((residence) => {
+        return {
             participants: residence.participants,
             residence_in_1977: residence.residence_in_1977,
             total_population: residence.total_population,
             median_household_income: residence.median_household_income
-        })
+        }
     });
 
     let newPartcipantsData = [], newResidencesData = {};
@@ -122,6 +123,11 @@ async function handleBasicData(data, participants, residences){
             "api::resident-in-1977.resident-in-1977": newResidenceInput
         }
     }), 'utf-8');
+
+    return {
+        "api::nwc-participant.nwc-participant": toObject(participantDifference, 'id'),
+        "api::resident-in-1977.resident-in-1977": newResidenceInput
+    }
 }
 
 module.exports = {
