@@ -172,6 +172,9 @@ async function handlePositionData(data, positions){
         }
     }));
 
+    return {
+      "api::nwc-plank.nwc-plank": newPositionInput
+    }
 }
 module.exports = {
     handlePositionData

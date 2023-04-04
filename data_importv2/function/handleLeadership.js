@@ -43,6 +43,10 @@ async function handleLeadershipData(data, leaderships){
            "api::data-leadership-in-organization.data-leadership-in-organization": newLeadershipInput,
         }
     }), 'utf-8');
+
+    return {
+        "api::data-leadership-in-organization.data-leadership-in-organization": newLeadershipInput,
+    }
 }
 module.exports = {
     handleLeadershipData
