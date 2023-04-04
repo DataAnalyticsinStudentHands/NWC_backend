@@ -9,17 +9,17 @@ import {
   EmptyStateLayout,
   Tabs, Tab, TabGroup, TabPanels, TabPanel,
 } from '@strapi/design-system';
-const groupBy = (arr, key) => arr.reduce((acc, item) => ((acc[item[key]] = [...(acc[item[key]] || []), item]), acc), {});
 
+const groupBy = (arr, key) => arr.reduce((acc, item) => ((acc[item[key]] = [...(acc[item[key]] || []), item]), acc), {});
 import * as data from './MasterSheet.json'
 const masterSheet = data.default;
 const errLog= {
   match:{
-    id: "ID does not match with the master sheet",
-    first_name: 'First Name does not match with the master sheet',
-    last_name: 'Last Name does not match with the master sheet',
-    state: 'State does not match with the master sheet',
-    name: 'Name does not match with the master sheet',
+    id: "ID is not exist in the master sheet",
+    first_name: 'First Name Not Match',
+    last_name: 'Last Name Not Match',
+    state: 'State Not Match',
+    name: 'Name Not Match',
   },
   dataType:{
     number: 'The field should be number',
@@ -56,8 +56,6 @@ const HomePage = () => {
     e.preventDefault();
 
     let errData = [];
-
-    // console.log(sheets["Role at NWC"][0]);
     
     Object.keys(sheets).forEach((sheetName)=>{
       switch (sheetName) {
@@ -168,7 +166,36 @@ const HomePage = () => {
           })
       }
     })
-    setReport(groupBy(errData, "sheet_name"));
+    let errorData = groupBy(errData, "sheet_name")
+    // setReport(errorData);
+
+    const newErrorData = Object.keys(errorData).reduce((acc, sheetName) => {
+      const sheetErrors = errorData[sheetName].reduce((errorsAcc, item) => {
+        if (errorsAcc[item.id]) {
+          errorsAcc[item.id].errors[item.error]
+            ? errorsAcc[item.id].errors[item.error].push(item.row_number)
+            :  errorsAcc[item.id].errors[item.error] = [item.row_number];
+        } else {
+          errorsAcc[item.id] = {
+            id: item.id,
+            master: item.master,
+            file: item.file,
+            errors: {
+              [item.error]: [item.row_number],
+            },
+            sheet_name: item.sheet_name,
+          };
+        }
+        return errorsAcc;
+      }, {});
+      return {
+        ...acc,
+        [sheetName]: sheetErrors,
+      };
+    }, {});
+  
+    setReport(newErrorData);
+
 
   }
 
@@ -191,8 +218,6 @@ const HomePage = () => {
                   return (
                     <Tab key={index}>
                       {sheetName}
-                      <Typography as="span" color="neutral600" fontSize="m" marginRight={2} style={{color:"red"}}>
-                        {report[sheetName].length}</Typography>
                     </Tab>
                   )
                 })}
@@ -201,24 +226,25 @@ const HomePage = () => {
               <TabPanels>
                 {Object.keys(report).map((sheetName, index)=>{
                   return (
-                    <TabPanel key={index}>
+                    <TabPanel key={index + sheetName}>
                       <Box padding={4} background="neutral0">
                         <Table colCount={6} rowCount={10}>
                           <Thead>
                             <Tr>
-                              <Th>Row #</Th>
+                              {/* <Th>Row #</Th> */}
                               <Th>ID</Th>
-                              <Th>Error</Th>
                               <Th>Data</Th>
+                              <Th>Error</Th>
+                              <Th>Rows in the file</Th>
                             </Tr>
                           </Thead>
-                          <Tbody>
-                          {report[sheetName].map((item)=>{
+                          <Tbody key = {index + sheetName + 'tbody'}>
+                          {Object.values(report[sheetName]).map((item)=>{
+                            // console.log(item);
                             return (
-                              <Tr key={item.sheet_name+item.id+item.row_number}>
-                                <Td>{item.row_number}</Td>
+                              <Tr key={item.sheet_name+ Math.random()}>
+                                {/* <Td>{item.row_number}</Td> */}
                                 <Td>{item.id}</Td>
-                                <Td>{item.error}</Td>
                                 <Td>
                                   {/* {item.master ? item.master.last_name + ", " + item.master.first_name : ""} */}
                                   {item.master ? item.master : ""}
@@ -226,6 +252,27 @@ const HomePage = () => {
                                   <br/>
                                   {item.file ? item.file : ""}
                                 </Td>
+                                <Td>{
+                                    Object.entries(item.errors).map((error, index)=>{
+                                      return(
+                                        <Typography key={index} as="span" color="neutral600" fontSize="m" marginRight={2} style={{color:"red"}}>
+                                          {error[0]}
+                                        </Typography>
+                                      )
+                                    })
+                                  }</Td>
+                                <Td>
+                                  {
+                                    Object.entries(item.errors).map((error, index)=>{
+                                      return(
+                                        <Typography key={index} as="span" color="neutral600" fontSize="m" marginRight={2} style={{color:"red"}}>
+                                          {error[1].join(", ")}
+                                        </Typography>
+                                      )
+                                    })
+                                  }
+                                </Td>
+
                               </Tr>
                             )
                           })}
