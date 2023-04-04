@@ -4,9 +4,9 @@ module.exports =  {
       enabled: true,
       resolve: './src/plugins/email-service'
     },
-    // 'preflight-check': {
-    //   enabled: true,
-    //   resolve: './src/plugins/preflight-check'
-    // },
+    'preflight-check': {
+      enabled: true,
+      resolve: './src/plugins/preflight-check'
+    },
     // ...
   }
