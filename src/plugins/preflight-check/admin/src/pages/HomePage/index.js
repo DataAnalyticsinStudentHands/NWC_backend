@@ -10,321 +10,19 @@ import {
   Tabs, Tab, TabGroup, TabPanels, TabPanel,
 } from '@strapi/design-system';
 const groupBy = (arr, key) => arr.reduce((acc, item) => ((acc[item[key]] = [...(acc[item[key]] || []), item]), acc), {});
-const masterSheet = {
-  "1": {
-      "last_name": "Anderson",
-      "first_name": "Betty",
-      "state": "TX"
+
+import * as data from './MasterSheet.json'
+const masterSheet = data.default;
+const errLog= {
+  match:{
+    id: "ID does not match with the master sheet",
+    first_name: 'First Name does not match with the master sheet',
+    last_name: 'Last Name does not match with the master sheet',
+    state: 'State does not match with the master sheet',
+    name: 'Name does not match with the master sheet',
   },
-  "2": {
-      "last_name": "Anderson",
-      "first_name": "Linda",
-      "state": "TX"
-  },
-  "3": {
-      "last_name": "Anderson",
-      "first_name": "Owanah",
-      "state": "TX"
-  },
-  "4": {
-      "last_name": "Anguiano",
-      "first_name": "Lupe",
-      "state": "TX"
-  },
-  "5": {
-      "last_name": "Armstrong",
-      "first_name": "Deane",
-      "state": "TX"
-  },
-  "6": {
-      "last_name": "Bebon",
-      "first_name": "Cynthia",
-      "state": "TX"
-  },
-  "7": {
-      "last_name": "Becnel",
-      "first_name": "Melva",
-      "state": "TX"
-  },
-  "8": {
-      "last_name": "Biggs",
-      "first_name": "Linda",
-      "state": "TX"
-  },
-  "9": {
-      "last_name": "Brandon",
-      "first_name": "Peggy",
-      "state": "TX"
-  },
-  "10": {
-      "last_name": "Brown",
-      "first_name": "Geraldine",
-      "state": "TX"
-  },
-  "11": {
-      "last_name": "Brown",
-      "first_name": "Penny",
-      "state": "TX"
-  },
-  "12": {
-      "last_name": "Castillo",
-      "first_name": "Mary",
-      "state": "TX"
-  },
-  "13": {
-      "last_name": "Cavazos",
-      "first_name": "Maria",
-      "state": "TX"
-  },
-  "14": {
-      "last_name": "Cotera",
-      "first_name": "Marta",
-      "state": "TX"
-  },
-  "15": {
-      "last_name": "Cuadra",
-      "first_name": "Eva",
-      "state": "TX"
-  },
-  "16": {
-      "last_name": "Cunningham",
-      "first_name": "Claire",
-      "state": "TX"
-  },
-  "17": {
-      "last_name": "Dixon",
-      "first_name": "Hortense",
-      "state": "TX"
-  },
-  "18": {
-      "last_name": "Duke",
-      "first_name": "Barbara",
-      "state": "TX"
-  },
-  "19": {
-      "last_name": "Flinn",
-      "first_name": "Mary",
-      "state": "TX"
-  },
-  "20": {
-      "last_name": "Flores",
-      "first_name": "Margie",
-      "state": "TX"
-  },
-  "21": {
-      "last_name": "Garcia",
-      "first_name": "Sylvia",
-      "state": "TX"
-  },
-  "22": {
-      "last_name": "Glossbrenner",
-      "first_name": "Ernestine",
-      "state": "TX"
-  },
-  "23": {
-      "last_name": "Gomez",
-      "first_name": "Rita",
-      "state": "TX"
-  },
-  "24": {
-      "last_name": "Gutierrez",
-      "first_name": "Ruby",
-      "state": "TX"
-  },
-  "25": {
-      "last_name": "Hatfield",
-      "first_name": "Carol",
-      "state": "TX"
-  },
-  "26": {
-      "last_name": "Hickie",
-      "first_name": "Naoma",
-      "state": "TX"
-  },
-  "27": {
-      "last_name": "Hightower",
-      "first_name": "Nikki",
-      "state": "TX"
-  },
-  "28": {
-      "last_name": "Johnson",
-      "first_name": "Eddie",
-      "state": "TX"
-  },
-  "29": {
-      "last_name": "Kirby",
-      "first_name": "Ruth",
-      "state": "TX"
-  },
-  "30": {
-      "last_name": "Lesley",
-      "first_name": "Bonnie",
-      "state": "TX"
-  },
-  "31": {
-      "last_name": "Macha",
-      "first_name": "Sharon",
-      "state": "TX"
-  },
-  "32": {
-      "last_name": "Macon",
-      "first_name": "Jane",
-      "state": "TX"
-  },
-  "33": {
-      "last_name": "Maloy",
-      "first_name": "Minnie",
-      "state": "TX"
-  },
-  "34": {
-      "last_name": "McKnight",
-      "first_name": "Mamie",
-      "state": "TX"
-  },
-  "35": {
-      "last_name": "McKool",
-      "first_name": "Betty",
-      "state": "TX"
-  },
-  "36": {
-      "last_name": "Monte",
-      "first_name": "Millie",
-      "state": "TX"
-  },
-  "37": {
-      "last_name": "Opiela",
-      "first_name": "Elaine",
-      "state": "TX"
-  },
-  "38": {
-      "last_name": "Oser",
-      "first_name": "Marie",
-      "state": "TX"
-  },
-  "39": {
-      "last_name": "Peden",
-      "first_name": "Betty",
-      "state": "TX"
-  },
-  "40": {
-      "last_name": "Puente",
-      "first_name": "Dolores",
-      "state": "TX"
-  },
-  "41": {
-      "last_name": "Rangel",
-      "first_name": "Irma",
-      "state": "TX"
-  },
-  "42": {
-      "last_name": "Reagan",
-      "first_name": "Barbara",
-      "state": "TX"
-  },
-  "43": {
-      "last_name": "Richards",
-      "first_name": "Ann",
-      "state": "TX"
-  },
-  "44": {
-      "last_name": "Robinson",
-      "first_name": "Janice",
-      "state": "TX"
-  },
-  "45": {
-      "last_name": "Rodriguez-Mendoza",
-      "first_name": "Amalia",
-      "state": "TX"
-  },
-  "46": {
-      "last_name": "Rodriguez",
-      "first_name": "Irene",
-      "state": "TX"
-  },
-  "47": {
-      "last_name": "Salinas",
-      "first_name": "Estela",
-      "state": "TX"
-  },
-  "48": {
-      "last_name": "Sauceda",
-      "first_name": "Teresa",
-      "state": "TX"
-  },
-  "49": {
-      "last_name": "Shandera",
-      "first_name": "Dorothy",
-      "state": "TX"
-  },
-  "50": {
-      "last_name": "Shaw",
-      "first_name": "Loretta",
-      "state": "TX"
-  },
-  "51": {
-      "last_name": "Smiley",
-      "first_name": "Martha",
-      "state": "TX"
-  },
-  "52": {
-      "last_name": "Stafford",
-      "first_name": "Sammye",
-      "state": "TX"
-  },
-  "53": {
-      "last_name": "Stewart",
-      "first_name": "Josephine",
-      "state": "TX"
-  },
-  "54": {
-      "last_name": "Stravato",
-      "first_name": "Claudia",
-      "state": "TX"
-  },
-  "55": {
-      "last_name": "Tobolowsky",
-      "first_name": "Hermine",
-      "state": "TX"
-  },
-  "56": {
-      "last_name": "Vasquez",
-      "first_name": "Patricia",
-      "state": "TX"
-  },
-  "57": {
-      "last_name": "Waddell",
-      "first_name": "N.",
-      "state": "TX"
-  },
-  "58": {
-      "last_name": "Weddington",
-      "first_name": "Sarah",
-      "state": "TX"
-  },
-  "59": {
-      "last_name": "Williams",
-      "first_name": "Arthur",
-      "state": "TX"
-  },
-  "60": {
-      "last_name": "Willrich",
-      "first_name": "Penny",
-      "state": "TX"
-  },
-  "61": {
-      "last_name": "Wright",
-      "first_name": "Helen",
-      "state": "TX"
-  },
-  "62": {
-      "last_name": "Zumbrun",
-      "first_name": "Janna",
-      "state": "TX"
-  },
-  "917": {
-      "last_name": "Gutierrez",
-      "first_name": "Luz",
-      "state": "TX"
+  dataType:{
+    number: 'The field should be number',
   }
 }
 const HomePage = () => {
@@ -358,74 +56,116 @@ const HomePage = () => {
     e.preventDefault();
 
     let errData = [];
+
+    // console.log(sheets["Role at NWC"][0]);
     
     Object.keys(sheets).forEach((sheetName)=>{
-      // Handle Basic Data sheet
-      if (sheetName === "Basic Data"){
-        sheets[sheetName].forEach((item, index)=>{
-          // Check if ID in file is in master sheet
-          if (!masterSheet[item["ID"]]){
-            errData.push({
-              row_number:index+2,
-              id:item["ID"],
-              sheet_name:sheetName,
-              error:"ID not exist in master sheet",
-              file: item["Last Name"] + ", " + item["First Name"] + " " + item["State"]
-            })
-          } 
-          // Check if Ln Fn and State in file is match with master sheet
-          else if (
-            item["Last Name"] !== masterSheet[item["ID"]].last_name || 
-            item["First Name"].replace(/ /g,'') !== masterSheet[item["ID"]].first_name || 
-            item["State"] !== masterSheet[item["ID"]].state
-          ){            
-            errData.push({
-              row_number:index+2,
-              id:item["ID"],
-              sheet_name:sheetName,
-              error:"Name or State does not match with the master sheet",
-              master: masterSheet[item["ID"]],
-              file: item["Last Name"] + ", " + item["First Name"] + " " + item["State"]
-            })
-          }
-        })
-      } 
-      // Handle Other Data sheet
-      else {
-        // Check if ID in file is in master sheet
-        sheets[sheetName].forEach((item, index)=>{
-          if (!masterSheet[item["ID"]]){
-            errData.push({
-              row_number:index+2,
-              id:item["ID"],
-              sheet_name:sheetName,
-              error:"ID not exist in master sheet"
-            })
-          } 
-          // Check if Name in file is match with master sheet
-          else if (!item["Name"]){
-            errData.push({
-              row_number:index+2,
-              id:item["ID"],
-              sheet_name:sheetName,
-              error:"First or Last name does not match with the master sheet",
-            })
-          } else {
-            let ln = item["Name"].split(", ")[0];
-            let fn = item["Name"].split(", ")[1].split(" ")[0];
-            if (ln != masterSheet[item["ID"]].last_name || fn != masterSheet[item["ID"]].first_name){
+      switch (sheetName) {
+        case "Basic Data":
+          sheets[sheetName].forEach((item, index)=>{
+            if (!masterSheet[item.ID]) {
               errData.push({
-                row_number:index+2,
-                id:item["ID"],
-                sheet_name:sheetName,
-                error:"Name NOT MATCH WITH PARTICIPANT INFO",
-                master: masterSheet[item["ID"]],
-                file: item["Name"]
+                row_number: index + 2,
+                id: item.ID,
+                sheet_name: sheetName,
+                error: errLog.match.id,
+                file: `${item["Last Name"]}, ${item["First Name"]} ${item.State}`
+              });
+            } else {      
+              item["Last Name"] !== masterSheet[item.ID].last_name && errData.push({
+                row_number: index + 2,
+                id: item.ID,
+                sheet_name: sheetName,
+                error: errLog.match.last_name,
+                master: masterSheet[item.ID].last_name,
+                file: `${item["Last Name"]}`
+              });
+              item["First Name"] !== masterSheet[item.ID].first_name && errData.push({
+                row_number: index + 2,
+                id: item.ID,
+                sheet_name: sheetName,
+                error: errLog.match.first_name,
+                master: masterSheet[item.ID].first_name,
+                file: `${item["First Name"]}`
+              });
+              item.State !== masterSheet[item.ID].state && errData.push({
+                row_number: index + 2,
+                id: item.ID,
+                sheet_name: sheetName,
+                error: errLog.match.state,
+                master: masterSheet[item.ID].state,
+                file: `${item.State}`
+              });
+
+              const numberColumns = [
+                'Age in 1977',
+                'Birthdate Day',
+                'Birthdate Month',
+                'Birthdate Year',
+                'Deathdate Day',
+                'Deathdate Month',
+                'Deathdate Year',
+                'Median Household Income of Place of Residence (check US Census)',
+                'Total Population of Place of Residence (check US Census)',
+                'Total Number of Children (born throughout lifetime)'
+            ]
+            numberColumns.forEach((column)=>{
+              if (item[column] && isNaN(item[column])) {
+                errData.push({
+                  row_number: index + 2,
+                  id: item.ID,
+                  sheet_name: sheetName,
+                  error: errLog.dataType.number,
+                  master: column,
+                  file: `${item[column]}`
+                });
+              }
+            })
+
+
+            }
+          })
+          break;
+        default:
+          sheets[sheetName].forEach((item, index)=>{
+            if (!masterSheet[item.ID]) {
+              errData.push({
+                row_number: index + 2,
+                id: item.ID,
+                sheet_name: sheetName,
+                error: errLog.match.id,
+                master: "",
+                file: `${item["Last Name"]}, ${item["First Name"]}`
+              });
+            } else {
+              item.Name !== `${masterSheet[item.ID].last_name}, ${masterSheet[item.ID].first_name}` && errData.push({
+                row_number: index + 2,
+                id: item.ID,
+                sheet_name: sheetName,
+                error: errLog.match.name,
+                master: `${masterSheet[item.ID].last_name}, ${masterSheet[item.ID].first_name} (master sheet)`,
+                file: `${item.Name} (file)`
+              });
+
+              const numberColumns = [
+                'College: Graduate/ Professional year of graduation (if more than one, list all but create new row for each)',
+                'College: Undergrad year of graduation (if more than one, list all but create new row for each)',
+                'Votes Received at State Meeting for NWC Delegate/Alternate',
+              ]
+              numberColumns.forEach((column)=>{
+                if (item[column] && isNaN(item[column])) {
+                  errData.push({
+                    row_number: index + 2,
+                    id: item.ID,
+                    sheet_name: sheetName,
+                    error: errLog.dataType.number,
+                    master: column,
+                    file: `${item[column]}`
+                  });
+                }
               })
             }
-          }
-        })
-
+          })
       }
     })
     setReport(groupBy(errData, "sheet_name"));
@@ -467,9 +207,9 @@ const HomePage = () => {
                           <Thead>
                             <Tr>
                               <Th>Row #</Th>
-                              <Th>Error</Th>
                               <Th>ID</Th>
-                              <Th>Difference</Th>
+                              <Th>Error</Th>
+                              <Th>Data</Th>
                             </Tr>
                           </Thead>
                           <Tbody>
@@ -477,13 +217,14 @@ const HomePage = () => {
                             return (
                               <Tr key={item.sheet_name+item.id+item.row_number}>
                                 <Td>{item.row_number}</Td>
-                                <Td>{item.error}</Td>
                                 <Td>{item.id}</Td>
+                                <Td>{item.error}</Td>
                                 <Td>
-                                  {item.master ? item.master.last_name + ", " + item.master.first_name : ""} (Master)
+                                  {/* {item.master ? item.master.last_name + ", " + item.master.first_name : ""} */}
+                                  {item.master ? item.master : ""}
                                   <br/>
                                   <br/>
-                                  {item.file ? item.file : ""} (File)
+                                  {item.file ? item.file : ""}
                                 </Td>
                               </Tr>
                             )
