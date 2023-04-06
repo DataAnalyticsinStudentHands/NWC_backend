@@ -113,7 +113,7 @@
     "address": {
       "type": "string"
     },
-    "zip_code": {
+    "zip": {
       "type": "string",
       "maxLength": 5,
       "minLength": 5
@@ -126,9 +126,6 @@
     },
     "lon": {
       "type": "float"
-    },
-    "boundingbox": {
-      "type": "json"
     },
     "residence_in_1977": {
       "type": "relation",
@@ -148,7 +145,7 @@
     "marital_classification": {
       "type": "string"
     },
-    "state": {
+    "represented_state": {
       "type": "string"
     },
     "age_range": {
@@ -222,6 +219,21 @@
       "relation": "oneToMany",
       "target": "api::data-leadership-in-organization.data-leadership-in-organization",
       "mappedBy": "participant"
+    },
+    "federal_level_commission": {
+      "type": "boolean"
+    },
+    "state_level_commission": {
+      "type": "boolean"
+    },
+    "county_level_commission": {
+      "type": "boolean"
+    },
+    "city_level_commission": {
+      "type": "boolean"
+    },
+    "has_children": {
+      "type": "boolean"
     }
   }
 }
