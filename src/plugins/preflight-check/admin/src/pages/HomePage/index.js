@@ -240,13 +240,10 @@ const HomePage = () => {
                           </Thead>
                           <Tbody key = {index + sheetName + 'tbody'}>
                           {Object.values(report[sheetName]).map((item)=>{
-                            // console.log(item);
                             return (
                               <Tr key={item.sheet_name+ Math.random()}>
-                                {/* <Td>{item.row_number}</Td> */}
                                 <Td>{item.id}</Td>
                                 <Td>
-                                  {/* {item.master ? item.master.last_name + ", " + item.master.first_name : ""} */}
                                   {item.master ? item.master : ""}
                                   <br/>
                                   <br/>
