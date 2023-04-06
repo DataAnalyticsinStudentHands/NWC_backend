@@ -1,50 +1,21 @@
 const fs = require('fs');
 const { toObject, onlyInLeft, removeNullUndefined, merge } = require('../utility/utility');
 
-const participantLookup = {
-    'ID': 'id',
-    'Last Name': 'last_name',
-    'First Name': 'first_name',
-    'Middle Name and/or Initial ': 'middle_name_initial',
-    'Nickname': 'nickname',
-    'State': 'state',
-    'Optional Column: Use only if Birthdate year is an approximation.  In such cases use dropdown menu and select ca.': 'birth_ca',
-    'Birthdate Month': 'birth_month',
-    'Birthdate Day': 'birth_day',
-    'Birthdate Year': 'birth_year',
-    'Optional Column: Fill out ONLY if birth year or Age in 1977 not found. Use Age Range from NWC Registration forms as indicated in dropdown menu.': 'age_range',
-    'Age in 1977': 'age_in_1977',
-    'Deathdate Month': 'death_month',
-    'Deathdate Day':'death_day',
-    'Deathdate Year': 'death_year',
-    'Place of Birth': 'place_of_birth',
-    'Marital Classification': 'marital_classification',
-    'Name of Spouse': 'name_of_spouse',
-    'Religion': 'religion',
-    'Gender ': 'gender',
-    'Sexual Orientation': 'sexual_orientation',
-    'Total Number of Children (born throughout lifetime)': 'total_number_of_children',
-}
-
-const residenceIn1977Lookup = {
-    'ID': 'participant_id',
-    'Residence in 1977': 'residence_in_1977',
-    'Total Population of Place of Residence (check US Census)': 'total_population',
-    'Median Household Income of Place of Residence (check US Census)': 'median_household_income',
-}
+const participantLookup = JSON.parse(fs.readFileSync('../utility/basic_participant.json', 'utf-8'));
+const residenceIn1977Lookup = JSON.parse(fs.readFileSync('../utility/basic_residence.json', 'utf-8'));
 
 async function handleBasicData(data, participants, residences){
 
-    let participantData = []; 
-    Object.values(participants).forEach((participant) => {
-        let participantDataObj = {};
+    const participantData = Object.values(participants).map((participant) => {
+        const participantDataObj = {};
         Object.keys(participant).forEach((key) => {
-            Object.values(participantLookup).includes(key) ? participantDataObj[key] = participant[key] : null;
+          Object.values(participantLookup).includes(key) ? participantDataObj[key] = participant[key] : null;
         });
-        participantData.push(removeNullUndefined(participantDataObj));
-    });
+        return removeNullUndefined(participantDataObj);
+      });
+    
 
-    let residenceData = Object.values(residences).map((residence) => {
+    const residenceData = Object.values(residences).map((residence) => {
         return {
             participants: residence.participants,
             residence_in_1977: residence.residence_in_1977,
@@ -61,6 +32,8 @@ async function handleBasicData(data, participants, residences){
             residenceIn1977Lookup[key] ? newResidencesObj[residenceIn1977Lookup[key]] = row[key] : null;
         });
         newParticipantObj.birth_ca === 'ca.' ? newParticipantObj.birth_ca = true : null; // convert 'ca.' to true
+        newParticipantObj.has_children === 'yes' ? newParticipantObj.has_children = true : null; // convert 'yes' to true
+        newParticipantObj.has_children === 'no' ? newParticipantObj.has_children = false : null; // convert 'no' to false
         newPartcipantsData.push(newParticipantObj);
 
         newResidencesData[newResidencesObj.residence_in_1977]
@@ -96,22 +69,25 @@ async function handleBasicData(data, participants, residences){
         a.sexual_orientation === b.sexual_orientation &&
         a.total_number_of_children === b.total_number_of_children;
     let participantDifference = onlyInLeft(newPartcipantsData, participantData, isSameParticipant);
+    // console.log(toObject(newPartcipantsData,'id')[13]);
+    // console.log(toObject(participantData,'id')[13]);
 
     const isSameResidence = (a,b) => a.participants.sort().join(',') === b.participants.sort().join(',') &&
         a.residence_in_1977 === b.residence_in_1977 &&
         a.total_population == b.total_population &&
         a.median_household_income == b.median_household_income;
     let residenceDifference = onlyInLeft(Object.values(newResidencesData), residenceData, isSameResidence);
+
     let newResidenceInput = {};
-    residenceDifference.forEach((residence) => {
+    residenceDifference.forEach((residence, index) => {
         toObject(Object.values(residences), 'residence_in_1977')[residence.residence_in_1977]
         ? newResidenceInput[toObject(Object.values(residences), 'residence_in_1977')[residence.residence_in_1977].id] = {
             id: toObject(Object.values(residences), 'residence_in_1977')[residence.residence_in_1977].id,
             ...residence,
             participants: merge(toObject(Object.values(residences), 'residence_in_1977')[residence.residence_in_1977].participants, residence.participants)
         }
-        : newResidenceInput[Object.keys(residences).length + 1] = {
-            id: Object.keys(residences).length + 1,
+        : newResidenceInput[Object.keys(residences).length + 1 + index] = {
+            id: Object.keys(residences).length + 1 + index,
             ...residence
         }
     });
@@ -128,6 +104,7 @@ async function handleBasicData(data, participants, residences){
         "api::nwc-participant.nwc-participant": toObject(participantDifference, 'id'),
         "api::resident-in-1977.resident-in-1977": newResidenceInput
     }
+    
 }
 
 module.exports = {

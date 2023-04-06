@@ -1,97 +1,44 @@
 const fs = require('fs');
 const { toObject, onlyInLeft, removeNullUndefined } = require('../utility/utility');
-// const removeDuplicate = (arr) => arr.filter((i) => arr.indexOf(i) === arr.lastIndexOf(i));
 
-const educationUndergradComponentFields = {
-    'ID':'participant',
-    'College: Undergrad degree (if more than one, list all but create new row for each)': 'degree',
-    'College: Undergrad institution (if more than one, list all but create new row for each)': 'institution',
-    'College: Undergrad year of graduation (if more than one, list all but create new row for each)': 'year'
-}
-const educationGraduateComponentFields = {
-    'ID':'participant',
-    'College: Graduate/ Professional degree (if more than one, list all but create new row for each)': 'degree',
-    'College: Graduate/ Professional institution (if more than one, list all but create new row for each)': 'institution',
-    'College: Graduate/ Professional year of graduation (if more than one, list all but create new row for each)': 'year',
-}
-const careerComponentFields = {
-    'ID':'participant',
-    'Category of Employment': 'category_of_employment',
-    'Job/ Profession (if more than one, list all but create new row for each)': 'job_profession',
-}
-const spouseComponentFields = {
-    'ID':'participant',
-    "Spouse's Profession (if more than one, list all but create new row for each)": "spouse_profession"
-}
-const participantFileds = {
-    'ID':'id',
-    'Highest Level of Education Attained': 'highest_level_of_education_attained',
-    'High School': 'high_school',
-    'Military Service': 'military_service',
-    'Union Member': 'union_member',
-    'Income Level': 'income_level',
-    'Optional: Fill out ONLY if NWC Registration Forms have specific dollar amount check boxes, otherwise indicate low, medium, high, or not reported per the NWC Registration forms in previous column.': 'income_level_dollar_amount',
-}
-
-const category_of_employment_lookup = {
-    Agriculture: 'Agriculture',
-    'Architecture…': 'Architecture and Engineering',
-    'Arts…': 'Arts and Entertainment',
-    'Clergy…': 'Clergy/Religious-Related Employment',
-    'Construction…': 'Construction and Trade',
-    'Corporate…': 'Corporate and Management',
-    'Education…': 'Education and Libraries',
-    'Finance…': 'Finance, Insurance, and Real Estate',
-    'Food…': 'Food, Retail, and Hospitality',
-    'Government…': 'Government/Public Sector/Nonprofit',
-    'Homemaker': 'Homemaker',
-    'Law…': 'Law and Legal Employment',
-    'Law Enforcement…': 'Law Enforcement and Criminal Justice',
-    'Manufacturing': 'Manufacturing and Industrial Production',
-    'Media…': 'Media and Communications',
-    'Medical…': 'Medical/Health Care/Social Work',
-    'Office…': 'Office and Administrative Support',
-    'Science…': 'Science and Technology',
-    'Service…': 'Service Sector',
-    'Small Business Owner': 'Small Business Owner',
-    'Student': 'Student',
-    'Transportation…': 'Transportation and Public Utilities',
-    'Unemployed': 'Unemployed',
-    'Wholesal': 'Wholesale and Retail'
-}
+const educationUndergradComponentFields = JSON.parse(fs.readFileSync('../utility/undergrad.json', 'utf-8'));
+const educationGraduateComponentFields = JSON.parse(fs.readFileSync('../utility/graduate.json', 'utf-8'));
+const careerComponentFields = JSON.parse(fs.readFileSync('../utility/career.json', 'utf-8'));
+const spouseComponentFields = JSON.parse(fs.readFileSync('../utility/spouse_career.json', 'utf-8'));
+const participantFileds = JSON.parse(fs.readFileSync('../utility/education_participant.json', 'utf-8'));
+const category_of_employment_lookup = JSON.parse(fs.readFileSync('../utility/category_of_employment.json', 'utf-8'));
 
 async function handleEdandCareerData(data, participants, educations, careers, spouses_carees) {
 
-    let participantData = [], educationData = [], careerData = [], spouseData = [];
-    Object.values(participants).forEach((row) => {
+    const participantData = Object.values(participants).map((row) => {
         let participantDataObj = {};
         Object.keys(row).forEach((key) => {
             Object.values(participantFileds).includes(key) ? participantDataObj[key] = row[key] : null;
         })
-        participantData.push(removeNullUndefined(participantDataObj))
+        return removeNullUndefined(participantDataObj)
     })
-
-    Object.values(educations).forEach((row) => {
-        educationData.push({
+    const educationData = Object.values(educations).map((row) => {
+        return {
             degree: row.degree,
             institution: row.institution,
             year: row.year,
             participant: row.participant
-        })
+        }
     })
-    Object.values(careers).forEach((row) => {
-        careerData.push({
+    const careerData = Object.values(careers).map((row) => {
+        return {
             category_of_employment: row.category_of_employment,
             job_profession: row.job_profession,
             participant: row.participant
-        })
+        }
     })
-    Object.values(spouses_carees).forEach((row) => {
-        spouseData.push({
+    const spouseData = Object.values(spouses_carees).map((row) => {
+        return {
             spouse_profession: row.spouse_profession,
             participant: row.participant
-        })
+        }
     })
+
 
     let newPartcipantsData = [], educationsNewData = [], careerNewData = [], spousesNewData = []
     data.forEach((row) => {
@@ -126,10 +73,10 @@ async function handleEdandCareerData(data, participants, educations, careers, sp
         a.union_member == b.union_member &&
         a.income_level == b.income_level &&
         a.income_level_dollar_amount == b.income_level_dollar_amount;
-    let participantDifference = onlyInLeft(newPartcipantsData, participantData, isSameParticipant);
+    const participantDifference = onlyInLeft(newPartcipantsData, participantData, isSameParticipant);
 
     const isSameEducation = (a, b) => a.participant == b.participant && a.degree == b.degree && a.institution == b.institution && a.year == b.year;    
-    let educationDifference = onlyInLeft(educationsNewData, educationData, isSameEducation);
+    const educationDifference = onlyInLeft(educationsNewData, educationData, isSameEducation);
     let newEducationInput = {}
     educationDifference.forEach((row, index) => {
         newEducationInput[Object.keys(educations).length+1+index] = {
@@ -139,7 +86,7 @@ async function handleEdandCareerData(data, participants, educations, careers, sp
     })
 
     const isSameCareer = (a, b) => a.participant == b.participant && a.category_of_employment == b.category_of_employment && a.job_profession == b.job_profession;
-    let careerDifference = onlyInLeft(careerNewData, careerData, isSameCareer);
+    const careerDifference = onlyInLeft(careerNewData, careerData, isSameCareer);
     let newCareerInput = {}
     careerDifference.forEach((row, index) => {
         newCareerInput[Object.keys(careers).length+1+index] = {
@@ -149,7 +96,7 @@ async function handleEdandCareerData(data, participants, educations, careers, sp
     })
 
     const isSameSpouse = (a, b) => a.participant == b.participant && a.spouse_profession == b.spouse_profession;
-    let spouseDifference = onlyInLeft(spousesNewData, spouseData, isSameSpouse);
+    const spouseDifference = onlyInLeft(spousesNewData, spouseData, isSameSpouse);
     let newSpouseInput = {}
     spouseDifference.forEach((row, index) => {
         newSpouseInput[Object.keys(spouses_carees).length+1+index] = {
@@ -158,16 +105,23 @@ async function handleEdandCareerData(data, participants, educations, careers, sp
         }
     })
 
-    fs.writeFileSync('jsonData/Ed & Career Test.json', 
+    fs.writeFileSync('jsonData/Ed & Career.json', 
     JSON.stringify({
         "version": 2,
         "data": {
             "api::nwc-participant.nwc-participant": toObject(participantDifference, 'id'),
             "api::data-education.data-education": newEducationInput,
             "api::data-career.data-career": newCareerInput,
-            "api::data-spouse-career.data-spouse-career": spouses_carees
+            "api::data-spouse-career.data-spouse-career": newSpouseInput
         }
     }), 'utf-8');
+
+    return{
+        "api::nwc-participant.nwc-participant": toObject(participantDifference, 'id'),
+        "api::data-education.data-education": newEducationInput,
+        "api::data-career.data-career": newCareerInput,
+        "api::data-spouse-career.data-spouse-career": newSpouseInput
+    }
 }
 module.exports = {
     handleEdandCareerData

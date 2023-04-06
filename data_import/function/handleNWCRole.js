@@ -3,23 +3,17 @@ const { toObject, onlyInLeft, merge } = require('../utility/utility');
 
 async function handleNWCRoleData(data, participants, roles){
 
-    let roleData = [], participantData = [];
-    Object.values(roles).forEach((row) => {
-        roleData.push({
-            role: row.role,
-            participants: row.participants
-        })
-    });
-    Object.values(participants).forEach((row) => {
-        participantData.push({
-            id: row.id,
-            votes_received_at_state_meeting_for_nwc_delegate_alternate: row.votes_received_at_state_meeting_for_nwc_delegate_alternate
-        })
-    });
+    const roleData = Object.values(roles).map((row) => ({
+        role: row.role,
+        participants: row.participants
+    }));
+    const participantData = Object.values(participants).map((row) =>( {
+        id: row.id,
+        votes_received_at_state_meeting_for_nwc_delegate_alternate: row.votes_received_at_state_meeting_for_nwc_delegate_alternate
+    }));
 
     let newRoleData = {}, newParticipantData = [];
     data.forEach((row) => {
-        let roleObj = {};
         Object.keys(row).forEach((key) => {
             if (key === "Name" || key === "ID") return;
             if (key === "Votes Received at State Meeting for NWC Delegate/Alternate"){
@@ -36,16 +30,23 @@ async function handleNWCRoleData(data, participants, roles){
                     participants: [row["ID"]]
                 }
             } 
+            if (key == 'Other Role'){
+                newRoleData[row[key]]
+                ? newRoleData[row[key]].participants.push(row["ID"])
+                : newRoleData[row[key]] = {
+                    role: row[key],
+                    participants: [row["ID"]]
+                }
+            }
         })
-        
     })
 
     const isSameParticipant = ( a , b ) => a.id == b.id && 
         a.votes_received_at_state_meeting_for_nwc_delegate_alternate == b.votes_received_at_state_meeting_for_nwc_delegate_alternate;
-    let participantDifference = onlyInLeft(newParticipantData, participantData, isSameParticipant);
+    const participantDifference = onlyInLeft(newParticipantData, participantData, isSameParticipant);
 
     const isSameRole = ( a , b ) => a.role == b.role && a.participants.sort().join(',') === b.participants.sort().join(',');
-    let roleDifference = onlyInLeft(Object.values(newRoleData), roleData, isSameRole);
+    const roleDifference = onlyInLeft(Object.values(newRoleData), roleData, isSameRole);
     let newRoleInput = {};
     roleDifference.forEach((row, index) => {
         toObject(Object.values(roles), 'role')[row.role]
@@ -69,10 +70,12 @@ async function handleNWCRoleData(data, participants, roles){
             "api::nwc-role.nwc-role": newRoleInput
         }
     }))
+
     return{
         "api::nwc-participant.nwc-participant": toObject(participantDifference, 'id'),
         "api::nwc-role.nwc-role": newRoleInput
     }
+    
 }
 module.exports = {
     handleNWCRoleData
