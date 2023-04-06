@@ -1,0 +1,6 @@
+{
+	"ID": "participant",
+	"Jurisdiction of Political Offices Sought but Lost": "jurisdiction",
+	"Name of Political Offices Sought but Lost (if more than one, list all but create new row for each)": "political_office",
+	"Year of Race that was Lost ": "year"
+}

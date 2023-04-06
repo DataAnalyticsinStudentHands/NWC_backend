@@ -1,0 +1,8 @@
+{
+	"ID": "participant",
+	"Jurisdiction of Political Offices Held (if true for more than one category, create a new row for each)": "jurisdiction",
+	"Name of Political Offices Held (if more than one, list all but create new row for each)": "political_office",
+	"Start Year for Political Office": "start_year",
+	"End Year for Political Office (if office is still held leave this column blank)": "end_year",
+	"Optional Column:  Use this column only if the person is still serving in office.  Select \"present\" from the dropdown menu.": "present"
+}

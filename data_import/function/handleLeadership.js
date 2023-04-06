@@ -1,36 +1,26 @@
 const fs = require('fs');
 const { onlyInLeft } = require('../utility/utility');
-const leadershipLookup = {
-    'ID':'participant',
-    'General Name of Leadership Position:  Use Dropdown Menu (create separate row for each leadership position)': 'role',
-    'Specific Name of Leadership Position  (create separate row for each leadership position)': 'specific_role',
-    'Name of Organization in which leadership position was held ': 'organization',
-  }
 
+const leadershipLookup = JSON.parse(fs.readFileSync('../utility/leadership.json', 'utf-8'));
 async function handleLeadershipData(data, leaderships){
 
-    let leadershipsData = [];
-    Object.values(leaderships).forEach((row) => {
-        leadershipsData.push({
-            role: row.role,
-            specific_role: row.specific_role,
-            organization: row.organization,
-            participant: row.participant
-        })
-    });
-
-    let newLeadershipData = [];
-    data.forEach((row) => {
+    const leadershipsData = Object.values(leaderships).map(row => ({
+        role: row.role,
+        specific_role: row.specific_role,
+        organization: row.organization,
+        participant: row.participant
+    }));
+ 
+    const newLeadershipData = data.map(row => {
         let leadershipObj = {};
-        Object.keys(row).forEach((key) => {
+        Object.keys(row).forEach(key => {
             leadershipLookup[key] ? leadershipObj[leadershipLookup[key]] = row[key] : null;
         });
-
-        Object.keys(leadershipObj).length > 1 ? newLeadershipData.push(leadershipObj) : null;
-    })
+        return leadershipObj;
+    }).filter(obj => Object.keys(obj).length > 1);
     
     const isSameLeadership = (a, b) => a.participant === b.participant && a.role === b.role && a.specific_role === b.specific_role && a.organization === b.organization;
-    let leadershipDifference = onlyInLeft(newLeadershipData, leadershipsData, isSameLeadership);
+    const leadershipDifference = onlyInLeft(newLeadershipData, leadershipsData, isSameLeadership);
     let newLeadershipInput = {};
     leadershipDifference.forEach((row, index) => {
         newLeadershipInput[Object.keys(leaderships).length + 1 + index] = {id: Object.keys(leaderships).length + 1 + index,...row};

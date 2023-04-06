@@ -1,13 +1,7 @@
 const fs = require("fs");
 const { toObject, onlyInLeft, merge } = require('../utility/utility');
 
-const raceObj = {
-    "Asian American/Pacific Islander": { id: 1, race: "Asian American/Pacific Islander" },
-    "Black": {id: 2, race: "Black"},
-    "Hispanic": {id : 3, race: "Hispanic"},
-    "Native American/American Indian": { id : 4, race: "Native American/American Indian"},
-    "White": {id: 5, race: "White"} // Must fix 'white' in the xlsx file
-}
+const raceObj = JSON.parse(fs.readFileSync('../utility/basic_race.json', 'utf-8'));
 
 async function handleBasicRaceData (data, basicRace) {
 
@@ -55,6 +49,7 @@ async function handleBasicRaceData (data, basicRace) {
            "api::basic-race.basic-race": newBasicRaceInput,
         }
     }), 'utf-8');
+
     return {
         "api::basic-race.basic-race": newBasicRaceInput,
     };

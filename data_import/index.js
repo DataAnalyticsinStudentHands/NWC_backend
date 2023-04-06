@@ -47,9 +47,9 @@ async function main() {
 			dataContent.data["api::resident-in-1977.resident-in-1977"],
 		]),
 		handleData(
-			sheets["Race & Ethnicity--Reg Forms"],
-			basicrace.handleBasicRaceData,
-			[dataContent.data["api::basic-race.basic-race"]]
+			sheets["Race & Ethnicity--Reg Forms"], basicrace.handleBasicRaceData,[
+				dataContent.data["api::basic-race.basic-race"]
+			]
 		),
 		handleData(sheets["Race & Ethnicity--Expanded"], race.handleRaceData, [
 			dataContent.data["api::race.race"],
@@ -61,8 +61,7 @@ async function main() {
 			dataContent.data["api::data-spouse-career.data-spouse-career"],
 		]),
 		handleData(
-			sheets["Electoral Politics"],
-			electpol.handleElectoralPoliticsData,[
+			sheets["Electoral Politics"], electpol.handleElectoralPoliticsData,[
 				dataContent.data["api::nwc-participant.nwc-participant"],
 				dataContent.data["api::data-political-office-held.data-political-office-held"],
 				dataContent.data["api::data-political-office-lost.data-political-office-lost"],
@@ -76,8 +75,7 @@ async function main() {
 			]
 		),
 		handleData(
-			sheets["Organizational & Political"],
-			organization.handleOrganizationalData,[
+			sheets["Organizational & Political"], organization.handleOrganizationalData,[
 				dataContent.data["api::organizational-and-political.organizational-and-political"],
 			]
 		),

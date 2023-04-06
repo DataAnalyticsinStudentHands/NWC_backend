@@ -3,13 +3,10 @@ const { toObject, onlyInLeft, merge } = require('../utility/utility');
 
 async function handleOrganizationalData(data, organizations){
 
-    let organizationData = [];
-    Object.values(organizations).forEach((row) => {
-        organizationData.push({
-            organizational_and_political: row.organizational_and_political,
-            participants: row.participants
-        })
-    });
+    const organizationData = Object.values(organizations).map((row) => ({
+        organizational_and_political: row.organizational_and_political,
+        participants: row.participants
+    }));
 
     let newOrganizationData = {};    
     data.forEach((row) => {
@@ -30,7 +27,7 @@ async function handleOrganizationalData(data, organizations){
     let organizationDifference = onlyInLeft(Object.values(newOrganizationData), organizationData, isSameOrganization);
     let newOrganizationInput = {};
     organizations = toObject(Object.values(organizations), 'organizational_and_political');
-    organizationDifference.forEach((row) => {
+    organizationDifference.forEach((row, index) => {
         organizations[row.organizational_and_political]
         ? newOrganizationInput[row.organizational_and_political] = { 
             id: organizations[row.organizational_and_political].id,
@@ -38,7 +35,7 @@ async function handleOrganizationalData(data, organizations){
             participants: merge(organizations[row.organizational_and_political].participants, row.participants)
         }
         : newOrganizationInput[row.organizational_and_political] = {
-            id: Object.keys(organizations).length + 1,
+            id: Object.keys(organizations).length + 1 + index,
             organizational_and_political: row.organizational_and_political,
             participants: row.participants
         }
@@ -55,6 +52,7 @@ async function handleOrganizationalData(data, organizations){
     return {
         "api::organizational-and-political.organizational-and-political": toObject(Object.values(newOrganizationInput), 'id')
     }
+
 }
 module.exports = {
     handleOrganizationalData
