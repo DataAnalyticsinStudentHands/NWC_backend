@@ -228,6 +228,12 @@
     },
     "has_children": {
       "type": "boolean"
+    },
+    "lat": {
+      "type": "float"
+    },
+    "lon": {
+      "type": "float"
     }
   }
 }
