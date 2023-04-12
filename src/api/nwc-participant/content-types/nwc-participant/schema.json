@@ -121,12 +121,6 @@
     "city": {
       "type": "string"
     },
-    "lat": {
-      "type": "float"
-    },
-    "lon": {
-      "type": "float"
-    },
     "residence_in_1977": {
       "type": "relation",
       "relation": "manyToOne",
