@@ -1,9 +1,0 @@
-{
-	"ID": "id",
-	"Political Party Membership": "political_party_membership",
-	"Identified Self as a Feminist": "self_identified_feminist",
-	"President's Commission on the Status of Women (federal level)": "federal_level_commission",
-	"state level Commission on the Status of Women (include years)": "state_level_commission",
-	"county level Commission on the Status of Women (include years) ": "county_level_commission",
-	"city level Commission on the Status of Women (include years)": "city_level_commission"
-}
