@@ -11,18 +11,20 @@ import {
 } from '@strapi/design-system';
 
 const groupBy = (arr, key) => arr.reduce((acc, item) => ((acc[item[key]] = [...(acc[item[key]] || []), item]), acc), {});
-import * as data from './MasterSheet.json'
-const masterSheet = data.default;
+
+import * as master from './masterAnalyst.json';
+
 const errLog= {
   match:{
-    id: "ID is not exist in the master sheet",
-    first_name: 'First Name Not Match',
-    last_name: 'Last Name Not Match',
-    state: 'State Not Match',
-    name: 'Name Not Match',
+    participant: 'participant info does not match',
+    id: "This ID doesnt belong to this State",
+    name: 'Name is not Match with ID',
   },
   dataType:{
     number: 'The field should be number',
+  },
+  err:{
+    state: 'This Sheet inclded more than one state',
   }
 }
 const HomePage = () => {
@@ -31,6 +33,9 @@ const HomePage = () => {
   const [sheets, setSheets] = useState(null);
 
   const [report, setReport] = useState({});
+  // const [analysis, setAnalysis] = useState({
+  //   state: {},
+  // });
 
   function handleFile(e){
     e.preventDefault();
@@ -39,12 +44,12 @@ const HomePage = () => {
     if (e.target.files) {
         const reader = new FileReader();
         reader.onload = (e) => {
-            let data = e.target.result;
-            let workbook = xlsx.read(data, { type: "array" });
-            let worksheets = {};
-            workbook.SheetNames.forEach((sheetName)=>{
-              worksheets[sheetName] = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
-            })
+            const data = e.target.result;
+            const workbook = xlsx.read(data, { type: "array" });
+            const worksheets = workbook.SheetNames.reduce((acc, sheetName) => {
+              acc[sheetName] = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
+              return acc;
+          }, {});
             setSheets(worksheets);
             setUpload(true);
         };
@@ -56,58 +61,51 @@ const HomePage = () => {
     e.preventDefault();
 
     let errData = [];
-    
+    let analysisData = {
+      state: {},
+    };
     Object.keys(sheets).forEach((sheetName)=>{
+
       switch (sheetName) {
         case "Basic Data":
           sheets[sheetName].forEach((item, index)=>{
-            if (!masterSheet[item.ID]) {
+
+            if(! master[item.State].ids.includes(item.ID)){
               errData.push({
                 row_number: index + 2,
                 id: item.ID,
                 sheet_name: sheetName,
                 error: errLog.match.id,
-                file: `${item["Last Name"]}, ${item["First Name"]} ${item.State}`
+                master: 'File Data',
+                file: `${item.ID} - ${item.State}`
               });
-            } else {      
-              item["Last Name"] !== masterSheet[item.ID].last_name && errData.push({
-                row_number: index + 2,
-                id: item.ID,
-                sheet_name: sheetName,
-                error: errLog.match.last_name,
-                master: masterSheet[item.ID].last_name,
-                file: `${item["Last Name"]}`
-              });
-              item["First Name"] !== masterSheet[item.ID].first_name && errData.push({
-                row_number: index + 2,
-                id: item.ID,
-                sheet_name: sheetName,
-                error: errLog.match.first_name,
-                master: masterSheet[item.ID].first_name,
-                file: `${item["First Name"]}`
-              });
-              item.State !== masterSheet[item.ID].state && errData.push({
-                row_number: index + 2,
-                id: item.ID,
-                sheet_name: sheetName,
-                error: errLog.match.state,
-                master: masterSheet[item.ID].state,
-                file: `${item.State}`
-              });
+              return;
+            }
 
-              const numberColumns = [
-                'Age in 1977',
-                'Birthdate Day',
-                'Birthdate Month',
-                'Birthdate Year',
-                'Deathdate Day',
-                'Deathdate Month',
-                'Deathdate Year',
-                'Median Household Income of Place of Residence (check US Census)',
-                'Total Population of Place of Residence (check US Census)',
-                'Total Number of Children (born throughout lifetime)'
-            ]
-            numberColumns.forEach((column)=>{
+            const masterObj = master[item.State].data[item.ID];
+            
+            `${item['Last Name']}, ${item['First Name']}` !== `${masterObj.last_name}, ${masterObj.first_name}` && errData.push({
+              row_number: index + 2,
+              id: item.ID,
+              sheet_name: sheetName,
+              error: errLog.match.participant,
+              master: `${masterObj.last_name}, ${masterObj.first_name} (master sheet)`,
+              file: `${item['Last Name']}, ${item['First Name']} (file)`
+            });
+
+            // Check the number fields
+            [
+              'Age in 1977',
+              'Birthdate Day',
+              'Birthdate Month',
+              'Birthdate Year',
+              'Deathdate Day',
+              'Deathdate Month',
+              'Deathdate Year',
+              'Median Household Income of Place of Residence (check US Census)',
+              'Total Population of Place of Residence (check US Census)',
+              'Total Number of Children (born throughout lifetime)'
+            ].forEach((column)=>{
               if (item[column] && isNaN(item[column])) {
                 errData.push({
                   row_number: index + 2,
@@ -120,37 +118,55 @@ const HomePage = () => {
               }
             })
 
+            analysisData.state[item.State] ? analysisData.state[item.State] = {
+              sum: analysisData.state[item.State].sum + 1,
+              ids: [...analysisData.state[item.State].ids, item.ID]
+            } : analysisData.state[item.State] = {
+              sum: 1,
+              ids: [item.ID]
+            };
 
-            }
+            
           })
           break;
         default:
           sheets[sheetName].forEach((item, index)=>{
-            if (!masterSheet[item.ID]) {
+            if( sheetName === 'Sources' || sheetName === 'Questions') return
+
+            if(Object.keys(analysisData.state).length > 1){
               errData.push({
-                row_number: index + 2,
-                id: item.ID,
+                row_number: '',
+                id: '',
                 sheet_name: sheetName,
-                error: errLog.match.id,
-                master: "",
-                file: `${item["Last Name"]}, ${item["First Name"]}`
+                error: errLog.err.state,
+                master: '',
+                file: ``
               });
-            } else {
-              item.Name !== `${masterSheet[item.ID].last_name}, ${masterSheet[item.ID].first_name}` && errData.push({
+              return;
+            }
+
+            // const stateValues = Object.keys(analysisData.state)[0];
+            const masterObj = master[Object.keys(analysisData.state)[0]].data[item.ID];
+              item.Name.split(',')[0] !== `${masterObj.last_name}` && errData.push({
                 row_number: index + 2,
                 id: item.ID,
                 sheet_name: sheetName,
                 error: errLog.match.name,
-                master: `${masterSheet[item.ID].last_name}, ${masterSheet[item.ID].first_name} (master sheet)`,
+                master: `${masterObj.last_name}, ${masterObj.first_name} (master sheet)`,
                 file: `${item.Name} (file)`
-              });
+              });         
 
-              const numberColumns = [
+
+              // Check the number fields
+              const numberCloumns = [
+                'Start Year for Political Office',
+                'End Year for Political Office (if office is still held leave this column blank)',
+                'Year of Race that was Lost ',
                 'College: Graduate/ Professional year of graduation (if more than one, list all but create new row for each)',
                 'College: Undergrad year of graduation (if more than one, list all but create new row for each)',
-                'Votes Received at State Meeting for NWC Delegate/Alternate',
+                'Votes Received at State Meeting for NWC Delegate/Alternate'
               ]
-              numberColumns.forEach((column)=>{
+              numberCloumns.forEach((column)=>{
                 if (item[column] && isNaN(item[column])) {
                   errData.push({
                     row_number: index + 2,
@@ -162,12 +178,12 @@ const HomePage = () => {
                   });
                 }
               })
-            }
+            
           })
       }
+
     })
     let errorData = groupBy(errData, "sheet_name")
-    // setReport(errorData);
 
     const newErrorData = Object.keys(errorData).reduce((acc, sheetName) => {
       const sheetErrors = errorData[sheetName].reduce((errorsAcc, item) => {
@@ -193,9 +209,8 @@ const HomePage = () => {
         [sheetName]: sheetErrors,
       };
     }, {});
-  
     setReport(newErrorData);
-
+    // setAnalysis(analysisData);
 
   }
 
@@ -212,7 +227,7 @@ const HomePage = () => {
         startCol={
           Object.keys(report).length > 0
           ? 
-            <TabGroup label="Some stuff for the label" id="tabs" onTabChange={selected => console.log(selected)}>
+            <TabGroup label="Some stuff for the label" id="tabs">
               <Tabs>
                 {Object.keys(report).map((sheetName, index)=>{
                   return (
@@ -311,6 +326,14 @@ const HomePage = () => {
                 {upload && <Button size="L" onClick={handleReport} >Generate preflight report</Button>}
               </Flex>
             </Flex>
+
+            <Box>
+              <Typography variant="omega"> 
+                {/* {master[Object.keys(analysis.state)[0]]?.sum === analysis?.state[Object.keys(analysis.state)[0]]?.sum ? `All the participants from ${Object.keys(analysis.state)[0]} are presented`: `Some participants from ${Object.keys(analysis.state)[0]} are missing`} */}
+
+              </Typography>
+
+            </Box>
           </Box>
         } />
     </Box>
