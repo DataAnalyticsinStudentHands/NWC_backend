@@ -113,7 +113,7 @@ const AllDataReport = (props) => {
           template <br />
           (missing, spelled differently, or additional)
         </Typography>
-        <Box background="neutral100">
+        <Box background="neutral0" marginTop={4} >
           {formatCheck && Object.keys(formatCheck).length === 0 ? (
             <Typography variant="beta">No issues found</Typography>
           ) : (
@@ -160,7 +160,7 @@ const AllDataReport = (props) => {
           Lists all issues with entries where a number is expected (e.g "year of
           graduation")
         </Typography>
-        <Box background="neutral100">
+        <Box background="neutral0" marginTop={4} >
           {numberColumns && Object.keys(numberColumns).length === 0 ? (
             <Typography variant="beta">No issues found</Typography>
           ) : (
@@ -260,57 +260,3 @@ const AllDataReport = (props) => {
 };
 
 export default AllDataReport;
-
-// const formatCheck = {
-//   'Basic Data': [
-//     'Latitude and Longitude of Residence in 1977',
-//     'Middle Name and/or Initial and/or Nickname',
-//     'Birthdate',
-//     'Date of Death'
-//   ],
-//   'Race & Ethnicity--Reg Forms': [
-//     'Last Name',
-//     'First Name',
-//     'Middle Name and/or Initial and/or Nickname'
-//   ],
-//   'Race & Ethnicity--Expanded': [
-//     'Last Name',
-//     'First Name',
-//     'Middle Name and/or Initial and/or Nickname'
-//   ],
-//   'Ed & Career': [
-//     'Last Name',
-//     'First Name',
-//     'Middle Name and/or Initial and/or Nickname'
-//   ],
-//   'Electoral Politics': [
-//     'Last Name',
-//     'First Name',
-//     'state level Commission on the Status of Women',
-//     'county level Commission on the Status of Women',
-//     'city level Commission on the Status of Women',
-//     'Middle Name and/or Initial and/or Nickname',
-//     'End Year for Political Office',
-//     '__EMPTY',
-//     '__EMPTY_1',
-//     "Spouse/partner's Political positions (include years) (if more than one, list all but create new column for each)"
-//   ],
-//   'Leadership in Org': [
-//     'Last Name',
-//     'First Name',
-//     'Leadership positions in voluntary organizations (create separate row for each leadership position and identify the group)',
-//     'Middle Name and/or Initial and/or Nickname',
-//     '__EMPTY'
-//   ],
-//   'Role at NWC': [
-//     'Last Name',
-//     'First Name',
-//     'Middle Name and/or Initial and/or Nickname',
-//     'Asian and Pacific Women’s Caucus'
-//   ],
-//   'Position on Planks': [
-//     'Last Name',
-//     'First Name',
-//     'Middle Name and/or Initial and/or Nickname'
-//   ]
-// }

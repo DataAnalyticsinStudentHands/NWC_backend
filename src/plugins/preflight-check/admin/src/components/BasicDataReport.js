@@ -66,13 +66,13 @@ const BasicDataReport = (props) => {
   }, [sheets]);
 
   return (
-    <Box>
+    <Box background="neutral0" padding={4}>
       <Typography variant="alpha">Basic Data Tab Checks</Typography> <br />
       <Typography variant="epsilon">
         Lists all discrepancies between the mastersheet and the columns
         "Participant ID", "Last Name", "First Name", "State"
       </Typography>
-      <Box>
+      <Box background="neutral0" marginTop={4}>
         {Object.keys(data).length === 0 ? (
           <Typography variant="beta">No errors found</Typography>
         ) : (

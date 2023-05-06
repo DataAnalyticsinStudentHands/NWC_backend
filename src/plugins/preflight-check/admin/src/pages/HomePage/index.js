@@ -76,9 +76,9 @@ const HomePage = () => {
         </Box>
         <TabGroup id = 'reportTabs' label='reportTabs'>
           <Tabs>
-            <Tab>General</Tab>
-            <Tab>Basic Data Sheet</Tab>
-            <Tab>Other Data Sheets</Tab>
+            <Tab>General Check</Tab>
+            <Tab>Basic Data Sheet Check</Tab>
+            <Tab>Other Sheets Check</Tab>
           </Tabs>
           <TabPanels>
             <TabPanel>

@@ -48,7 +48,7 @@ const BasicDataReport = (props) => {
     sheets
       ? Object.entries(sheets).forEach(([sheet, values]) => {
           idCheckSheet.includes(sheet) && !values[0]["Name"]
-            ? errorArray.push(`${sheet} does not have a Name column`)
+            ? errorArray.push(`"${sheet}" does not have a "Name" column`)
             : null;
 
           idCheckSheet.includes(sheet)
@@ -74,96 +74,97 @@ const BasicDataReport = (props) => {
   }, [sheets]);
 
   return (
-    <Box>
+    <Box background="neutral0" padding={4}>
       <Typography variant="alpha">ID - Name Check</Typography> <br />
-      <Typography variant="beta">
+      <Typography variant="epsilon">
         Lists all entries where the ID or/and the Name field do not match
         according to the mastersheet
       </Typography>
-      {error.length === 0 && Object.keys(data).length === 0 ? (
-        <Typography variant="beta">No errors found</Typography>
-      ) : (
-        <Box>
-          <Box padding={4}>
-            <ul style={{ listStyle: "disc" }}>
-              {error.map((item, index) => {
-                return (
-                  <li
-                    key={index}
-                    style={{ marginBottom: "24px", marginLeft: "32px" }}
-                  >
-                    {item}
-                  </li>
-                );
-              })}
-            </ul>
-          </Box>
-
-          <TabGroup label="CheckFormat" id="CheckFormat" variant="simple">
-            <Tabs>
-              {Object.keys(data).map((sheetName, index) => {
-                return <Tab key={index}>{sheetName}</Tab>;
-              })}
-            </Tabs>
-            <TabPanels>
-              {Object.values(data).map((values, index) => {
-                return (
-                  <TabPanel key={index}>
-                    <Table colCount={4} rowCount={10}>
-                      <Thead>
-                        <Tr>
-                          <Th>
-                            <Typography variant="sigma">Row</Typography>
-                          </Th>
-                          <Th>
-                            <Typography variant="sigma">
-                              Participant ID
-                            </Typography>
-                          </Th>
-                          <Th>
-                            <Typography variant="sigma">Master</Typography>
-                          </Th>
-                          <Th>
-                            <Typography variant="sigma">Sheet</Typography>
-                          </Th>
-                        </Tr>
-                      </Thead>
-                      <Tbody>
-                        {Object.entries(values).map(([key, value]) => {
-                          return (
-                            <Tr key={key}>
-                              <Td>
-                                <Typography textColor="neutral800">
-                                  {value.row}
-                                </Typography>
-                              </Td>
-                              <Td>
-                                <Typography textColor="neutral800">
-                                  {value.id}
-                                </Typography>
-                              </Td>
-                              <Td>
-                                <Typography textColor="neutral800">
-                                  {value.master}
-                                </Typography>
-                              </Td>
-                              <Td>
-                                <Typography textColor="neutral800">
-                                  {value.error_name}
-                                </Typography>
-                              </Td>
-                            </Tr>
-                          );
-                        })}
-                      </Tbody>
-                    </Table>
-                  </TabPanel>
-                );
-              })}
-            </TabPanels>
-          </TabGroup>
-        </Box>
-      )}
+      <Box background="neutral0" marginTop={4}>
+        {error.length === 0 && Object.keys(data).length === 0 ? (
+          <Typography variant="beta">No errors found</Typography>
+        ) : (
+          <>
+            <Box padding={4}>
+              <ul style={{ listStyle: "disc" }}>
+                {error.map((item, index) => {
+                  return (
+                    <li
+                      key={index}
+                      style={{ marginBottom: "24px", marginLeft: "32px" }}
+                    >
+                      {item}
+                    </li>
+                  );
+                })}
+              </ul>
+            </Box>
+            <TabGroup label="CheckFormat" id="CheckFormat" variant="simple">
+              <Tabs>
+                {Object.keys(data).map((sheetName, index) => {
+                  return <Tab key={index}>{sheetName}</Tab>;
+                })}
+              </Tabs>
+              <TabPanels>
+                {Object.values(data).map((values, index) => {
+                  return (
+                    <TabPanel key={index}>
+                      <Table colCount={4} rowCount={10}>
+                        <Thead>
+                          <Tr>
+                            <Th>
+                              <Typography variant="sigma">Row</Typography>
+                            </Th>
+                            <Th>
+                              <Typography variant="sigma">
+                                Participant ID
+                              </Typography>
+                            </Th>
+                            <Th>
+                              <Typography variant="sigma">Master</Typography>
+                            </Th>
+                            <Th>
+                              <Typography variant="sigma">Sheet</Typography>
+                            </Th>
+                          </Tr>
+                        </Thead>
+                        <Tbody>
+                          {Object.entries(values).map(([key, value]) => {
+                            return (
+                              <Tr key={key}>
+                                <Td>
+                                  <Typography textColor="neutral800">
+                                    {value.row}
+                                  </Typography>
+                                </Td>
+                                <Td>
+                                  <Typography textColor="neutral800">
+                                    {value.id}
+                                  </Typography>
+                                </Td>
+                                <Td>
+                                  <Typography textColor="neutral800">
+                                    {value.master}
+                                  </Typography>
+                                </Td>
+                                <Td>
+                                  <Typography textColor="neutral800">
+                                    {value.error_name}
+                                  </Typography>
+                                </Td>
+                              </Tr>
+                            );
+                          })}
+                        </Tbody>
+                      </Table>
+                    </TabPanel>
+                  );
+                })}
+              </TabPanels>
+            </TabGroup>
+          </>
+        )}
+      </Box>
     </Box>
   );
 };
