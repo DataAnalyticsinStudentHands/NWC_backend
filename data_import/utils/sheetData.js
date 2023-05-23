@@ -76,7 +76,7 @@ function cleanSheetObjectI (data, lookup, pk){
             if(key === 'Other Role' && value) {
                 obj[value] ? obj[value].participants.push(row["ID"]) : (obj[value] = {
                     participants: [row["ID"]],
-                    [pk]: value,
+                    [pk]: `Other Role: ${value}`,
                 });
             }
 
