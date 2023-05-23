@@ -20,6 +20,12 @@
       "relation": "manyToMany",
       "target": "api::nwc-participant.nwc-participant",
       "mappedBy": "organizational_and_politicals"
+    },
+    "organization_category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::data-organization-category.data-organization-category",
+      "inversedBy": "organizational_and_politicals"
     }
   }
 }
