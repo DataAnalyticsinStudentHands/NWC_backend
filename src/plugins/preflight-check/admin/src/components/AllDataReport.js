@@ -40,7 +40,7 @@ const numberColumnsList = [
 ];
 
 const AllDataReport = (props) => {
-  const { sheets } = props;
+  const { sheets,  handlePass} = props;
   const [formatCheck, setFormatCheck] = useState({});
   const [numberColumns, setNumberColumns] = useState([]);
 
@@ -71,6 +71,7 @@ const AllDataReport = (props) => {
     let array = [];
     sheets
       ? Object.entries(sheets).forEach(([sheet, values]) => {
+        if(sheet === "Sources" || sheet === "Questions") return;
           values.forEach((row, index) => {
             Object.entries(row).forEach(([key, value]) => {
               _.isNumber(value)
@@ -103,6 +104,10 @@ const AllDataReport = (props) => {
 
     setNumberColumns(_.groupBy(array, "sheet"));
   }, [formatCheck]);
+
+  useEffect(() => {
+    Object.keys(formatCheck).length === 0 && Object.keys(numberColumns).length === 0 ? handlePass({'allDataReport': true}) : handlePass({'allDataReport': false}) ;
+  }, [numberColumns]);
 
   return (
     <>
