@@ -127,3 +127,4 @@ data
 .env.local
 .env.sharkmongo
 .env.shark
+data_import/DataDirectory
