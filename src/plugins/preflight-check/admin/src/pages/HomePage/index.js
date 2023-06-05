@@ -1,55 +1,45 @@
 import React, { useEffect, useState } from "react";
-// import axios from "axios";
-// import { request } from '@strapi/helper-plugin';
-import axios from "axios";
-import qs from "qs";
 import * as xlsx from "xlsx";
 import {
   BaseHeaderLayout,
   Box,
   Button,
-  Flex,
   Typography,
-  Field,
   FieldLabel,
-  TwoColsLayout,
   FieldInput,
-  EmptyStateLayout,
   TabGroup,
   Tabs,
   Tab,
   TabPanels,
   TabPanel,
+  ModalLayout,
+  ModalBody,
+  ModalHeader,
+  ModalFooter,
 } from "@strapi/design-system";
-import * as _ from "lodash";
+// import * as _ from "lodash";
 import * as master from "./master.json";
 import AllDataReport from "../../components/AllDataReport";
 import BasicDataReport from "../../components/BasicDataReport";
 import OtherDataReport from "../../components/OtherDataReport";
 
-const token = '53d96f599b1d291321c7e4691ca2f204be5e4ddd58b66be5674d77281ca2110d4affa23a09ca34678cfaf117f59dfceff074f13a55a0fef4a06500da5ad9b668ff86c630ae1742b32a9ed84ae67d6d4f8e4cdfda16e40b5b424f25f4e5dcfe11b8451de84e56250debbfa92584bcc10650fe22d217ec639cefdb6f1d3dd095a7'
+import preflightRequests from "../../api/preflight";
+import { preFlightFile } from "../../utils/data_import/index.js";
 
 const HomePage = () => {
-  // const [upload, setUpload] = useState(false);
   const [sheets, setSheets] = useState(null);
-  // const [fileName, setFileName] = useState(null);
-  // const [errMessage, setErrMessage] = useState({
-  //   columns:{},
-  // });
-  // const [report, setReport] = useState({});
-
+  const [strapiData, setStrapiData] = useState(null);
   const [isPass, setIsPass] = useState({
     allDataReport: false,
     basicDataReport: false,
     otherDataReport: false,
   });
+  const [isVisible, setIsVisible] = useState(false);
 
-  const [jsonData, setJsonData] = useState(null);
+  const [importData, setImportData] = useState(null);
 
   function handleFile(e) {
     e.preventDefault();
-    // setUpload(false);
-    // setReport({});
     if (e.target.files) {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -60,7 +50,6 @@ const HomePage = () => {
           return acc;
         }, {});
         setSheets(worksheets);
-        // setUpload(true);
       };
       reader.readAsArrayBuffer(e.target.files[0]);
     }
@@ -73,141 +62,85 @@ const HomePage = () => {
       otherDataReport: false,
     });
   }, [sheets]);
+  useEffect(async () => {
+    let result = await preflightRequests.getData();
+    setStrapiData(result);
+  }, [importData]);
 
   function handlePass(report) {
     setIsPass((prevState) => ({ ...prevState, ...report }));
   }
-  async function handleDownload() {
 
-    // console.log('Clicked');
-    // console.log(sheets);
-    const exportURL = "http://localhost:1337/api/import-export-entries/content/export/contentTypes";
-    const params = {
-      slug:"api::nwc-participant.nwc-participant",
-      exportFormat:"json-v2",
-      // relationsAsId:true,
-      deepness:3
-    };
-    const header = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      }
-    }
+  async function handleImportSummary() {
+    let result = preFlightFile(sheets, strapiData);
+    setImportData(result);
 
-    const results = await axios.post(exportURL, params,header);
-  
-    console.log(JSON.parse(results.data.data));
-
-
-    
-    // // //Plan A
-
-    // // //Download JSON file
-    // var fileInput = document.getElementById("checkFile");
-
-    // // Convert JSON object to string
-    // var jsonStr = JSON.stringify(JSON.parse(results.data.data), null, 2);
-
-    // // Create a Blob object with the JSON string
-    // var blob = new Blob([results.data.data], { type: "application/json" });
-
-    // // Create a link element
-    // var link = document.createElement("a");
-    
-    // // Set the link's href attribute to the Blob URL
-    // link.href = URL.createObjectURL(blob);
-
-    // // Set the download attribute with desired filename
-    // link.download = fileInput.files[0].name + ".json";
-
-    // // Trigger a click event on the link element to initiate download
-    // link.click();
-
-    // // Clean up by revoking the URL object
-    // URL.revokeObjectURL(link.href);
-  }
-
-  async function handleDirectImport(e) {
-    e.preventDefault();
-    // console.log(jsonData);
-
-    const apiURL = "http://localhost:1337/api/import-export-entries/content/import";
-    const dataContent = {
-      "version":2,
-      "data":{
-        "api::nwc-role.nwc-role": {
-          "5": {
-            "id": 5,
-            "role": "Other Role: chair, Texas Coordinating Committee for International Women's Year"
-          },
-          "6": {
-            "id": 6,
-            "role": "Other Role: vice chair, First Plenary Session, NWC"
-          },
-        }
-      }
-    }
-    const data = {
-      slug: "string",
-      data: JSON.stringify(dataContent),
-      format: "json"
-    }
-    axios.post(apiURL, data)
-
-
-    
-  }
-
-  function handleJSONFile(e) {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-
-    reader.onload = (e) => {
-      const data = JSON.parse(e.target.result);
-      console.log(data);
-      setJsonData(data);
-    };
-    reader.readAsText(file);
+    setIsVisible((prev) => !prev);
   }
 
   return (
     <Box>
       <Box background="neutral100">
-        <BaseHeaderLayout
-          title="Pre-Flight Check"
-          as="h1"
-          primaryAction={
-            isPass.allDataReport &&
-            isPass.basicDataReport &&
-            isPass.otherDataReport && (
-              <Box padding={4} background="neutral100">
-                <Button
-                  variant="success"
-                  onClick={(e) => handleDownload(e)}
-                >
-                  download
-                </Button>
-              </Box>
-            )
-          }
-        />
+        <BaseHeaderLayout title="Pre-Flight Check" as="h1" />
       </Box>
 
-      {/* <Box>
-        <FieldInput
-              type="file"
-              id="testFile"
-              name="testFile"
-              accept=".json"
-              onChange={handleJSONFile}
-            />
-        <Button
-          variant="success"
-          onClick={(e) => handleDirectImport(e)}
+      {isVisible && (
+        <ModalLayout
+          onClose={() => setIsVisible((prev) => !prev)}
+          labelledBy="title"
         >
-          import
-        </Button>
-      </Box> */}
+          <ModalHeader>
+            <Typography
+              fontWeight="bold"
+              textColor="neutral800"
+              as="h2"
+              id="title"
+            >
+              Title
+            </Typography>
+          </ModalHeader>
+          <ModalBody>
+            {importData && (
+              <Box>
+                <Typography variant="alpha" as="h2">
+                  The body of this module is still developing
+                </Typography>
+                {Object.entries(importData.data).map(([key, value], index) => {
+                  if (Object.keys(value).length > 0) {
+                    return (
+                      <Box key={key + index}>
+                        <Typography variant="beta" as="h4">
+                          {key}
+                        </Typography>
+                      </Box>
+                    );
+                  }
+                })}
+              </Box>
+            )}
+          </ModalBody>
+          <ModalFooter
+            startActions={
+              <Button
+                onClick={() => setIsVisible((prev) => !prev)}
+                variant="tertiary"
+              >
+                Cancel
+              </Button>
+            }
+            endActions={
+                <Button
+                  onClick={() => {
+                    preflightRequests.importData(importData);
+                    setIsVisible((prev) => !prev);
+                  }}
+                >
+                  Import
+                </Button>
+            }
+          />
+        </ModalLayout>
+      )}
 
       <Box padding={4} background="neutral100">
         <Box>
@@ -225,7 +158,10 @@ const HomePage = () => {
               accept=".xlsx"
               onChange={handleFile}
             />
-            <FieldLabel htmlFor='checkFile'>Upload your "Demographic Data" file. Note that this file must be in .xlsx format.</FieldLabel>
+            <FieldLabel htmlFor="checkFile">
+              Upload your "Demographic Data" file. Note that this file must be
+              in .xlsx format.
+            </FieldLabel>
           </Box>
         </Box>
       </Box>
@@ -258,6 +194,19 @@ const HomePage = () => {
               </TabPanel>
             </TabPanels>
           </TabGroup>
+          {isPass.allDataReport &&
+            isPass.basicDataReport &&
+            isPass.otherDataReport && (
+              <Box padding={4} background="neutral100">
+                <Button
+                  variant="success"
+                  // onClick={() => setIsVisible(prev => !prev)}
+                  onClick={() => handleImportSummary()}
+                >
+                  Import Data
+                </Button>
+              </Box>
+            )}
         </Box>
       )}
     </Box>
