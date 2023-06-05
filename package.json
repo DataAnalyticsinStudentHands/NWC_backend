@@ -18,7 +18,7 @@
     "nodemailer": "^6.7.3",
     "pg": "^8.7.3",
     "request": "^2.88.2",
-    "strapi-plugin-import-export-entries": "^1.18.0",
+    "strapi-plugin-import-export-entries": "^1.19.2",
     "xlsx": "^0.18.5"
   },
   "author": {

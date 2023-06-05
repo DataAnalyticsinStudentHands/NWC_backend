@@ -17,7 +17,7 @@ const basicRequired = {
   State: "represented_state",
 };
 const BasicDataReport = (props) => {
-  const { sheets, master } = props;
+  const { sheets, master, handlePass } = props;
   const [data, setData] = useState({});
 
   useEffect(() => {
@@ -64,6 +64,10 @@ const BasicDataReport = (props) => {
 
     setData(obj);
   }, [sheets]);
+
+  useEffect(() => {
+    Object.keys(data).length === 0 ? handlePass({'basicDataReport':true}) :handlePass({'basicDataReport':false});
+  }, [data]);
 
   return (
     <Box background="neutral0" padding={4}>

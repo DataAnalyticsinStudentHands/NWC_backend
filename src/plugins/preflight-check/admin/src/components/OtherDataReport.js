@@ -27,7 +27,7 @@ const idCheckSheet = [
   "Position on Planks",
 ];
 const BasicDataReport = (props) => {
-  const { sheets, master } = props;
+  const { sheets, master, handlePass } = props;
   const [data, setData] = useState({});
   const [error, setError] = useState([]);
 
@@ -72,6 +72,10 @@ const BasicDataReport = (props) => {
     setError(errorArray);
     setData(_.groupBy(array, "sheet"));
   }, [sheets]);
+
+  useEffect(() => {
+    error.length === 0 && Object.keys(data).length === 0 ? handlePass({'otherDataReport':true}) :handlePass({'otherDataReport':false});
+  }, [error, data]);
 
   return (
     <Box background="neutral0" padding={4}>
