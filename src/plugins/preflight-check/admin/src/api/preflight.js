@@ -7,8 +7,7 @@ const header = {
 };
 const preflightRequests = {
   getData: async () => {
-    const exportURL =
-      "http://localhost:1337/api/import-export-entries/content/export/contentTypes";
+    const exportURL =`/api/import-export-entries/content/export/contentTypes`;
     const params = {
       slug: "api::nwc-participant.nwc-participant",
       exportFormat: "json-v2",
@@ -20,16 +19,14 @@ const preflightRequests = {
   },
 
   importData: async (dataContent) => {
-    const apiURL =
-      "http://localhost:1337/api/import-export-entries/content/import";
-
+    const importURL ="/api/import-export-entries/content/import";
     const data = {
       slug: "api::nwc-participant.nwc-participant",
       data: JSON.stringify(dataContent),
       format: "json",
     };
 
-    axios.post(apiURL, data, header);
+    axios.post(importURL, data, header);
   },
 };
 export default preflightRequests;
