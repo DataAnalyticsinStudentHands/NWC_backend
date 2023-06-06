@@ -10,7 +10,7 @@ library(stringr)
 # Prepare source data (HAS TO BE IN SEPARATE FOLDER) and name of output file --------------------------------------------------------
 ## Data will also be merged if multiple files are found (check that you only have files there that need to be fixed/merged)
 source_folder <- 'DataDirectory/FordCarter'
-#output_filename <- 'California_Fixed_2023-06-02_PL.xlsx'
+#output_filename <- 'California_Fixed_2023-06-05_PL.xlsx'
 output_filename <- 'FordCarter_Merged_2023-06-02_PL.xlsx'
 
 ## list all source files found in folder
@@ -57,12 +57,15 @@ basic_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_repair=
          `Median Household Income of Place of Residence (check US Census)` =  `Median.Household.Income.of.Place.of.Residence..check.US.Census.`,
          `Marital Classification` = `Marital.Classification`,                                                                                
          `Sexual Orientation` =  `Sexual.Orientation`,                                                                                      
-         `Total Number of Children (born throughout lifetime)` = `Total.Number.of.Children..born.throughout.lifetime.`)
+         `Total Number of Children (born throughout lifetime)` = `Total.Number.of.Children..born.throughout.lifetime.`) %>%
+  mutate(`Birthdate Month` = if("Birthdate" %in% colnames(.)) `Birthdate`) %>%
+  mutate(`Deathdate Month` = if("Date.of.Death" %in% colnames(.)) `Date.of.Death`) %>%
+  select(-any_of(c("Birthdate", "Date.of.Death")))
 
 ## Create the basic data and add to workbook (removing columns that are not used in new template)
 addWorksheet(wb, "Basic Data")
 basic_data <- full_join(basic_template, basic_file_data) %>%
-  select(-`Residence.in.1977`, 
+  select(-`Residence.in.1977`,
          -starts_with("Latitude"),
          -starts_with("Longitude"), 
          -starts_with("Name.of.Spouse"))
@@ -98,7 +101,7 @@ race_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_repair="
   rename(`Asian American/Pacific Islander` =  `Asian.American.Pacific.Islander`,
          `Native American/American Indian` = `Native.American.American.Indian`) %>%
   mutate( Name = if("First.Name" %in% colnames(.)) str_c(`Last.Name`,`First.Name`) else Name) %>%
-  select(-any_of(c("Middle.Name.and.or.Initial.and.or.Nickname")))
+  select(-any_of(c("Middle.Name.and.or.Initial.and.or.Nickname", "First.Name", "Last.Name")))
 
 ## Create the reg race data and add to workbook (removing columns that are not used in new template)
 addWorksheet(wb, "Race & Ethnicity--Reg Forms")
@@ -114,26 +117,25 @@ dataValidation(wb, sheet="Race & Ethnicity--Reg Forms",
 addStyle(wb, sheet = "Race & Ethnicity--Reg Forms", outputStyle, rows=1:(nrow(race_reg_data)+1), cols=1:ncol(race_reg_data), gridExpand = TRUE)
 setRowHeights(wb, "Race & Ethnicity--Reg Forms", rows = 1, heights = 64)
 
-## Read expanded race data template and add to workbook 
+## Read expanded race data template (will be used if file doesn't contain an extended race sheet)
 race_ext_template <- read_excel("template.xlsx", col_types = 'text', sheet = "Race & Ethnicity--Expanded") %>%
   filter(`ID` != "0") #removing any existing data from template
 
-## Check whether extended race sheet exists
-
-
-## Create the ext race data and add to workbook (only adding ID and Name)
+## Read/Create the ext race data and add to workbook 
 addWorksheet(wb, "Race & Ethnicity--Expanded")
+## Check whether extended race sheet exists
 if (!'Race & Ethnicity--Expanded' %in% file_sheets) {
   race_ext_file_data <- race_file_data %>%
-    select(ID, Name)
+    select(ID, Name) # only adding ID and name from race sheet
+  race_ext_data <- full_join(race_ext_template, race_ext_file_data)
 } else {
-  race_ext_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_repair="universal", sheet = "Race & Ethnicity--Expanded", read_excel) %>%
+  race_ext_data <- purrr::map_dfr(files$files, col_types = 'text', sheet = "Race & Ethnicity--Expanded", read_excel) %>%
   mutate(ID = str_pad(ID, width=4, side="left", pad="0")) %>%
-    mutate( Name = if("First.Name" %in% colnames(.)) str_c(`Last.Name`,`First.Name`) else Name) %>%
-    select(-any_of(c("Middle.Name.and.or.Initial.and.or.Nickname")))
+    mutate( Name = if("First Name" %in% colnames(.)) str_c(`Last Name`,`First Name`) else Name) %>%
+    relocate(Name, .after = ID) %>%
+    select(-any_of(c("Middle Name and/or Initial and/or Nickname", "First Name", "Last Name")))
 }
 
-race_ext_data <- full_join(race_ext_template, race_ext_file_data)
 writeData(wb, race_ext_data, sheet="Race & Ethnicity--Expanded", row.names=FALSE, startRow=1)
 
 ## Add race ext data validation with drop-downs
@@ -153,7 +155,7 @@ ed_template <- read_excel("template.xlsx", col_types = 'text', sheet = "Ed & Car
 
 ## Read ed & career data sheet from all files, clean/rename columns
 ed_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_repair="universal", sheet = "Ed & Career", read_excel) %>%
-  mutate(ID = str_pad(ID, width=4, side="left", pad="0")) %>% #pad ID with leading zeros %>%
+  mutate(ID = str_pad(ID, width=4, side="left", pad="0")) %>% #pad ID with leading zeros
   rename(`Highest Level of Education Attained` = `Highest.Level.of.Education.Attained`,
          `High School` = `High.School`,
          `College: Undergrad degree (if more than one, list all but create new row for each)` = `College..Undergrad.degree..if.more.than.one..list.all.but.create.new.row.for.each.`,
@@ -167,7 +169,7 @@ ed_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_repair="un
          `Job/ Profession (if more than one, list all but create new row for each)` = `Job..Profession..if.more.than.one..list.all.but.create.new.row.for.each.`,
          `Income Level` = `Income.Level`) %>%
   mutate( Name = if("First.Name" %in% colnames(.)) str_c(`Last.Name`,`First.Name`) else Name) %>%
-  select(-any_of(c("Middle.Name.and.or.Initial.and.or.Nickname")))
+  select(-any_of(c("Middle.Name.and.or.Initial.and.or.Nickname", "First.Name", "Last.Name")))
 
 ## Create the ed data and add to workbook (adding columns from new template)
 addWorksheet(wb, "Ed & Career")
@@ -197,7 +199,7 @@ electoral_template <- read_excel("template.xlsx", col_types = 'text', sheet = "E
 
 ## Read electoral data sheet from all files, clean/rename columns
 electoral_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_repair="universal", sheet = "Electoral Politics", read_excel) %>%
-  mutate(ID = str_pad(ID, width=4, side="left", pad="0")) %>% #pad ID with leading zeros %>%
+  mutate(ID = str_pad(ID, width=4, side="left", pad="0")) %>% #pad ID with leading zeros
   rename(`Jurisdiction of Political Offices Held (if true for more than one category, create a new row for each)` = `Jurisdiction.of.Political.Offices.Held..if.true.for.more.than.one.category..create.a.new.row.for.each.`, 
          `Name of Political Offices Held (if more than one, list all but create new row for each)` = `Name.of.Political.Offices.Held..if.more.than.one..list.all.but.create.new.row.for.each.`,
          `Start Year for Political Office` = `Start.Year.for.Political.Office`,
@@ -207,16 +209,16 @@ electoral_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_rep
          `Year of Race that was Lost` = `Year.of.Race.that.was.Lost`,
          `Political Party Membership` = `Political.Party.Membership`,
          `Identified Self as a Feminist` = `Identified.Self.as.a.Feminist`,
-         `state level Commission on the Status of Women (include years)` = `state.level.Commission.on.the.Status.of.Women..include.years.`,
-         `county level Commission on the Status of Women (include years)` = `county.level.Commission.on.the.Status.of.Women..include.years.`,
-         `city level Commission on the Status of Women (include years)` = `city.level.Commission.on.the.Status.of.Women..include.years.`) %>%
+         `state level Commission on the Status of Women (include years)` = `state.level.Commission.on.the.Status.of.Women`,
+         `county level Commission on the Status of Women (include years)` = `county.level.Commission.on.the.Status.of.Women`,
+         `city level Commission on the Status of Women (include years)` = `city.level.Commission.on.the.Status.of.Women`) %>%
   mutate( Name = if("First.Name" %in% colnames(.)) str_c(`Last.Name`,`First.Name`) else Name) %>%
   select(-any_of(c("Middle.Name.and.or.Initial.and.or.Nickname")))
 
 ## Create the electoral data and add to workbook (adding columns from new template)
 addWorksheet(wb, "Electoral Politics")
 electoral_data <- full_join(electoral_template, electoral_file_data) %>%
-  select(-`Spouse.partner.s.political..positions..if.more.than.one..list.all.but.create.new.row.for.each.`)
+  select(-`Spouse.partner.s.Political.positions..include.years...if.more.than.one..list.all.but.create.new.column.for.each.`)
 writeData(wb, electoral_data, sheet="Electoral Politics", row.names=FALSE, startRow=1)
 
 ## Add electoral data validation with drop-downs
@@ -251,15 +253,15 @@ spouse_template <- read_excel("template.xlsx", col_types = 'text', sheet = "Spou
 ## Create the spouse data and add to workbook (removing columns that are not used in new template)
 addWorksheet(wb, "Spouse Partner Info")
 spouse_info <- basic_file_data %>%
-  select(ID, `Name.of.Spouse..create.additional.row.if.more.than.one.spouse.`) %>%
-  rename(`Last Name of Spouse/Partner` = `Name.of.Spouse..create.additional.row.if.more.than.one.spouse.`)
+  select(ID, starts_with("Name.of.Spouse")) %>%
+  rename(`Last Name of Spouse/Partner` = starts_with("Name.of.Spouse"))
 spouse_info2 <- ed_file_data %>%
   select(ID, `Spouse.s.Profession..if.more.than.one..list.all.but.create.new.row.for.each.`) %>%
   rename(`Spouse's Profession (if more than one, list all but create new row for each)` = `Spouse.s.Profession..if.more.than.one..list.all.but.create.new.row.for.each.`) %>%
   full_join(spouse_info)
 spouse_info3 <- electoral_file_data %>%
-  select(ID, `Spouse.partner.s.political..positions..if.more.than.one..list.all.but.create.new.row.for.each.`) %>%
-  rename(`Spouse/partner's political positions (if more than one, list all but create new row for each)` = `Spouse.partner.s.political..positions..if.more.than.one..list.all.but.create.new.row.for.each.`) %>%
+  select(ID, `Spouse.partner.s.Political.positions..include.years...if.more.than.one..list.all.but.create.new.column.for.each.`) %>%
+  rename(`Spouse/partner's political positions (if more than one, list all but create new row for each)` = `Spouse.partner.s.Political.positions..include.years...if.more.than.one..list.all.but.create.new.column.for.each.`) %>%
   full_join(spouse_info2)
 
 spouse_data <- full_join(spouse_template, spouse_info3) %>%
@@ -278,7 +280,7 @@ leadership_template <- read_excel("template.xlsx", col_types = 'text', sheet = "
 
 ## Read leadership data sheet from all files, clean/rename columns
 leadership_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_repair="universal", sheet = "Leadership in Org", read_excel) %>%
-  mutate(ID = str_pad(ID, width=4, side="left", pad="0")) %>% #pad ID with leading zeros %>%
+  mutate(ID = str_pad(ID, width=4, side="left", pad="0")) %>% #pad ID with leading zeros
   rename(`Specific Name of Leadership Position  (create separate row for each leadership position)` = `Leadership.positions.in.voluntary.organizations..create.separate.row.for.each.leadership.position.and.identify.the.group.`)
 
 ## Create the leadership data and add to workbook (adding columns from new template)
@@ -320,7 +322,7 @@ role_template <- read_excel("template.xlsx", col_types = 'text', sheet = "Role a
 
 ## Read role data sheet from all files, clean/rename columns
 role_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_repair="universal", sheet = "Role at NWC", read_excel) %>%
-  mutate(ID = str_pad(ID, width=4, side="left", pad="0")) %>% #pad ID with leading zeros %>%
+  mutate(ID = str_pad(ID, width=4, side="left", pad="0")) %>% #pad ID with leading zeros
   select(ID:`Other.Role`) %>%
   rename(`Delegate at the NWC` =  `Delegate.at.the.NWC`,
          `Alternate at the NWC` = `Alternate.at.the.NWC`, 
@@ -335,9 +337,11 @@ role_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_repair="
          `Torch Relay Runner` = `Torch.Relay.Runner`,
          `International Dignitary` = `International.Dignitary`, 
          `Unofficial Observer` = `Unofficial.Observer`,
-         `Other Role` = `Other.Role`)
+         `Other Role` = `Other.Role`) %>%
+  mutate( Name = if("First.Name" %in% colnames(.)) str_c(`Last.Name`,`First.Name`) else Name) %>%
+  select(-any_of(c("Middle.Name.and.or.Initial.and.or.Nickname")))
 
-## Create the planks data and add to workbook (adding columns from new template)
+## Create the role data and add to workbook (adding columns from new template)
 addWorksheet(wb, "Role at NWC")
 role_data <- full_join(role_template, role_file_data)
 writeData(wb, role_data, sheet="Role at NWC", row.names=FALSE, startRow=1)
@@ -357,8 +361,17 @@ planks_template <- read_excel("template.xlsx", col_types = 'text', sheet = "Posi
   filter(`ID` != "0") #removing any existing data from template
 
 ## Read planks data from all files, clean/rename columns
-planks_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_repair="universal", sheet = "Role at NWC", read_excel) %>%
-  mutate(ID = str_pad(ID, width=4, side="left", pad="0")) %>% #pad ID with leading zeros %>%
+## Check whether planks data sheet exists
+if (!'Position on Planks' %in% file_sheets) {
+  planks_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_repair="universal", sheet = "Role at NWC", read_excel) 
+} else {
+  planks_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_repair="universal", sheet = "Position on Planks", read_excel)
+}
+
+planks_file_data <- planks_file_data %>%
+  mutate(ID = str_pad(ID, width=4, side="left", pad="0")) %>% #pad ID with leading zeros
+  mutate( Name = if("First.Name" %in% colnames(.)) str_c(`Last.Name`,`First.Name`) else Name) %>%
+  select(-any_of(c("Middle.Name.and.or.Initial.and.or.Nickname"))) %>%
   select(ID, Name, `Arts.and.Humanities.Plank`:Notes) %>%
   rename(`Arts and Humanities Plank` = `Arts.and.Humanities.Plank`,
          `Battered Women Plank` = `Battered.Women.Plank`,
@@ -387,6 +400,7 @@ planks_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_repair
          `Women, Welfare and Poverty Plank` = `Women..Welfare.and.Poverty.Plank`,
          `Committee on the Conference Plank` = `Committee.on.the.Conference.Plank`)
 
+
 ## Create the planks data and add to workbook (removing columns that are not used in new template)
 addWorksheet(wb, "Position on Planks")
 planks_data <- full_join(planks_template, planks_file_data)
@@ -412,7 +426,9 @@ setRowHeights(wb, "Questions", rows = 1, heights = 120)
 
 addWorksheet(wb, "Sources")
 sources_data <- purrr::map_dfr(files$files, col_types = 'text', sheet = "Sources", read_excel) %>%
-  mutate(ID = str_pad(ID, width=4, side="left", pad="0")) #pad ID with leading zeros
+  mutate(ID = str_pad(ID, width=4, side="left", pad="0")) %>% #pad ID with leading zeros 
+  #select(ID:"Source 61") %>%
+  slice_head(n = 68)
 writeData(wb, sources_data, sheet="Sources", row.names=FALSE, startRow=1)
 
 ## apply styles and set row height for header column
@@ -428,6 +444,7 @@ saveWorkbook(wb, output_filename, overwrite = TRUE)
 #Questions for Nancy
 #Convert unknown and N/A to empty?
 #Copy Research Checklist?
+#Add Name column if not exists for sources and questions?
 #Remove none from validations for elected offices held?
 #How to handle Notes? Columns will stay but renamed e.g. Notes_1 etc. if more than one is found
 
