@@ -17,7 +17,7 @@ const preflightRequests = {
       deepness: 3,
     };
 
-    const results = await axios.post(exportURL, params);
+    const results = await axios.post(exportURL, params, header);
     return JSON.parse(results.data.data);
   },
 
