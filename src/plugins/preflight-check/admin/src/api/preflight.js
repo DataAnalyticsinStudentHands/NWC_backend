@@ -7,6 +7,7 @@ const header = {
     Authorization: `Bearer ${token}`,
   },
 };
+
 const preflightRequests = {
   getData: async () => {
     const exportURL =`${process.env.STRAPI_ADMIN_BACKEND_URL}/api/import-export-entries/content/export/contentTypes`;
@@ -16,12 +17,13 @@ const preflightRequests = {
       deepness: 3,
     };
 
-    const results = await axios.post(exportURL, params, header);
+    const results = await axios.post(exportURL, params);
     return JSON.parse(results.data.data);
   },
 
   importData: async (dataContent) => {
     const importURL =`${process.env.STRAPI_ADMIN_BACKEND_URL}/api/import-export-entries/content/import`;
+
     const data = {
       slug: "api::nwc-participant.nwc-participant",
       data: JSON.stringify(dataContent),
@@ -29,6 +31,7 @@ const preflightRequests = {
     };
 
     axios.post(importURL, data, header);
+
   },
 };
 export default preflightRequests;
