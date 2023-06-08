@@ -25,7 +25,7 @@
 			"Marital Classification": "marital_classification",
 			"Name of Spouse": "name_of_spouse",
 			"Religion": "religion",
-			"Gender ": "gender",
+			"Gender": "gender",
 			"Sexual Orientation": "sexual_orientation",
 			"Children": "has_children",
 			"Total Number of Children (born throughout lifetime)": "total_number_of_children"
@@ -131,7 +131,7 @@
             "Identified Self as a Feminist": "self_identified_feminist",
             "President's Commission on the Status of Women (federal level)": "federal_level_commission",
             "state level Commission on the Status of Women (include years)": "state_level_commission",
-            "county level Commission on the Status of Women (include years) ": "county_level_commission",
+            "county level Commission on the Status of Women (include years)": "county_level_commission",
             "city level Commission on the Status of Women (include years)": "city_level_commission"
         }        
     },
@@ -158,7 +158,7 @@
             "ID": "participant",
             "Jurisdiction of Political Offices Sought but Lost": "jurisdiction",
             "Name of Political Offices Sought but Lost (if more than one, list all but create new row for each)": "political_office",
-            "Year of Race that was Lost ": "year"
+            "Year of Race that was Lost": "year"
         }        
     },
     "politics_office_spouse":{

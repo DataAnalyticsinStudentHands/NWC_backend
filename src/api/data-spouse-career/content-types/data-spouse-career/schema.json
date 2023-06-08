@@ -10,16 +10,20 @@
   "options": {
     "draftAndPublish": false
   },
-  "pluginOptions": {},
+  "pluginOptions": {
+    "import-export-entries": {
+      "idField": "spouse_carrer"
+    }
+  },
   "attributes": {
-    "spouse_profession": {
+    "spouse_carrer": {
       "type": "string"
     },
-    "participant": {
+    "spouses": {
       "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::nwc-participant.nwc-participant",
-      "inversedBy": "spouse_careers"
+      "relation": "manyToMany",
+      "target": "api::data-spouse.data-spouse",
+      "mappedBy": "spouse_careers"
     }
   }
 }

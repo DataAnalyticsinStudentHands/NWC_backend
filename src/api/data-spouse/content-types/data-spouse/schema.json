@@ -1,0 +1,52 @@
+{
+  "kind": "collectionType",
+  "collectionName": "data_spouses",
+  "info": {
+    "singularName": "data-spouse",
+    "pluralName": "data-spouses",
+    "displayName": "data-spouse",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "last_name": {
+      "type": "string"
+    },
+    "first_name": {
+      "type": "string"
+    },
+    "middle_name_initial": {
+      "type": "string"
+    },
+    "middle_name_initial_2": {
+      "type": "string"
+    },
+    "nickname": {
+      "type": "string"
+    },
+    "spouse_political_offices": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::data-spouse-political-office.data-spouse-political-office",
+      "mappedBy": "spouses"
+    },
+    "spouse_careers": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::data-spouse-career.data-spouse-career",
+      "inversedBy": "spouses"
+    },
+    "participant": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::nwc-participant.nwc-participant",
+      "inversedBy": "spouses"
+    }
+  }
+}
