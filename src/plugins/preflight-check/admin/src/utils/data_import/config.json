@@ -110,6 +110,24 @@
             "Job/ Profession (if more than one, list all but create new row for each)": "job_profession"
         }
     },
+    "spouse":{
+        "pk":"id",
+        "type":"attributes as heading",
+        "sheet":"Spouse Partner Info",
+        "api":"api::data-spouse.data-spouse",
+        "lookup":{
+            "Last Name of Spouse/Partner": "last_name",
+            "First Name of Spouse/Partner": "first_name",
+            "Middle Name and/or Initial 1 of Spouse/Partner": "middle_name_initial",
+            "Middle Name and/or Initial 2 of Spouse/Partner": "middle_name_initial_2",
+            "Nickname of Spouse/Partner": "nickname",
+            "Suffix of Spouse/Partner": "suffix",
+            "ID":"participant",
+            
+            "name": "name",
+            "id":"id"
+        }
+    },
     "education_spouse_career":{
         "pk":"participant",
         "type":"attributes as heading",
@@ -117,7 +135,21 @@
         "api":"api::data-spouse-career.data-spouse-career",
         "lookup":{
             "ID": "participant",
-            "Spouse's Profession (if more than one, list all but create new row for each)": "spouse_profession"
+            "Last Name of Spouse/Partner": "last_name",
+            "First Name of Spouse/Partner": "first_name",
+            "Spouse's Profession (if more than one, list all but create new row for each)": "spouse_career"
+        }
+    },
+    "politics_office_spouse":{
+        "pk":"participant",
+        "type":"attributes as heading",
+        "sheet":"Electoral Politics",
+        "api":"api::data-spouse-political-office.data-spouse-political-office",
+        "lookup":{
+            "ID": "participant",
+            "Last Name of Spouse/Partner": "last_name",
+            "First Name of Spouse/Partner": "first_name",
+            "Spouse/partner's Political offices (if more than one, list all but create new column for each)": "political_office"
         }
     },
     "politics_participant":{
@@ -161,18 +193,7 @@
             "Year of Race that was Lost": "year"
         }        
     },
-    "politics_office_spouse":{
-        "pk":"participant",
-        "type":"attributes as heading",
-        "sheet":"Electoral Politics",
-        "api":"api::data-spouse-political-office.data-spouse-political-office",
-        "lookup":{
-            "ID": "participant",
-            "Spouse/partner's Political offices (if more than one, list all but create new column for each)": "political_office",
-            "Start Year for Spouse/Partner’s Political Office": "start_year",
-            "End Year for Spouse/Partner’s Political Office (if office is still held leave this column blank)": "end_year"
-        }        
-    },
+
     "leadership_in_org":{
         "pk":"participant",
         "type":"attributes as heading",
