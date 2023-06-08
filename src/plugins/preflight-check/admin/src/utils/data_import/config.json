@@ -25,7 +25,7 @@
 			"Marital Classification": "marital_classification",
 			"Name of Spouse": "name_of_spouse",
 			"Religion": "religion",
-			"Gender ": "gender",
+			"Gender": "gender",
 			"Sexual Orientation": "sexual_orientation",
 			"Children": "has_children",
 			"Total Number of Children (born throughout lifetime)": "total_number_of_children"
@@ -110,6 +110,24 @@
             "Job/ Profession (if more than one, list all but create new row for each)": "job_profession"
         }
     },
+    "spouse":{
+        "pk":"id",
+        "type":"attributes as heading",
+        "sheet":"Spouse Partner Info",
+        "api":"api::data-spouse.data-spouse",
+        "lookup":{
+            "Last Name of Spouse/Partner": "last_name",
+            "First Name of Spouse/Partner": "first_name",
+            "Middle Name and/or Initial 1 of Spouse/Partner": "middle_name_initial",
+            "Middle Name and/or Initial 2 of Spouse/Partner": "middle_name_initial_2",
+            "Nickname of Spouse/Partner": "nickname",
+            "Suffix of Spouse/Partner": "suffix",
+            "ID":"participant",
+            
+            "name": "name",
+            "id":"id"
+        }
+    },
     "education_spouse_career":{
         "pk":"participant",
         "type":"attributes as heading",
@@ -117,7 +135,21 @@
         "api":"api::data-spouse-career.data-spouse-career",
         "lookup":{
             "ID": "participant",
-            "Spouse's Profession (if more than one, list all but create new row for each)": "spouse_profession"
+            "Last Name of Spouse/Partner": "last_name",
+            "First Name of Spouse/Partner": "first_name",
+            "Spouse's Profession (if more than one, list all but create new row for each)": "spouse_career"
+        }
+    },
+    "politics_office_spouse":{
+        "pk":"participant",
+        "type":"attributes as heading",
+        "sheet":"Electoral Politics",
+        "api":"api::data-spouse-political-office.data-spouse-political-office",
+        "lookup":{
+            "ID": "participant",
+            "Last Name of Spouse/Partner": "last_name",
+            "First Name of Spouse/Partner": "first_name",
+            "Spouse/partner's Political offices (if more than one, list all but create new column for each)": "political_office"
         }
     },
     "politics_participant":{
@@ -131,7 +163,7 @@
             "Identified Self as a Feminist": "self_identified_feminist",
             "President's Commission on the Status of Women (federal level)": "federal_level_commission",
             "state level Commission on the Status of Women (include years)": "state_level_commission",
-            "county level Commission on the Status of Women (include years) ": "county_level_commission",
+            "county level Commission on the Status of Women (include years)": "county_level_commission",
             "city level Commission on the Status of Women (include years)": "city_level_commission"
         }        
     },
@@ -158,21 +190,10 @@
             "ID": "participant",
             "Jurisdiction of Political Offices Sought but Lost": "jurisdiction",
             "Name of Political Offices Sought but Lost (if more than one, list all but create new row for each)": "political_office",
-            "Year of Race that was Lost ": "year"
+            "Year of Race that was Lost": "year"
         }        
     },
-    "politics_office_spouse":{
-        "pk":"participant",
-        "type":"attributes as heading",
-        "sheet":"Electoral Politics",
-        "api":"api::data-spouse-political-office.data-spouse-political-office",
-        "lookup":{
-            "ID": "participant",
-            "Spouse/partner's Political offices (if more than one, list all but create new column for each)": "political_office",
-            "Start Year for Spouse/Partner’s Political Office": "start_year",
-            "End Year for Spouse/Partner’s Political Office (if office is still held leave this column blank)": "end_year"
-        }        
-    },
+
     "leadership_in_org":{
         "pk":"participant",
         "type":"attributes as heading",

@@ -15,17 +15,11 @@
     "political_office": {
       "type": "string"
     },
-    "participant": {
+    "spouses": {
       "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::nwc-participant.nwc-participant",
+      "relation": "manyToMany",
+      "target": "api::data-spouse.data-spouse",
       "inversedBy": "spouse_political_offices"
-    },
-    "start_year": {
-      "type": "biginteger"
-    },
-    "end_year": {
-      "type": "biginteger"
     }
   }
 }

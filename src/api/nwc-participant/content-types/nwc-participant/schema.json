@@ -62,9 +62,6 @@
     "place_of_birth": {
       "type": "string"
     },
-    "name_of_spouse": {
-      "type": "string"
-    },
     "total_number_of_children": {
       "type": "integer"
     },
@@ -184,12 +181,6 @@
       "target": "api::data-career.data-career",
       "mappedBy": "participant"
     },
-    "spouse_careers": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::data-spouse-career.data-spouse-career",
-      "mappedBy": "participant"
-    },
     "political_office_helds": {
       "type": "relation",
       "relation": "oneToMany",
@@ -200,12 +191,6 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::data-political-office-lost.data-political-office-lost",
-      "mappedBy": "participant"
-    },
-    "spouse_political_offices": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::data-spouse-political-office.data-spouse-political-office",
       "mappedBy": "participant"
     },
     "leadership_in_organizations": {
@@ -234,6 +219,12 @@
     },
     "lon": {
       "type": "float"
+    },
+    "spouses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::data-spouse.data-spouse",
+      "mappedBy": "participant"
     }
   }
 }
