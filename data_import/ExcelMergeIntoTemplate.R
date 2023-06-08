@@ -9,9 +9,9 @@ library(stringr)
 
 # Prepare source data (HAS TO BE IN SEPARATE FOLDER) and name of output file --------------------------------------------------------
 ## Data will also be merged if multiple files are found (check that you only have files there that need to be fixed/merged)
-source_folder <- 'DataDirectory/FordCarter'
-#output_filename <- 'California_Fixed_2023-06-05_PL.xlsx'
-output_filename <- 'FordCarter_Merged_2023-06-02_PL.xlsx'
+source_folder <- 'DataDirectory/California'
+output_filename <- 'California_Merged_2023-06-06_PL.xlsx'
+#output_filename <- 'FordCarter_Merged_2023-06-02_PL.xlsx'
 
 ## list all source files found in folder
 files <- list.files(source_folder, full.names = TRUE, recursive = TRUE, pattern = "xlsx") 
@@ -446,6 +446,7 @@ saveWorkbook(wb, output_filename, overwrite = TRUE)
 #Copy Research Checklist?
 #Add Name column if not exists for sources and questions?
 #Remove none from validations for elected offices held?
+#Formatting for median income and population. Number, currency?
 #How to handle Notes? Columns will stay but renamed e.g. Notes_1 etc. if more than one is found
 
 
