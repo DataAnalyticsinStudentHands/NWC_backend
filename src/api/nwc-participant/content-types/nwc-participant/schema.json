@@ -225,6 +225,12 @@
       "relation": "oneToMany",
       "target": "api::data-spouse.data-spouse",
       "mappedBy": "participant"
+    },
+    "content_discover_story": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::content-discover-story.content-discover-story",
+      "mappedBy": "participant_id"
     }
   }
 }
