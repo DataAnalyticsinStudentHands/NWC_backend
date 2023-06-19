@@ -4,6 +4,8 @@ const { toObject, difference, signId, removeNullUndefined } = require("./utils/u
 const { cleanStrapiObject, cleanStrapiObjectI, cleanStrapiArray } = require("./utils/strapiData.js");
 const { cleanSheetObject, cleanSheetObjectI, cleanSheetArray } = require("./utils/sheetData.js");
 import * as config from './config.json';
+import * as xlsx from "xlsx";
+import preflightRequests from '../../api/preflight';
 
 function OO (key, sheets, jsonData){
 
@@ -124,42 +126,48 @@ function AA(key, sheets, jsonData){
     }
 }
 
-function preFlightFile(sheets, jsonData){
+// function preFlightFile(sheets, jsonData){
+async function preFlightFile(data){
 
-    const participant = OO('participant', sheets, jsonData);
-    const education_participant = OO('education_participant', sheets, jsonData)
-    const politics_participant = OO('politics_participant', sheets, jsonData)
-    const role_participant = OO('role_participant', sheets, jsonData)
 
-    // // OOI
-    const basic_race = OOI('basic_race', sheets, jsonData)
-    const race = OOI('race', sheets, jsonData)
-    const organization_and_political = OOI('organization_and_political', sheets, jsonData)
-    const role = OOI('role', sheets, jsonData)
-    const plank = OOI('plank', sheets, jsonData)
-    // // AA
-    const residence_in_1977 = AA('residence_in_1977', sheets, jsonData)
-    const education_edu = AA('education_edu', sheets, jsonData)
-    const education_spouse_career = AA('education_spouse_career', sheets, jsonData)
-    const eudcation_career = AA('eudcation_career', sheets, jsonData)
-    const politics_office_hold = AA('politics_office_hold', sheets, jsonData)
-    const politics_office_lost = AA('politics_office_lost', sheets, jsonData)
-    const politics_office_spouse = AA('politics_office_spouse', sheets, jsonData)
-    const leadership_in_org = AA('leadership_in_org', sheets, jsonData)
+    const sheets = JSON.parse(data);
+    console.log(sheets);
 
-    const merged = _.merge(
-        participant, education_participant, politics_participant, role_participant,
-        basic_race, race, organization_and_political, role, plank,
-        residence_in_1977, 
-        education_edu, 
-        education_spouse_career, eudcation_career, politics_office_hold, politics_office_lost, politics_office_spouse, leadership_in_org
-    )
+    // const participant = OO('participant', sheets, jsonData);
+    // const education_participant = OO('education_participant', sheets, jsonData)
+    // const politics_participant = OO('politics_participant', sheets, jsonData)
+    // const role_participant = OO('role_participant', sheets, jsonData)
 
+    // // // OOI
+    // const basic_race = OOI('basic_race', sheets, jsonData)
+    // const race = OOI('race', sheets, jsonData)
+    // const organization_and_political = OOI('organization_and_political', sheets, jsonData)
+    // const role = OOI('role', sheets, jsonData)
+    // const plank = OOI('plank', sheets, jsonData)
+    // // // AA
+    // const residence_in_1977 = AA('residence_in_1977', sheets, jsonData)
+    // const education_edu = AA('education_edu', sheets, jsonData)
+    // const education_spouse_career = AA('education_spouse_career', sheets, jsonData)
+    // const eudcation_career = AA('eudcation_career', sheets, jsonData)
+    // const politics_office_hold = AA('politics_office_hold', sheets, jsonData)
+    // const politics_office_lost = AA('politics_office_lost', sheets, jsonData)
+    // const politics_office_spouse = AA('politics_office_spouse', sheets, jsonData)
+    // const leadership_in_org = AA('leadership_in_org', sheets, jsonData)
+
+    // const merged = _.merge(
+    //     participant, education_participant, politics_participant, role_participant,
+    //     basic_race, race, organization_and_political, role, plank,
+    //     residence_in_1977, 
+    //     education_edu, 
+    //     education_spouse_career, eudcation_career, politics_office_hold, politics_office_lost, politics_office_spouse, leadership_in_org
+    // )
+
+    // return sheets
     
-    return ({
-        version: 2,
-        data: merged,
-    });
+    // return ({
+    //     version: 2,
+    //     data: merged,
+    // });
 }
 
 export { preFlightFile };

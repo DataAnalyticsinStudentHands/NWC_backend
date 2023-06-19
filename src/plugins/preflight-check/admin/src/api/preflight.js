@@ -9,10 +9,10 @@ const header = {
 };
 
 const preflightRequests = {
-  getData: async () => {
+  getData: async ({slug}) => {
     const exportURL =`${process.env.STRAPI_ADMIN_BACKEND_URL}/api/import-export-entries/content/export/contentTypes`;
     const params = {
-      slug: "api::nwc-participant.nwc-participant",
+      slug: slug,
       exportFormat: "json-v2",
       deepness: 3,
     };
