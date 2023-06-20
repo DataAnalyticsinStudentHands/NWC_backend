@@ -14,20 +14,22 @@ const preflightRequests = {
     const params = {
       slug: slug,
       exportFormat: "json-v2",
-      deepness: 3,
+      deepness: 2,
     };
 
     const results = await axios.post(exportURL, params, header);
     return JSON.parse(results.data.data);
   },
 
-  importData: async (dataContent) => {
+  importData: async (props) => {
+    const {slug, dataContent, idField} = props;
     const importURL =`${process.env.STRAPI_ADMIN_BACKEND_URL}/api/import-export-entries/content/import`;
 
     const data = {
-      slug: "api::nwc-participant.nwc-participant",
+      slug: slug,
       data: JSON.stringify(dataContent),
       format: "json",
+      idField:idField
     };
 
     axios.post(importURL, data, header);

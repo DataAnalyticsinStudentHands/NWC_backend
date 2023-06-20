@@ -10,10 +10,16 @@
   "options": {
     "draftAndPublish": false
   },
-  "pluginOptions": {},
+  "pluginOptions": {
+    "import-export-entries": {
+      "idField": "plank"
+    }
+  },
   "attributes": {
     "plank": {
-      "type": "string"
+      "type": "string",
+      "required": true,
+      "unique": true
     },
     "participants_for": {
       "type": "relation",

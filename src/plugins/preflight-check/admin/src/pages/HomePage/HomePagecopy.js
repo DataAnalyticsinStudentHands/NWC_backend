@@ -208,7 +208,7 @@ const HomePage = () => {
       formatData: formatReportData,
       isNumberData: isNumberReportData,
     })
-  }, [sheets, file]);
+  }, [sheets]);
 
   const removeFile = () => {
     setFile({});

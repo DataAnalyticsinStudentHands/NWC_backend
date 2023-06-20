@@ -1,43 +1,110 @@
 // const config = JSON.parse(fs.readFileSync("./config.json"), "utf8");
 const _ = require("lodash");
-const { toObject, difference, signId, removeNullUndefined } = require("./utils/utils.js");
-const { cleanStrapiObject, cleanStrapiObjectI, cleanStrapiArray } = require("./utils/strapiData.js");
-const { cleanSheetObject, cleanSheetObjectI, cleanSheetArray } = require("./utils/sheetData.js");
+const {  difference, signId, removeNullUndefined } = require("./utils/utils.js");
+const {  cleanStrapiObjectI, cleanStrapiArray } = require("./utils/strapiData.js");
+const { cleanSheetObject, cleanSheetObjectI, cleanSheetArray, cleanResidenceSheetData } = require("./utils/sheetData.js");
 import * as config from './config.json';
-import * as xlsx from "xlsx";
 import preflightRequests from '../../api/preflight';
 
-function OO (key, sheets, jsonData){
+async function handleResidence(key, sheets){
+    const {pk, lookup,sheet, api} = config[key];
+    const sheetData = sheets[sheet];
+    const newSheetData = cleanResidenceSheetData(sheetData, lookup, pk);
+    const strapiData = await preflightRequests.getData({slug:api});
+
+    const newStrapiData = {};
+    Object.values(strapiData.data[api]).forEach((item) => {
+        newStrapiData[item.residence_in_1977] = {
+            participants: item.participants,
+            residence_in_1977: item.residence_in_1977,
+            total_population: item.total_population,
+            median_household_income: item.median_household_income,
+        }
+    });
+
+    Object.entries(newSheetData).forEach(([key, value]) => {
+        newStrapiData[key] ?  (
+            newStrapiData[key].participants = [
+                ...newStrapiData[key].participants || [], 
+                ...value.participants
+            ]
+        )
+        : newStrapiData[key] = value;
+    });
+
+    const data = {
+        version:2,
+        data:{
+            [api]:newStrapiData
+        }
+    }
+    preflightRequests.importData({slug:api, dataContent:data, idField:pk});
+
+}
+async function OO (key, sheets){
 
     const {pk, lookup,sheet, api} = config[key];
     const sheetData = sheets[sheet];
-    const strapiData = jsonData.data[api];
 
-    const newStrapiData = cleanStrapiObject(Object.values(strapiData),lookup, pk);
     const newSheetData = cleanSheetObject(sheetData, lookup, pk);
 
-    const diff = difference(
-        Object.values(newSheetData),
-        Object.values(newStrapiData),
-        _.isEqual
-    );
-    return {[api]:toObject(diff,pk)};
+    const data = {
+        version: 2,
+        data: {
+            [api]:newSheetData
+        }
+    }
+    preflightRequests.importData({slug:api, dataContent:data, idField:pk});
 }
-function OOI (key, sheets, jsonData){
+async function OOI (key, sheets){
     const {pk, lookup,sheet, api} = config[key];
     const sheetData = sheets[sheet];
-	const strapiData = jsonData.data[api];
+	const strapiData = await preflightRequests.getData({slug:api});
 
-	const newStrapiData = cleanStrapiObjectI(Object.values(strapiData),lookup, pk);
+	const newStrapiData = cleanStrapiObjectI(Object.values(strapiData.data[api]),lookup, pk);
 	const newSheetData = cleanSheetObjectI(sheetData, lookup, pk);
 
-	const diff = difference(
-		Object.values(newSheetData),
-		Object.values(newStrapiData),
-		_.isEqual
-	);
-    const newObj = signId(diff,strapiData, lookup, pk);
-    return {[api]:newObj};
+    console.log(newSheetData);
+
+    if(key === 'plank'){
+        Object.entries(newSheetData).forEach(([key, value]) => {
+            newStrapiData[key] ?  (
+                newStrapiData[key].participants_for = [
+                    ...newStrapiData[key].participants_for || [], 
+                    ...value.participants_for || []
+                ],
+                newStrapiData[key].participants_against = [
+                    ...newStrapiData[key].participants_against || [],
+                    ...value.participants_against || []
+                ],
+                newStrapiData[key].participants_spoke_for = [
+                    ...newStrapiData[key].participants_spoke_for || [],
+                    ...value.participants_spoke_for || []
+                ]
+        )
+        : newStrapiData[key] = value;
+        });
+    } else {
+        Object.entries(newSheetData).forEach(([key, value]) => {
+            newStrapiData[key] ?  (
+                newStrapiData[key].participants = [
+                    ...newStrapiData[key].participants || [], 
+                    ...value.participants
+                ]
+            )
+            : newStrapiData[key] = value;
+        });
+    }
+    const data = {
+        version: 2,
+        data: {
+            [api]:newStrapiData
+        }
+    }
+    preflightRequests.importData({slug:api, dataContent:data, idField:pk});
+
+    // const newObj = signId(diff,strapiData, lookup, pk);
+    // return {[api]:newObj};
 }
 
 function AA(key, sheets, jsonData){
@@ -131,21 +198,20 @@ async function preFlightFile(data){
 
 
     const sheets = JSON.parse(data);
-    console.log(sheets);
+    OO('participant', sheets);
+    OO('education_participant', sheets)
+    OO('politics_participant', sheets)
+    OO('role_participant', sheets)
 
-    // const participant = OO('participant', sheets, jsonData);
-    // const education_participant = OO('education_participant', sheets, jsonData)
-    // const politics_participant = OO('politics_participant', sheets, jsonData)
-    // const role_participant = OO('role_participant', sheets, jsonData)
+    // // // // OOI
+    OOI('basic_race', sheets)
+    OOI('race', sheets)
+    OOI('organization_and_political', sheets)
+    OOI('role', sheets)
+    OOI('plank', sheets)
+    handleResidence('residence_in_1977', sheets)
 
-    // // // OOI
-    // const basic_race = OOI('basic_race', sheets, jsonData)
-    // const race = OOI('race', sheets, jsonData)
-    // const organization_and_political = OOI('organization_and_political', sheets, jsonData)
-    // const role = OOI('role', sheets, jsonData)
-    // const plank = OOI('plank', sheets, jsonData)
     // // // AA
-    // const residence_in_1977 = AA('residence_in_1977', sheets, jsonData)
     // const education_edu = AA('education_edu', sheets, jsonData)
     // const education_spouse_career = AA('education_spouse_career', sheets, jsonData)
     // const eudcation_career = AA('eudcation_career', sheets, jsonData)

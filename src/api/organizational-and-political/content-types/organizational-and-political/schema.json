@@ -10,10 +10,16 @@
   "options": {
     "draftAndPublish": false
   },
-  "pluginOptions": {},
+  "pluginOptions": {
+    "import-export-entries": {
+      "idField": "organizational_and_political"
+    }
+  },
   "attributes": {
     "organizational_and_political": {
-      "type": "string"
+      "type": "string",
+      "required": true,
+      "unique": true
     },
     "participants": {
       "type": "relation",

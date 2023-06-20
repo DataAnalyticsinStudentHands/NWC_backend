@@ -17,7 +17,6 @@ import {
   ModalHeader,
   ModalFooter,
 } from "@strapi/design-system";
-// import * as _ from "lodash";
 import * as master from "./master.json";
 import AllDataReport from "../../components/AllDataReport";
 import BasicDataReport from "../../components/BasicDataReport";
@@ -35,8 +34,6 @@ const HomePage = () => {
     otherDataReport: false,
   });
   const [isVisible, setIsVisible] = useState(false);
-
-//   const [importData, setImportData] = useState(null);
 
   function handleFile(e) {
     e.preventDefault();
