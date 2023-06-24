@@ -90,12 +90,6 @@
     },
     "lastname": {
       "type": "string"
-    },
-    "participant_id": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::nwc-participant.nwc-participant",
-      "inversedBy": "content_discover_story"
     }
   }
 }
