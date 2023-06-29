@@ -4,7 +4,8 @@
   "info": {
     "singularName": "data-spouse-political-office",
     "pluralName": "data-spouse-political-offices",
-    "displayName": "data-spouse-political-office"
+    "displayName": "data-spouse-political-office",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -14,10 +15,10 @@
     "political_office": {
       "type": "string"
     },
-    "participant": {
+    "spouses": {
       "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::nwc-participant.nwc-participant",
+      "relation": "manyToMany",
+      "target": "api::data-spouse.data-spouse",
       "inversedBy": "spouse_political_offices"
     }
   }

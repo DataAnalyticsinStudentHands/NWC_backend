@@ -2,8 +2,8 @@
   "kind": "collectionType",
   "collectionName": "content_discover_stories",
   "info": {
-    "singularName": "content-discover-story", 
-    "pluralName": "content-discover-stories", 
+    "singularName": "content-discover-story",
+    "pluralName": "content-discover-stories",
     "displayName": "content-discover-story",
     "name": "CONTENT_Discover_Story",
     "description": ""
@@ -24,14 +24,14 @@
       "type": "string"
     },
     "profilepic": {
-      "type":"media",
-      "multiple":false,
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos"
       ],
-      "required": false,
       "pluginOptions": {}
     },
     "dob": {
