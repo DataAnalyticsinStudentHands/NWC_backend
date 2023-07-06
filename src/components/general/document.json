@@ -17,6 +17,7 @@
       "required": false
     },
     "PDF": {
+      "type": "media",
       "collection": "file",
       "via": "related",
       "allowedTypes": [
