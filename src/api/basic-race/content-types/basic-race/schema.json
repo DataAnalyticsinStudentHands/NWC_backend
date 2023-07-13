@@ -10,10 +10,16 @@
   "options": {
     "draftAndPublish": false
   },
-  "pluginOptions": {},
+  "pluginOptions": {
+    "import-export-entries": {
+      "idField": "basic_race"
+    }
+  },
   "attributes": {
     "basic_race": {
-      "type": "string"
+      "type": "string",
+      "required": true,
+      "unique": true
     },
     "participants": {
       "type": "relation",

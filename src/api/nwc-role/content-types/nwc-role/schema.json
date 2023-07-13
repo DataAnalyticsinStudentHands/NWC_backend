@@ -10,10 +10,16 @@
   "options": {
     "draftAndPublish": false
   },
-  "pluginOptions": {},
+  "pluginOptions": {
+    "import-export-entries": {
+      "idField": "role"
+    }
+  },
   "attributes": {
     "role": {
-      "type": "string"
+      "type": "string",
+      "required": true,
+      "unique": true
     },
     "participants": {
       "type": "relation",

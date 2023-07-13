@@ -10,10 +10,16 @@
   "options": {
     "draftAndPublish": false
   },
-  "pluginOptions": {},
+  "pluginOptions": {
+    "import-export-entries": {
+      "idField": "residence_in_1977"
+    }
+  },
   "attributes": {
     "residence_in_1977": {
-      "type": "string"
+      "type": "string",
+      "required": true,
+      "unique": true
     },
     "total_population": {
       "type": "biginteger"
