@@ -24,6 +24,24 @@
     },
     "BannerImageCredit_more": {
       "type": "string"
+    },
+    "AdvancedSearch_Banner": {
+      "type": "richtext"
+    },
+    "AdvancedSearch_NWC": {
+      "type": "richtext"
+    },
+    "AdvancedSearch_Participants": {
+      "type": "richtext"
+    },
+    "AdvancedSearch_Education": {
+      "type": "richtext"
+    },
+    "AdvancedSearch_Politics": {
+      "type": "richtext"
+    },
+    "AdvancedSearch_Organizations": {
+      "type": "richtext"
     }
   }
 }
