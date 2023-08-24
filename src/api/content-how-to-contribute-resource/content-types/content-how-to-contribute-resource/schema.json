@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "content_resources",
+  "collectionName": "content_how_to_contribute_resources",
   "info": {
-    "singularName": "content-resource",
-    "pluralName": "content-resources",
-    "displayName": "Content-resource",
+    "singularName": "content-how-to-contribute-resource",
+    "pluralName": "content-how-to-contribute-resources",
+    "displayName": "content-how-to-contribute-resource",
     "description": ""
   },
   "options": {
@@ -17,14 +17,23 @@
       "required": true,
       "unique": true
     },
-    "resource_text": {
+    "resource_icon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "summary_text": {
       "type": "richtext"
     },
-    "resource_summary": {
+    "banner_text": {
       "type": "richtext"
     },
     "video_url": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "files": {
       "displayName": "files",
