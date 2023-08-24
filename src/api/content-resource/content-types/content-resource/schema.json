@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "content_resources",
+  "info": {
+    "singularName": "content-resource",
+    "pluralName": "content-resources",
+    "displayName": "Content-resource",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "resource": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "resource_text": {
+      "type": "richtext"
+    },
+    "resource_summary": {
+      "type": "richtext"
+    },
+    "video_url": {
+      "type": "string"
+    },
+    "files": {
+      "displayName": "files",
+      "type": "component",
+      "repeatable": true,
+      "component": "general.files"
+    }
+  }
+}
