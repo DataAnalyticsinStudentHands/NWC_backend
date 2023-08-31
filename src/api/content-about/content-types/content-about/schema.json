@@ -114,19 +114,19 @@
       ]
     },
     "aboutTimeline_1": {
-      "type": "richtext"
+      "type": "text"
     },
     "aboutTimeline_2": {
-      "type": "richtext"
+      "type": "text"
     },
     "aboutTimeline_3": {
-      "type": "richtext"
+      "type": "text"
     },
     "aboutTimeline_4": {
-      "type": "richtext"
+      "type": "text"
     },
     "aboutTimeline_5": {
-      "type": "richtext"
+      "type": "text"
     },
     "aboutDocuments_collectionsGuide": {
       "type": "media",
