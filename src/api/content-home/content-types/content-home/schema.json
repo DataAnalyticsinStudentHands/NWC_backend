@@ -18,13 +18,13 @@
       "type": "string"
     },
     "PhotoByExplore_more": {
-      "type": "richtext"
+      "type": "text"
     },
     "aboutImgCredit": {
       "type": "string"
     },
     "aboutImgCredit_more": {
-      "type": "richtext"
+      "type": "text"
     },
     "homeAbout_p": {
       "type": "richtext"
@@ -39,46 +39,28 @@
       "type": "string"
     },
     "homeButton1_text": {
-      "type": "richtext"
+      "type": "text"
     },
     "homeButton2_link": {
       "type": "string"
     },
     "homeButton2_text": {
-      "type": "richtext"
+      "type": "text"
     },
     "homeButton3_link": {
       "type": "string"
     },
     "homeButton3_text": {
-      "type": "richtext"
+      "type": "text"
     },
     "homeButton4_link": {
       "type": "string"
     },
     "homeButton4_text": {
-      "type": "richtext"
+      "type": "text"
     },
     "homeExplore_text": {
       "type": "richtext"
-    },
-    "homeHighlights_content1": {
-      "type": "richtext"
-    },
-    "homeHighlights_content2": {
-      "type": "richtext"
-    },
-    "homeHighlights_content3": {
-      "type": "richtext"
-    },
-    "homeHighlights_header1": {
-      "type": "string"
-    },
-    "homeHighlights_header2": {
-      "type": "string"
-    },
-    "homeHighlights_header3": {
-      "type": "string"
     },
     "homeMap_text": {
       "type": "richtext"
