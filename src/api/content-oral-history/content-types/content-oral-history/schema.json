@@ -24,15 +24,14 @@
     "What_NWC_Means": {
       "type": "richtext"
     },
-    "Featured": {
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
-      ],
-      "type": "media",
-      "multiple": true
+    "featured_video1": {
+      "type": "string"
+    },
+    "featured_video2": {
+      "type": "string"
+    },
+    "ExploreText": {
+      "type": "richtext"
     }
   }
 }
