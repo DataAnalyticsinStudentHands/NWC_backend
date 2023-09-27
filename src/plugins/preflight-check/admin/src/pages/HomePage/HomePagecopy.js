@@ -1,195 +1,24 @@
 import React, { useEffect, useState } from "react";
-import * as xlsx from "xlsx";
 import {
-  BaseHeaderLayout,
   Box,
   Button,
   Typography,
-  FieldLabel,
-  FieldInput,
   TabGroup,
   Tabs,
   Tab,
   TabPanels,
   TabPanel,
-  ModalLayout,
-  ModalBody,
-  ModalHeader,
-  ModalFooter,
   Flex,
 } from "@strapi/design-system";
-// import * as _ from "lodash";
 import { ContentLayout } from "@strapi/design-system/Layout";
 
-import * as master from "./master.json";
-import AllDataReport from "../../components/AllDataReport";
-import BasicDataReport from "../../components/BasicDataReport";
-// import OtherDataReport from "../../components/OtherDataReport";
-
+import MasterReport from "../../components/MasterReport";
+import FormatReport from "../../components/FormatReport";
+import NumberReport from "../../components/NumberReport";
 import { Header } from "../../components/Header/Header";
 import { InjectedImportButton } from '../../components/InjectedImportButton';
 import { ImportButton } from "../../components/ImportButton";
-import * as masterSheet from "./master.json";
-import * as headerSheet from "./sheetHeader.json";
-
-function checkWithMaser(sheetData, master) {
-
-  const basicRequired = {
-    "Last Name": "last_name",
-    "First Name": "first_name",
-    'State': "represented_state",
-  };
-  const idCheckSheet = [
-    "Race & Ethnicity--Reg Forms",
-    "Race & Ethnicity--Expanded",
-    "Ed & Career",
-    "Electoral Politics",
-    "Leadership in Org",
-    "Organizational & Political",
-    "Role at NWC",
-    "Position on Planks",
-  ];
-
-  const obj = {};
-  sheetData && sheetData["Basic Data"] && sheetData["Basic Data"].forEach((row, index) => {
-    let id = null;
-    master[row["ID"]] ? (id = row["ID"]) : null;
-    id ? Object.entries(basicRequired).forEach(([key, value]) => {
-        // trim strings
-        row[key] = _.isString(row[key]) ? row[key].trim() : row[key];
-        master[id][value] = _.isString(master[id][value])
-          ? master[id][value].trim()
-          : master[id][value];
-
-        master[id][value] !== row[key] && (obj[index + 2] = {
-              id: row["ID"],
-              row: index + 2,
-              master: {
-                ...obj[row["ID"]]?.master,
-                [value]: master[id][value],
-              },
-              error: {
-                ...obj[row["ID"]]?.error,
-                [value]: row[key],
-              },
-              errorType: "Not match with Master Sheet",
-            });
-      })
-    : (obj[index + 2] = {
-        id: row["ID"],
-        row: index + 2,
-        master: {
-          err: "ID not found in master",
-        },
-        error: {
-          id: row["ID"],
-        },
-      });
-  });
-
-  let errorArray = [], array = [];
-
-  sheetData && idCheckSheet.forEach((sheet) => {
-      ! Object.keys(sheetData).includes(sheet) &&
-        errorArray.push(`${sheet} sheet is not found`);
-    })
-  sheetData && Object.entries(sheetData).forEach(([sheet, values]) => {
-
-    idCheckSheet.includes(sheet) && values.forEach((row, index) => {
-      if (!row["Name"]) return;
-      let lastName = row["Name"].split(",")[0];
-
-      master[row["ID"]] && master[row["ID"]].last_name !== lastName && array.push({
-            sheet,
-            row: index + 2,
-            id: row["ID"],
-            master: `${master[row["ID"]]?.last_name}`,
-            error: lastName,
-            errorType: "last_name not match",
-          });
-    });
-  });
-  return {
-    basicData: obj,
-    sheetNameErrs: errorArray,
-    participantsNameErrs: _.groupBy(array, "sheet"),
-  };
-
-}
-function checkFormat(sheetData) {
-  const obj = {};
-  sheetData && Object.entries(headerSheet).forEach(([sheet, value]) => {
-    let keys = [];
-    sheetData[sheet]?.forEach((row) => {
-      Object.keys(row).forEach((key) => {
-        if (_.startsWith(key, "Note")) return;
-        !keys.includes(key) && keys.push(key);
-      });
-    });
-    _.difference(keys, value.headings).length > 0 && (obj[sheet] = _.difference(keys, value.headings));
-  });
-  return obj;
-}
-function checkIsNumber(sheetData, formatCheck) {
-  const numberColumnsList = [
-    "ID",
-    "Birthdate Month",
-    "Birthdate Day",
-    "Birthdate Year",
-    "Age in 1977",
-    "Deathdate Month",
-    "Deathdate Day",
-    "Deathdate Year",
-    "Total Population of Place of Residence (check US Census)",
-    "Median Household Income of Place of Residence (check US Census)",
-    "Total Number of Children (born throughout lifetime)",
-    "College: Undergrad year of graduation (if more than one, list all but create new row for each)",
-    "College: Graduate/ Professional year of graduation (if more than one, list all but create new row for each)",
-    "Start Year for Political Office",
-    "End Year for Political Office (if office is still held leave this column blank)",
-    "Year of Race that was Lost ",
-    "Start Year for Spouse/Partner’s Political Office",
-    "End Year for Spouse/Partner’s Political Office (if office is still held leave this column blank)",
-    "Votes Received at State Meeting for NWC Delegate/Alternate",
-  ];
-  let array = [];
-  sheetData && Object.entries(sheetData).forEach(([sheet, value]) => {
-    if(sheet === "Sources" || sheet === "Questions") return;
-    value.forEach((row, index) => {
-      Object.entries(row).forEach(([key, value]) => {
-        _.isNumber(value)
-          ? formatCheck[sheet] && formatCheck[sheet].includes(key)
-            ? null // if the heading is not follow the template, ignore the check
-            : !numberColumnsList.includes(key)
-            ? array.push({
-                sheet,
-                row: index + 2,
-                id: row["ID"],
-                error: {
-                  [key]: value,
-                },
-                errorType:" Is Number"
-              })
-            : null
-          : numberColumnsList.includes(key)
-          ? array.push({
-              sheet,
-              row: index + 2,
-              id: row["ID"],
-              error: {
-                [key]: value,
-              },
-              errorType: "Not Number"
-            })
-          : null;
-      });
-    });
-  });
-  // console.log(array);
-  return _.groupBy(array, "sheet");
-
-}
-
+import { checkFormat, checkWithMaser, checkIsNumber } from "../../utils/data_check";
 
 const HomePage = () => {
   const [file, setFile] = useState({});
@@ -199,12 +28,12 @@ const HomePage = () => {
   useEffect(() => {
     const sheetData = JSON.parse(sheets);
 
-    let basicReportData = checkWithMaser(sheetData, masterSheet);
+    let MasertCheckReport = checkWithMaser(sheetData);
     let formatReportData = checkFormat(sheetData);
     let isNumberReportData = checkIsNumber(sheetData, formatReportData);
 
     setReportData({
-      ...basicReportData,
+      masterCheck: MasertCheckReport,
       formatData: formatReportData,
       isNumberData: isNumberReportData,
     })
@@ -217,18 +46,14 @@ const HomePage = () => {
   };
 
 const showReport = file.name && !_.isEqual(reportData, {
-  basicData: {},
-  sheetNameErrs: [],
-  participantsNameErrs: {},
-  formatData: {},
-  isNumberData: {},
+  formatData: [],
+  isNumberData: [],
+  masterCheck: [],
 })
 const showImport = file.name && _.isEqual(reportData, {
-  basicData: {},
-  sheetNameErrs: [],
-  participantsNameErrs: {},
-  formatData: {},
-  isNumberData: {},
+  formatData: [],
+  isNumberData: [],
+  masterCheck: [],
 })
 
   return (
@@ -264,8 +89,7 @@ const showImport = file.name && _.isEqual(reportData, {
               )}
             </Flex>
           </Box>
-            {
-              showImport && (
+            { showImport && (
                 <Box style={{ alignSelf: "stretch" }} background="neutral0" padding="32px" hasRadius={true}>
                   <Typography variant="alpha">
                       This File passed All the checks and ready to import
@@ -278,23 +102,54 @@ const showImport = file.name && _.isEqual(reportData, {
                 <Box style={{ alignSelf: "stretch" }} background="neutral0" padding="32px" hasRadius={true}>
                   <TabGroup id="reportTabs" label="reportTabs">
                     <Tabs>
-                      <Tab>General Check</Tab>
-                      <Tab>Basic Data Sheet Check</Tab>
+                      {
+                        reportData?.masterCheck && Object.keys(reportData.masterCheck).length > 0 && (
+                          <Tab>Master Check Report</Tab>
+                        )
+                      }
+                      {
+                        reportData?.formatData && Object.keys(reportData.formatData).length > 0 && (
+                          <Tab>Format Check Report</Tab>
+                        )
+                      }
+                      {
+                        reportData?.isNumberData && Object.keys(reportData.isNumberData).length > 0 && (
+                          <Tab>Number Check Report</Tab>
+                        )
+                      }
                     </Tabs>
                     <TabPanels>
-                      <TabPanel>
-                        <AllDataReport reportData={reportData} />
-                      </TabPanel>
-                      <TabPanel>
-                        <BasicDataReport
-                          reportData={reportData}
-                        />
-                      </TabPanel>
+                      {
+                        reportData?.masterCheck && Object.keys(reportData.masterCheck).length > 0 && (
+                          <TabPanel>
+                            <MasterReport
+                              data={reportData.masterCheck}
+                            />
+                          </TabPanel>
+                        )
+                      }
+                      {
+                        reportData?.formatData && Object.keys(reportData.formatData).length > 0 && (
+                          <TabPanel>
+                            <FormatReport
+                              reportData={reportData}
+                            />
+                          </TabPanel>
+                        )
+                      }
+                      {
+                        reportData?.isNumberData && Object.keys(reportData.isNumberData).length > 0 && (
+                          <TabPanel>
+                            <NumberReport
+                              reportData={reportData}
+                            />
+                          </TabPanel>
+                        )
+                      }
                     </TabPanels>
                   </TabGroup>
                 </Box>
               )}
-
         </Flex>
     </ContentLayout>
     
