@@ -1,6 +1,7 @@
 import React from "react";
 import {
   Box,
+  Flex,
   Typography,
   Table,
   Thead,
@@ -14,14 +15,16 @@ import _ from "lodash";
 
 const MasterReport = (props) => {
   const {data} = props;
-  console.log(data);
   return (
     <Box background="neutral0">
+        <Box padding={4}>
+          <Flex direction="column" alignItems="start" gap={2}>
+            <Typography variant="beta">
+              The Master Sheet is based on file: IDCodeRangesMaster_V1_NBY_2023-02-27.xlsx
+            </Typography>
+          </Flex>
+        </Box>
       {data && Object.keys(data).length > 0 && (
-        <>
-          <Typography variant="beta">
-            Lists all discrepancies between the mastersheet and the uploaded file
-          </Typography>
           <Table colCount={4} rowCount={10}>
             <Thead>
             <Tr>
@@ -64,7 +67,6 @@ const MasterReport = (props) => {
               })}
             </Tbody>
           </Table>
-        </>
       )}
     </Box>
   );

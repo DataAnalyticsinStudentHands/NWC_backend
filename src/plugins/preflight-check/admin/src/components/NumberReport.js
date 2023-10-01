@@ -14,7 +14,6 @@ import _ from "lodash";
 
 const NumberReport = (props) => {
   const {reportData} = props;
-  console.log(reportData);
   return (
     <Box background="neutral0">
       {reportData?.isNumberData && Object.keys(reportData.isNumberData).length > 0 && (

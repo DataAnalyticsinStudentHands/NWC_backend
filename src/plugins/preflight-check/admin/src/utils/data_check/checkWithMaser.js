@@ -1,4 +1,4 @@
-const master = require("./res/master.json");
+const master = require("./res/IDCodeRangesMaster_V1_NBY_2023-02-27.json");
 
 export default function checkWithMaser(sheets) {
     const masterCheck = {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   Box,
+  Flex,
   Typography,
   Table,
   Thead,
@@ -13,14 +14,21 @@ import _ from "lodash";
 
 
 const FormatReport = (props) => {
-  const {reportData} = props;
+  const data = props?.reportData.formatData
   return (
     <Box background="neutral0">
-      {reportData?.formatData && Object.keys(reportData.formatData).length > 0 && (
-        <>
-          {/* <Typography variant="beta">
-            Lists all discrepancies between the mastersheet and the uploaded file
-          </Typography> */}
+      <Box padding={4}>
+        <Flex direction="column" alignItems="start" gap={2}>
+          <Typography variant="beta">
+            This process will not check the sheets of 'Organizational & Political', 'Role at NWC' 
+          </Typography>
+          <Typography variant="beta">
+            The suggestion section is only for reference. Please check the template.
+          </Typography>
+        </Flex>
+      </Box>
+      {data && Object.keys(data).length > 0 && (
+
           <Table colCount={4} rowCount={10}>
             <Thead>
             <Tr>
@@ -36,18 +44,18 @@ const FormatReport = (props) => {
             </Tr>
             </Thead>
             <Tbody>
-              {reportData?.formatData && Object.entries(reportData.formatData).map(([id, entry]) => {
+              {data && Object.entries(data).map(([id, entry]) => {
                 return (
                   <Tr key={id}>
                     <Td>
                       <Typography textColor="neutral800">{entry.sheetName}</Typography>
                     </Td>
                     <Td>
-                      <Typography textColor="neutral800">{entry.key}</Typography>
+                      <Typography textColor="neutral800">{entry.attribute}</Typography>
                     </Td>
                     <Td>
                       <Typography textColor="neutral800">
-                        {entry?.suggestion}
+                        {entry.suggestion.join(";\n")}
                       </Typography>
                     </Td>
                   </Tr>
@@ -55,7 +63,6 @@ const FormatReport = (props) => {
               })}
             </Tbody>
           </Table>
-        </>
       )}
     </Box>
   );
