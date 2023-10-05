@@ -24,14 +24,20 @@
     "What_NWC_Means": {
       "type": "richtext"
     },
-    "featured_video1": {
-      "type": "string"
-    },
-    "featured_video2": {
-      "type": "string"
-    },
     "ExploreText": {
       "type": "richtext"
+    },
+    "sortoptions": {
+      "displayName": "sortoptions",
+      "type": "component",
+      "repeatable": true,
+      "component": "oral-histories.sortoptions"
+    },
+    "featured_videos": {
+      "displayName": "featured_videos",
+      "type": "component",
+      "repeatable": true,
+      "component": "oral-histories.featured-videos"
     }
   }
 }

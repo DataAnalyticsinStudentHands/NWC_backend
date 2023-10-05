@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_oral_histories_sortoptions",
+  "info": {
+    "displayName": "sortoptions",
+    "icon": "bulletList"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_oral_histories_featured_videos",
+  "info": {
+    "displayName": "featured_videos",
+    "icon": "play",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "featured_video": {
+      "type": "string"
+    }
+  }
+}
