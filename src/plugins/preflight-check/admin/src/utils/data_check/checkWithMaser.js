@@ -1,4 +1,4 @@
-const master = require("./res/master.json");
+const master = require("./res/IDCodeRangesMaster_V1_NBY_2023-02-27.json");
 
 export default function checkWithMaser(sheets) {
     const masterCheck = {
@@ -15,9 +15,7 @@ export default function checkWithMaser(sheets) {
   
     let errors = [];
     sheets && Object.entries(sheets).forEach(([sheetName, sheetData]) => {
-      // ingore the Sources sheet
         if (sheetName === "Sources") return;
-      // preparcessing the data
         const newSheetData = sheetData.map((row) => {
           const newRow = {};
           Object.keys(row).forEach((key) => {
@@ -57,5 +55,5 @@ export default function checkWithMaser(sheets) {
           }
         });
       });
-      return errors;
+      return _.uniqWith(errors, _.isEqual);
   }
