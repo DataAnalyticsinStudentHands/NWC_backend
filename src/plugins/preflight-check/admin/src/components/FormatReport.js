@@ -36,7 +36,7 @@ const FormatReport = (props) => {
                   <Typography variant="sigma">Sheet</Typography>
                 </Th>
                 <Th>
-                  <Typography variant="sigma">Attribute</Typography>
+                  <Typography variant="sigma">column name</Typography>
                 </Th>
                 <Th>
                   <Typography variant="sigma">Suggestion</Typography>
@@ -55,7 +55,9 @@ const FormatReport = (props) => {
                     </Td>
                     <Td>
                       <Typography textColor="neutral800">
-                        {entry.suggestion.join(";\n")}
+                        {entry.suggestion.length > 0
+                        ? entry.suggestion.join(";\n")
+                        : 'No suggestion can be provided'}
                       </Typography>
                     </Td>
                   </Tr>

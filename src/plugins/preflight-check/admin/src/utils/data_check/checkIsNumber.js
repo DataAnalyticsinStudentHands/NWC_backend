@@ -39,5 +39,5 @@ export default function checkIsNumber(sheets) {
         });
     });
 
-    return errors;
+    return _.uniqWith(errors, _.isEqual);;
 };

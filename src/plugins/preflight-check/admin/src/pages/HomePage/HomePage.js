@@ -11,7 +11,7 @@ import {
   Flex,
 } from "@strapi/design-system";
 import { ContentLayout } from "@strapi/design-system/Layout";
-
+import { LinkButton } from '@strapi/design-system/v2';
 import MasterReport from "../../components/MasterReport";
 import FormatReport from "../../components/FormatReport";
 import NumberReport from "../../components/NumberReport";
@@ -25,6 +25,7 @@ const HomePage = () => {
   const [sheets, setSheets] = useState(null);
   const [reportData, setReportData] = useState(null);
   useEffect(() => {
+    setReportData(null);
     const sheetData = JSON.parse(sheets);
 
     let MasertCheckReport = checkWithMaser(sheetData);
@@ -149,9 +150,22 @@ const showImport = file.name && _.isEqual(reportData, {
                   </TabGroup>
                 </Box>
               )}
+            <Box style={{ alignSelf: "stretch" }} background="neutral0" padding="32px" hasRadius={true}>
+              <Flex direction="column" alignItems="start" gap={6}>
+                <Typography variant="alpha">
+                    Resources
+                </Typography>
+                <Box>
+                  <Flex direction="column" alignItems="start" gap={4}>
+                    <LinkButton variant="default" href="/uploads/template_8c478f67e9.xlsx">
+                     Download Template  
+                    </LinkButton>
+                  </Flex>
+                </Box>
+              </Flex>
+            </Box>
         </Flex>
     </ContentLayout>
-    
     </>
   );
 };

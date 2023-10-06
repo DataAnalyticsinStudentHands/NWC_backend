@@ -15,9 +15,7 @@ export default function checkWithMaser(sheets) {
   
     let errors = [];
     sheets && Object.entries(sheets).forEach(([sheetName, sheetData]) => {
-      // ingore the Sources sheet
         if (sheetName === "Sources") return;
-      // preparcessing the data
         const newSheetData = sheetData.map((row) => {
           const newRow = {};
           Object.keys(row).forEach((key) => {
@@ -57,5 +55,5 @@ export default function checkWithMaser(sheets) {
           }
         });
       });
-      return errors;
+      return _.uniqWith(errors, _.isEqual);
   }

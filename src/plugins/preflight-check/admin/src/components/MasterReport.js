@@ -15,6 +15,7 @@ import _ from "lodash";
 
 const MasterReport = (props) => {
   const {data} = props;
+  console.log(data);
   return (
     <Box background="neutral0">
         <Box padding={4}>
@@ -35,7 +36,7 @@ const MasterReport = (props) => {
                   <Typography variant="sigma">Sheet</Typography>
                 </Th>
                 <Th>
-                  <Typography variant="sigma">Attribute</Typography>
+                  <Typography variant="sigma">column name</Typography>
                 </Th>
                 <Th>
                   <Typography variant="sigma">Master !== Sheet</Typography>
@@ -47,7 +48,7 @@ const MasterReport = (props) => {
                 return (
                   <Tr key={id}>
                     <Td>
-                      <Typography textColor="neutral800">{entry.id}</Typography>
+                      <Typography textColor="neutral800">{entry.id || 'ID is missing'}</Typography>
                     </Td>
                     <Td>
                       <Typography textColor="neutral800">{entry.sheetName}</Typography>
