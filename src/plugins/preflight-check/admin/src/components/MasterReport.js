@@ -15,7 +15,6 @@ import _ from "lodash";
 
 const MasterReport = (props) => {
   const {data} = props;
-  console.log(data);
   return (
     <Box background="neutral0">
         <Box padding={4}>
