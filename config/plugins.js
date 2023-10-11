@@ -18,6 +18,10 @@ module.exports = {
       newline: "unix",
       path: "/usr/sbin/sendmail",
     },
+    settings: {
+      defaultFrom: "webadmin@dash.cs.uh.edu",
+      defaultReplyTo: "",
+    },
   },
   // ...
 };
