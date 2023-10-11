@@ -12,7 +12,7 @@ module.exports = {
     enabled: true,
   },
   email: {
-    provider: "sendmail",
+    provider: "nodemailer",
     providerOptions: {
       sendmail: true,
       newline: "unix",
