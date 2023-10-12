@@ -26,18 +26,6 @@
     },
     "ExploreText": {
       "type": "richtext"
-    },
-    "sortoptions": {
-      "displayName": "sortoptions",
-      "type": "component",
-      "repeatable": true,
-      "component": "oral-histories.sortoptions"
-    },
-    "featured_videos": {
-      "displayName": "featured_videos",
-      "type": "component",
-      "repeatable": true,
-      "component": "oral-histories.featured-videos"
     }
   }
 }
