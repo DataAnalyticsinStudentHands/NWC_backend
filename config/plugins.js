@@ -1,5 +1,4 @@
 module.exports = {
-  // ...
   "email-service": {
     enabled: true,
     resolve: "./src/plugins/email-service",
@@ -12,16 +11,15 @@ module.exports = {
     enabled: true,
   },
   email: {
-    provider: "nodemailer",
-    providerOptions: {
-      sendmail: true,
-      newline: "unix",
-      path: "/usr/sbin/sendmail",
-    },
-    settings: {
-      defaultFrom: "webadmin@dash.cs.uh.edu",
-      defaultReplyTo: "",
+    config: {
+      provider: "nodemailer",
+      providerOptions: {
+        sendmail: true,
+      },
+      settings: {
+        defaultFrom: "webadmin@dash.cs.uh.edu",
+        defaultReplyTo: "webadmin@dash.cs.uh.edu",
+      },
     },
   },
-  // ...
 };
