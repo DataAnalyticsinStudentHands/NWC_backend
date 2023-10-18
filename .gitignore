@@ -128,3 +128,4 @@ data
 .env.sharkmongo
 .env.shark
 data_import/DataDirectory
+.Rhistory
