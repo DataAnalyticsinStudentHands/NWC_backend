@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_general_files",
+  "info": {
+    "displayName": "files",
+    "icon": "alien",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "file": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "files"
+      ]
+    },
+    "link_to_form": {
+      "type": "enumeration",
+      "enum": [
+        "Corrections",
+        "Biographies and Orale Histories",
+        "Archives",
+        "More Ideas",
+        "Donate Papers"
+      ]
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "form_moreideas",
+  "collectionName": "form_donatepapers",
   "info": {
-    "singularName": "form-moreidea",
-    "pluralName": "form-moreideas",
-    "displayName": "form-moreideas",
+    "singularName": "form-donatepaper",
+    "pluralName": "form-donatepapers",
+    "displayName": "form-donatepaper",
     "description": ""
   },
   "options": {
@@ -12,22 +12,22 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "Name": {
+    "name": {
       "type": "string"
     },
-    "Affiliation": {
+    "role_at_nwc": {
       "type": "string"
     },
-    "Address": {
+    "address": {
+      "type": "text"
+    },
+    "phone": {
       "type": "string"
     },
-    "Phone": {
-      "type": "string"
-    },
-    "Email": {
+    "email": {
       "type": "email"
     },
-    "Comments": {
+    "comments": {
       "type": "text"
     }
   }

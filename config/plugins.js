@@ -1,19 +1,23 @@
-module.exports =  {
-    // ...
-    'email-service': {
-      enabled: true,
-      resolve: './src/plugins/email-service'
+module.exports = {
+  // ...
+  "preflight-check": {
+    enabled: true,
+    resolve: "./src/plugins/preflight-check",
+  },
+  "import-export-entries": {
+    enabled: true,
+  },
+  email: {
+    provider: "nodemailer",
+    providerOptions: {
+      sendmail: true,
+      newline: "unix",
+      path: "/usr/sbin/sendmail",
     },
-    'preflight-check': {
-      enabled: true,
-      resolve: './src/plugins/preflight-check'
+    settings: {
+      defaultFrom: "webadmin@dash.cs.uh.edu",
+      defaultReplyTo: "",
     },
-    'import-export-entries': {
-      enabled: true,
-      // config: {
-      //   // See `Config` section.
-      //   serverPublicHostname: 'https://dash.cs.uh.edu',
-      // },
-    },
-    // ...
-  }
+  },
+  // ...
+};

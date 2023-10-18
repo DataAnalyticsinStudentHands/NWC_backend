@@ -1,0 +1,45 @@
+{
+  "kind": "collectionType",
+  "collectionName": "content_how_to_contribute_resources",
+  "info": {
+    "singularName": "content-how-to-contribute-resource",
+    "pluralName": "content-how-to-contribute-resources",
+    "displayName": "content-how-to-contribute-resource",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "resource": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "resource_icon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "summary_text": {
+      "type": "richtext"
+    },
+    "banner_text": {
+      "type": "richtext"
+    },
+    "video_url": {
+      "type": "string",
+      "required": true
+    },
+    "files": {
+      "displayName": "files",
+      "type": "component",
+      "repeatable": true,
+      "component": "general.files"
+    }
+  }
+}

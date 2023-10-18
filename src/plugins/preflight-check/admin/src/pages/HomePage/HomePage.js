@@ -1,212 +1,172 @@
 import React, { useEffect, useState } from "react";
-import * as xlsx from "xlsx";
 import {
-  BaseHeaderLayout,
   Box,
   Button,
   Typography,
-  FieldLabel,
-  FieldInput,
   TabGroup,
   Tabs,
   Tab,
   TabPanels,
   TabPanel,
-  ModalLayout,
-  ModalBody,
-  ModalHeader,
-  ModalFooter,
+  Flex,
 } from "@strapi/design-system";
-import * as master from "./master.json";
-import AllDataReport from "../../components/AllDataReport";
-import BasicDataReport from "../../components/BasicDataReport";
-import OtherDataReport from "../../components/OtherDataReport";
-
-import preflightRequests from "../../api/preflight";
-import { preFlightFile } from "../../utils/data_import/index.js";
+import { ContentLayout } from "@strapi/design-system/Layout";
+import { LinkButton } from '@strapi/design-system/v2';
+import MasterReport from "../../components/MasterReport";
+import FormatReport from "../../components/FormatReport";
+import NumberReport from "../../components/NumberReport";
+import { Header } from "../../components/Header/Header";
+import { InjectedImportButton } from '../../components/InjectedImportButton';
+import { ImportButton } from "../../components/ImportButton";
+import { checkFormat, checkWithMaser, checkIsNumber } from "../../utils/data_check";
 
 const HomePage = () => {
+  const [file, setFile] = useState({});
   const [sheets, setSheets] = useState(null);
-  const [strapiData, setStrapiData] = useState(null);
-  const [isPass, setIsPass] = useState({
-    allDataReport: false,
-    basicDataReport: false,
-    otherDataReport: false,
-  });
-  const [isVisible, setIsVisible] = useState(false);
-
-  function handleFile(e) {
-    e.preventDefault();
-    if (e.target.files) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const data = e.target.result;
-        const workbook = xlsx.read(data, { type: "array" });
-        const worksheets = workbook.SheetNames.reduce((acc, sheetName) => {
-          acc[sheetName] = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
-          return acc;
-        }, {});
-        setSheets(worksheets);
-      };
-      reader.readAsArrayBuffer(e.target.files[0]);
-    }
-  }
-
+  const [reportData, setReportData] = useState(null);
   useEffect(() => {
-    setIsPass({
-      allDataReport: false,
-      basicDataReport: false,
-      otherDataReport: false,
-    });
+    setReportData(null);
+    const sheetData = JSON.parse(sheets);
+
+    let MasertCheckReport = checkWithMaser(sheetData);
+    let formatReportData = checkFormat(sheetData);
+    let isNumberReportData = checkIsNumber(sheetData, formatReportData);
+
+    setReportData({
+      masterCheck: MasertCheckReport,
+      formatData: formatReportData,
+      isNumberData: isNumberReportData,
+    })
   }, [sheets]);
-  useEffect(async () => {
-    let result = await preflightRequests.getData();
-    setStrapiData(result);
-  }, [importData]);
 
-  function handlePass(report) {
-    setIsPass((prevState) => ({ ...prevState, ...report }));
-  }
+  const removeFile = () => {
+    setFile({});
+    setSheets(null);
+    setReportData(null);
+  };
 
-  async function handleImportSummary() {
-    let result = preFlightFile(sheets, strapiData);
-    setImportData(result);
-
-    setIsVisible((prev) => !prev);
-  }
+const showReport = file.name && !_.isEqual(reportData, {
+  formatData: [],
+  isNumberData: [],
+  masterCheck: [],
+})
+const showImport = file.name && _.isEqual(reportData, {
+  formatData: [],
+  isNumberData: [],
+  masterCheck: [],
+})
 
   return (
-    <Box>
-      <Box background="neutral100">
-        <BaseHeaderLayout title="Pre-Flight Check" as="h1" />
-      </Box>
-
-      {isVisible && (
-        <ModalLayout
-          onClose={() => setIsVisible((prev) => !prev)}
-          labelledBy="title"
-        >
-          <ModalHeader>
-            <Typography
-              fontWeight="bold"
-              textColor="neutral800"
-              as="h2"
-              id="title"
-            >
-              Title
-            </Typography>
-          </ModalHeader>
-          <ModalBody>
-            {importData && (
+    <>
+    <Header />
+    <ContentLayout>
+        <Flex direction="column" alignItems="start" gap={8}>
+          <Box style={{ alignSelf: "stretch" }} background="neutral0" padding="32px" hasRadius={true}>
+            <Flex direction="column" alignItems="start" gap={6}>
+              <Typography variant="alpha">
+                  Quick Actions
+              </Typography>
               <Box>
-                <Typography variant="alpha" as="h2">
-                  The body of this module is still developing
-                </Typography>
-                {Object.entries(importData.data).map(([key, value], index) => {
-                  if (Object.keys(value).length > 0) {
-                    return (
-                      <Box key={key + index}>
-                        <Typography variant="beta" as="h4">
-                          {key}
-                        </Typography>
-                      </Box>
-                    );
-                  }
-                })}
+                <Flex direction="column" alignItems="start" gap={4}>
+                  <Flex gap={4}>
+                    {!file?.name && <InjectedImportButton setSheets={setSheets} setFile={setFile}/>}
+                    {
+                      file?.name && <Button onClick={removeFile} variant="tertiary">
+                        Remove File
+                      </Button>
+                    }
+                    {showImport && <ImportButton data={sheets}/>}
+                  </Flex>
+                </Flex>
               </Box>
-            )}
-          </ModalBody>
-          <ModalFooter
-            startActions={
-              <Button
-                onClick={() => setIsVisible((prev) => !prev)}
-                variant="tertiary"
-              >
-                Cancel
-              </Button>
-            }
-            endActions={
-                <Button
-                  onClick={() => {
-                    preflightRequests.importData(importData);
-                    setIsVisible((prev) => !prev);
-                  }}
-                >
-                  Import
-                </Button>
-            }
-          />
-        </ModalLayout>
-      )}
-
-      <Box padding={4} background="neutral100">
-        <Box>
-          <Typography variant="beta">
-            Before importing data to the database, a preflight report must be
-            created. This generates a report validating the data file, checking
-            for common errors and giving feedback on any changes necessary
-            before import.
-          </Typography>
-          <Box>
-            <FieldInput
-              type="file"
-              id="checkFile"
-              name="checkFile"
-              accept=".xlsx"
-              onChange={handleFile}
-            />
-            <FieldLabel htmlFor="checkFile">
-              Upload your "Demographic Data" file. Note that this file must be
-              in .xlsx format.
-            </FieldLabel>
+              { file?.name && (
+                <Box style={{ display: 'flex', gap: 8 }} paddingTop={2} paddingBottom={2}>
+                  <Typography fontWeight="bold" as="p">
+                    File name :
+                  </Typography>
+                  <Typography as="p">{file?.name}</Typography>
+                </Box>
+              )}
+            </Flex>
           </Box>
-        </Box>
-      </Box>
-
-      {sheets && (
-        <Box padding={4} background="primary100">
-          <TabGroup id="reportTabs" label="reportTabs">
-            <Tabs>
-              <Tab>General Check</Tab>
-              <Tab>Basic Data Sheet Check</Tab>
-              <Tab>Other Sheets Check</Tab>
-            </Tabs>
-            <TabPanels>
-              <TabPanel>
-                <AllDataReport sheets={sheets} handlePass={handlePass} />
-              </TabPanel>
-              <TabPanel>
-                <BasicDataReport
-                  sheets={sheets}
-                  master={master}
-                  handlePass={handlePass}
-                />
-              </TabPanel>
-              <TabPanel>
-                <OtherDataReport
-                  sheets={sheets}
-                  master={master}
-                  handlePass={handlePass}
-                />
-              </TabPanel>
-            </TabPanels>
-          </TabGroup>
-          {isPass.allDataReport &&
-            isPass.basicDataReport &&
-            isPass.otherDataReport && (
-              <Box padding={4} background="neutral100">
-                <Button
-                  variant="success"
-                  // onClick={() => setIsVisible(prev => !prev)}
-                  onClick={() => handleImportSummary()}
-                >
-                  Import Data
-                </Button>
-              </Box>
-            )}
-        </Box>
-      )}
-    </Box>
+            { showImport && (
+                <Box style={{ alignSelf: "stretch" }} background="neutral0" padding="32px" hasRadius={true}>
+                  <Typography variant="alpha">
+                      This File passed All the checks and ready to import
+                  </Typography>
+                </Box>
+              )
+            }
+            {
+              showReport && (
+                <Box style={{ alignSelf: "stretch" }} background="neutral0" padding="32px" hasRadius={true}>
+                  <TabGroup id="reportTabs" label="reportTabs">
+                    <Tabs>
+                      {
+                        reportData?.masterCheck && Object.keys(reportData.masterCheck).length > 0 && (
+                          <Tab>Master Check Report</Tab>
+                        )
+                      }
+                      {
+                        reportData?.formatData && Object.keys(reportData.formatData).length > 0 && (
+                          <Tab>Format Check Report</Tab>
+                        )
+                      }
+                      {
+                        reportData?.isNumberData && Object.keys(reportData.isNumberData).length > 0 && (
+                          <Tab>Number Check Report</Tab>
+                        )
+                      }
+                    </Tabs>
+                    <TabPanels>
+                      {
+                        reportData?.masterCheck && Object.keys(reportData.masterCheck).length > 0 && (
+                          <TabPanel>
+                            <MasterReport
+                              data={reportData.masterCheck}
+                            />
+                          </TabPanel>
+                        )
+                      }
+                      {
+                        reportData?.formatData && Object.keys(reportData.formatData).length > 0 && (
+                          <TabPanel>
+                            <FormatReport
+                              reportData={reportData}
+                            />
+                          </TabPanel>
+                        )
+                      }
+                      {
+                        reportData?.isNumberData && Object.keys(reportData.isNumberData).length > 0 && (
+                          <TabPanel>
+                            <NumberReport
+                              reportData={reportData}
+                            />
+                          </TabPanel>
+                        )
+                      }
+                    </TabPanels>
+                  </TabGroup>
+                </Box>
+              )}
+            <Box style={{ alignSelf: "stretch" }} background="neutral0" padding="32px" hasRadius={true}>
+              <Flex direction="column" alignItems="start" gap={6}>
+                <Typography variant="alpha">
+                    Resources
+                </Typography>
+                <Box>
+                  <Flex direction="column" alignItems="start" gap={4}>
+                    <LinkButton variant="default" href="/uploads/template_8c478f67e9.xlsx">
+                     Download Template  
+                    </LinkButton>
+                  </Flex>
+                </Box>
+              </Flex>
+            </Box>
+        </Flex>
+    </ContentLayout>
+    </>
   );
 };
 
