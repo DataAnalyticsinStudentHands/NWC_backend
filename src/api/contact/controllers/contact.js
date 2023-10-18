@@ -4,45 +4,64 @@ module.exports = createCoreController("api::contact.contact", ({ strapi }) => ({
   async sendEmail(ctx) {
     try {
       const { data, template } = ctx.request.body;
-
-      // Insert data into database
-      await strapi.db.query("api::contact.contact").create({
-        data: data,
-      });
-
+      // Validate input data
+      if (!data || !template) {
+        throw new Error("Missing required data or template in the request body.");
+      }
+      // Check if email template exists
+      const emailConfig = await fetchEmailTemplate(template);
+      if (!emailConfig) {
+        throw new Error(`Email template ${template} not found.`);
+      }
+      // Build email object
+      const email = buildEmailObject(data, emailConfig);
       // Send email
-      const templates = await strapi.entityService.findMany(
-        "api::email-template.email-template",
-        {
-          fields: ["bcc", "subject", "text"],
-          filters: {
-            template: {
-              $eq: template,
-            },
-          },
-        }
-      );
-      const emailConfig = templates[0] ?? {};
-      const email = {};
-      email.to = data.Email;
-      email.from = "webadmin@dash.cs.uh.edu";
-      emailConfig.bcc && (email.bcc = emailConfig.bcc);
-      email.subject = emailConfig.subject ?? "NWC - Thanks for contacting us";
-      email.text = `
-  Dear ${data.Name},
-  
-  ${
-    emailConfig.text ??
-    `Thanks for contacting us. We will get back to you soon.`
-  }
-    `;
-      await strapi.plugins["email"].services.email.send(email);
-
+      strapi.plugins["email"].services.email.send(email);
+      // Insert data into database
+      saveContactToDatabase(data);
       ctx.send({
         ok: "email send",
       });
     } catch (err) {
-      ctx.body = err;
+      console.error("Error in sendEmail function:", err.message);
+      ctx.status = 500; // Set server error status
+      ctx.body = { error: "Failed to send email. Please try again later." };
     }
   },
 }));
+
+// Helper function to save contact to database
+async function saveContactToDatabase(data) {
+  return await strapi.db.query("api::contact.contact").create({ data });
+}
+// Helper function to fetch email template
+async function fetchEmailTemplate(template) {
+  const templates = await strapi.entityService.findMany(
+    "api::email-template.email-template",
+    {
+      fields: ["bcc", "subject", "text"],
+      filters: {
+        template: {
+          $eq: template,
+        },
+      },
+    }
+  );
+
+  return templates[0] ?? {};
+}
+
+// Helper function to build email object
+function buildEmailObject(data, emailConfig) {
+  return {
+    to: data.Email,
+    from: "webadmin@dash.cs.uh.edu",
+    bcc: emailConfig.bcc || undefined,
+    subject: emailConfig.subject || "NWC - Thanks for contacting us",
+    text: `
+Dear ${data.Name},
+
+${emailConfig.text || "Thanks for contacting us. We will get back to you soon."}
+`,
+  };
+}
