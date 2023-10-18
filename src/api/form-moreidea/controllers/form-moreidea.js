@@ -1,32 +1,42 @@
 const { createCoreController } = require("@strapi/strapi").factories;
 
-module.exports = createCoreController(
-  "api::form-moreidea.form-moreidea",
-  ({ strapi }) => ({
+module.exports = createCoreController("api::form-moreidea.form-moreidea",({ strapi }) => ({
     async sendEmail(ctx) {
       try {
-        const data = ctx.request.body.data;
-        const emailconfig = await strapi
-          .service("plugin::email-service.emailservice")
-          .find();
+        const { data, template } = ctx.request.body;
 
-        const email = {};
-        email.to = data.Email;
-        email.from = emailconfig.emailFrom ?? "webadmin@dash.cs.uh.edu";
-        emailconfig.emailBCC && (email.bcc = emailconfig.emailBCC);
-        email.subject = emailconfig.emailMoreIdeasSubject ?? "NWC - Thanks for your ideas";
-        email.text = `
-        Dear ${data.Name},
-        
-        ${
-          emailconfig.emailMoreIdeasText ??
-          `Thanks for your ideas. We will get back to you soon.`
-        }
-        `;
-        await strapi.plugins["email"].services.email.send(email);
-        strapi.db.query("api::form-moreidea.form-moreidea").create({
+        // Insert data into database
+        await strapi.db.query("api::form-moreidea.form-moreidea").create({
           data: data,
         });
+  
+        // Send email
+        const templates = await strapi.entityService.findMany(
+          "api::email-template.email-template",
+          {
+            fields: ["bcc", "subject", "text"],
+            filters: {
+              template: {
+                $eq: template,
+              },
+            },
+          }
+        );
+        const emailConfig = templates[0] ?? {};
+        const email = {};
+        email.to = data.Email;
+        email.from = "webadmin@dash.cs.uh.edu";
+        emailConfig.bcc && (email.bcc = emailConfig.bcc);
+        email.subject = emailConfig.subject ?? "NWC - Thanks for your ideas";
+        email.text = `
+    Dear ${data.Name},
+    
+    ${
+      emailConfig.text ??
+      `Thanks for your ideas. We will get back to you soon.`
+    }
+      `;
+        await strapi.plugins["email"].services.email.send(email);
 
         ctx.send({
           ok: "email send",
@@ -35,5 +45,4 @@ module.exports = createCoreController(
         ctx.body = err;
       }
     },
-  })
-);
+  }));

@@ -1,35 +1,48 @@
-const { createCoreController } = require('@strapi/strapi').factories;
+const { createCoreController } = require("@strapi/strapi").factories;
 
-module.exports = createCoreController('api::form.form', ({strapi})=>({
-    async sendEmail(ctx) {
-        try {
-            const data = ctx.request.body.data;
-            const emailconfig = await strapi.service('plugin::email-service.emailservice').find();
+module.exports = createCoreController("api::form.form", ({ strapi }) => ({
+  async sendEmail(ctx) {
+    try {
+      const { data, template } = ctx.request.body;
 
-            const email = {};
-            email.to = data.Email;
-            email.from = emailconfig.emailFrom ?? "webadmin@dash.cs.uh.edu";
-            emailconfig.emailBCC && (email.bcc = emailconfig.emailBCC);
-            email.subject = emailconfig.emailContactUsSubject ?? "NWC - Thanks for your corrections";
-            email.text = `
+      // Insert data into database
+      await strapi.db.query("api::form.form").create({
+        data: data,
+      });
+
+      // Send email
+      const templates = await strapi.entityService.findMany(
+        "api::email-template.email-template",
+        {
+          fields: ["bcc", "subject", "text"],
+          filters: {
+            template: {
+              $eq: template,
+            },
+          },
+        }
+      );
+      const emailConfig = templates[0] ?? {};
+      const email = {};
+      email.to = data.Email;
+      email.from = "webadmin@dash.cs.uh.edu";
+      emailConfig.bcc && (email.bcc = emailConfig.bcc);
+      email.subject = emailConfig.subject ?? "NWC - Thanks for your corrections";
+      email.text = `
         Dear ${data.Name},
         
         ${
-            emailconfig.emailContactUsText ??
-            `Thanks for contacting us. We will get back to you soon.`
+          emailConfig.text ??
+          `Thanks for contacting us. We will get back to you soon.`
         }
             `;
-            await strapi.plugins['email'].services.email.send(email);
-            strapi.db.query('api::form.form').create({
-                data: data,
-            });
+      await strapi.plugins["email"].services.email.send(email);
 
-            ctx.send({
-                ok: 'email send',
-            });
-        }
-      catch (err) {
-        ctx.body = err;
-        }
+      ctx.send({
+        ok: "email send",
+      });
+    } catch (err) {
+      ctx.body = err;
     }
+  },
 }));
