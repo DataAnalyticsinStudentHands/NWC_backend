@@ -15,6 +15,7 @@ module.exports = createCoreController("api::contact.contact", ({ strapi }) => ({
       email.subject = emailconfig.emailContactUsSubject ?? "NWC - Thanks for contacting us";
       email.text = `
   Dear ${data.Name},
+  
   ${
     emailconfig.emailContactUsText ??
     `Thanks for contacting us. We will get back to you soon.`
