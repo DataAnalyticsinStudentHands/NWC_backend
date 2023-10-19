@@ -1,54 +1,66 @@
-const { createCoreController } = require('@strapi/strapi').factories;
+const { createCoreController } = require("@strapi/strapi").factories;
 
-module.exports = createCoreController('api::form.form', ({strapi})=>({
-    async sendEmail(ctx) {
-        try {
-            const emailconfig = await strapi.service('plugin::email-service.emailservice').find();
-            var emailFrom = emailconfig.emailFrom ?? 'webadmin@dash.cs.uh.edu'
-            var emailCC = emailconfig.emailCC ?? ""
-            var emailBCC= emailconfig.emailBCC   ?? ""
-            var emailCorrectionsSubject = emailconfig.emailCorrectionsSubject ?? "No Subject"
-            var emailCorrectionsText = emailconfig.emailCorrectionsText ?? "No Text"
-            var message = 
-    `Dear ${ctx.request.body.data.Name},
-
-    ${emailCorrectionsText}
-
-    Name: ${ctx.request.body.data.Name}
-    Affiliation/Occupation: ${ctx.request.body.data.Affiliation}
-    Email: ${ctx.request.body.data.Email}
-    Name of Page: ${ctx.request.body.data.Page}
-    Name of Feature: ${ctx.request.body.data.Feature}
-    Corrections: ${ctx.request.body.data.Corrections}
-    Source for Correction: ${ctx.request.body.data.Source}`
-
-            strapi.service('plugin::email-service.emailservice').send(
-                emailFrom,       
-                ctx.request.body.data.Email,
-                emailCC ,   
-                emailBCC,   
-                emailCorrectionsSubject,
-                message
-              );
-
-              strapi.db.query('api::form.form').create({
-                data: {
-                  Name: ctx.request.body.data.Name,
-                  Email: ctx.request.body.data.Email,
-                  Affiliation: ctx.request.body.data.Affiliation,
-                  Page: ctx.request.body.data.Page,
-                  Feature: ctx.request.body.data.Feature,
-                  Corrections: ctx.request.body.data.Corrections,
-                  Source: ctx.request.body.data.Source,
-                },
-              });
-
-              ctx.send({
-                ok:'email send'
-              })
-
-        } catch (err) {
-        ctx.body = err;
-        }
-    }
+module.exports = createCoreController("api::form.form", ({ strapi }) => ({
+  async sendEmail(ctx) {
+    try {
+      const { data, template } = ctx.request.body;
+      // Validate input data
+      if (!data || !template) {
+        throw new Error("Missing required data or template in the request body.");
+      }
+      // Check if email template exists
+      const emailConfig = await fetchEmailTemplate(template);
+      if (!emailConfig) {
+        throw new Error(`Email template ${template} not found.`);
+      }
+      // Build email object
+      const email = buildEmailObject(data, emailConfig);
+      // Send email
+      strapi.plugins["email"].services.email.send(email);
+      // Insert data into database
+      saveContactToDatabase(data);
+      ctx.send({
+        ok: "email send",
+      });
+    } catch (err) {
+      console.error("Error in sendEmail function:", err.message);
+      ctx.status = 500; // Set server error status
+      ctx.body = { error: "Failed to send email. Please try again later." };    }
+  },
 }));
+
+// Helper function to save contact to database
+async function saveContactToDatabase(data) {
+  return await strapi.db.query("api::form.form").create({ data });
+}
+// Helper function to fetch email template
+async function fetchEmailTemplate(template) {
+  const templates = await strapi.entityService.findMany(
+    "api::email-template.email-template",
+    {
+      fields: ["bcc", "subject", "text"],
+      filters: {
+        template: {
+          $eq: template,
+        },
+      },
+    }
+  );
+
+  return templates[0] ?? {};
+}
+
+// Helper function to build email object
+function buildEmailObject(data, emailConfig) {
+  return {
+    to: data.Email,
+    from: "webadmin@dash.cs.uh.edu",
+    bcc: emailConfig.bcc || undefined,
+    subject: emailConfig.subject || "NWC - Thanks for your corrections",
+    text: `
+Dear ${data.Name},
+
+${emailConfig.text || "Thanks for contacting us. We will get back to you soon."}
+`,
+  };
+}

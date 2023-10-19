@@ -1,48 +1,67 @@
-const { createCoreController } = require('@strapi/strapi').factories;
+const { createCoreController } = require("@strapi/strapi").factories;
 
-module.exports = createCoreController('api::contact.contact', ({strapi})=>({
-    async sendEmail(ctx) {
-        try {
-            const emailconfig = await strapi.service('plugin::email-service.emailservice').find();
-            var emailFrom = emailconfig.emailFrom ?? 'webadmin@dash.cs.uh.edu'
-            var emailCC = emailconfig.emailCC ?? ""
-            var emailBCC= emailconfig.emailBCC   ?? ""
-            var emailContactUsSubject = emailconfig.emailContactUsSubject ?? "No Subject"
-            var emailContactUsText = emailconfig.emailContactUsText ?? "No Text"
-            var message = 
-    `Dear ${ctx.request.body.data.Name},
-
-    ${emailContactUsText}
-
-    Name: ${ctx.request.body.data.Name}
-    Email: ${ctx.request.body.data.Email}
-    Phone: ${ctx.request.body.data.Phone}
-    Message: ${ctx.request.body.data.Message}`
-
-            strapi.service('plugin::email-service.emailservice').send(
-                emailFrom,       
-                ctx.request.body.data.Email,
-                emailCC ,   
-                emailBCC,   
-                emailContactUsSubject,
-                message
-              );
-
-              strapi.db.query('api::contact.contact').create({
-                data: {
-                  Name: ctx.request.body.data.Name,
-                  Email: ctx.request.body.data.Email,
-                  Phone: ctx.request.body.data.Phone,
-                  Message: ctx.request.body.data.Message,
-                },
-              });
-
-              ctx.send({
-                ok:'email send'
-              })
-
-        } catch (err) {
-        ctx.body = err;
-        }
+module.exports = createCoreController("api::contact.contact", ({ strapi }) => ({
+  async sendEmail(ctx) {
+    try {
+      const { data, template } = ctx.request.body;
+      // Validate input data
+      if (!data || !template) {
+        throw new Error("Missing required data or template in the request body.");
+      }
+      // Check if email template exists
+      const emailConfig = await fetchEmailTemplate(template);
+      if (!emailConfig) {
+        throw new Error(`Email template ${template} not found.`);
+      }
+      // Build email object
+      const email = buildEmailObject(data, emailConfig);
+      // Send email
+      strapi.plugins["email"].services.email.send(email);
+      // Insert data into database
+      saveContactToDatabase(data);
+      ctx.send({
+        ok: "email send",
+      });
+    } catch (err) {
+      console.error("Error in sendEmail function:", err.message);
+      ctx.status = 500; // Set server error status
+      ctx.body = { error: "Failed to send email. Please try again later." };
     }
+  },
 }));
+
+// Helper function to save contact to database
+async function saveContactToDatabase(data) {
+  return await strapi.db.query("api::contact.contact").create({ data });
+}
+// Helper function to fetch email template
+async function fetchEmailTemplate(template) {
+  const templates = await strapi.entityService.findMany(
+    "api::email-template.email-template",
+    {
+      fields: ["bcc", "subject", "text"],
+      filters: {
+        template: {
+          $eq: template,
+        },
+      },
+    }
+  );
+
+  return templates[0] ?? {};
+}
+
+// Helper function to build email object
+function buildEmailObject(data, emailConfig) {
+  return {
+    to: data.Email,
+    from: "webadmin@dash.cs.uh.edu",
+    bcc: emailConfig.bcc || undefined,
+    subject: emailConfig.subject || "NWC - Thanks for contacting us",
+    text: `
+Dear ${data.Name},
+
+${emailConfig.text || "Thanks for contacting us. We will get back to you soon."}
+`,
+  };
+}

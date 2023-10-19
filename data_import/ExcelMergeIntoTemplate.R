@@ -1,17 +1,18 @@
 # Script to convert existing Excel data files into the new template format. 
 # It fixes the name column for all non basic data sheets (e.g. removes middle name column and combines first name and last name).
 # It is recommended to run this script if the Pre-Flight check lists general issues with column names.
+# Users are expeced to fix issues with sheet names manually (the error message will say what it expects) nad the tool lists the file name that has issues.
 # Makes heavily use of openxlsx library - https://ycphs.github.io/openxlsx/reference/index.html
 library(openxlsx)
 library(dplyr)
 library(readxl)
 library(stringr)
+library(scales)
 
 # Prepare source data (HAS TO BE IN SEPARATE FOLDER) and name of output file --------------------------------------------------------
 ## Data will also be merged if multiple files are found (check that you only have files there that need to be fixed/merged)
-source_folder <- 'DataDirectory/California'
-output_filename <- 'California_Merged_2023-06-09_PL.xlsx'
-#output_filename <- 'FordCarter_Merged_2023-06-09_PL.xlsx'
+source_folder <- 'DataDirectory/Nevada/Nevada Young Fall 2022'
+output_filename <- 'Nevada_Merged_2023-10-17_PL.xlsx'
 
 ## list all source files found in folder
 files <- list.files(source_folder, full.names = TRUE, recursive = TRUE, pattern = "xlsx") 
@@ -26,19 +27,18 @@ wb <- createWorkbook()
 ## Read/Add the validations sheet - we use those cells to create the drop-downs
 addWorksheet(wb, "Validations")
 validations <- read_excel("template.xlsx", col_types = 'text', sheet = "Validations")
-writeData(wb, validations, sheet="Validations", row.names=FALSE, startRow=1)
+writeData(wb, validations, sheet="Validations", rowNames=FALSE, startRow=1)
 
-## cell styles to be applied later
-outputStyle <- createStyle(fontSize = 12, 
-                           border = c("top", "bottom", "left", "right"),
-                           borderColour = openxlsx_getOp("borderColour", "black"),
-                           borderStyle = openxlsx_getOp("borderStyle", "thin"),
-                           wrapText = TRUE)
-coloredStyle <- createStyle(fgFill = "#ffa500",
-                           border = c("top", "bottom", "left", "right"),
-                           borderColour = openxlsx_getOp("borderColour", "black"),
-                           borderStyle = openxlsx_getOp("borderStyle", "thin"),
-                           wrapText = TRUE)
+## Define cell styles to be applied later
+bodyStyle <- createStyle(fontSize = 12, border = "TopBottomLeftRight", borderColour = "black", wrapText = TRUE)
+coloredStyle <- createStyle(fontSize = 12, border = "TopBottomLeftRight", borderColour = "black", wrapText = TRUE, bgFill = "orange") 
+numStyle <- createStyle(fontSize = 12, border = "TopBottomLeftRight", borderColour = "black", wrapText = TRUE, numFmt = "#,###")
+
+## Wrapper for Excel data reading with print statement
+read_demographic_data <- function(file, sheet) {
+  print(paste("Reading", sheet, "sheet from: ", file))
+  read_excel(file, col_types = 'text', .name_repair="universal", sheet = sheet)
+}
 
 # BASIC DATA -----------------------------------------------------------------------------
 ## Read basic data template 
@@ -46,11 +46,11 @@ basic_template <- read_excel("template.xlsx", col_types = 'text', sheet = "Basic
   filter(`ID` != "0") #removing any existing data from template
 
 ## Read basic data sheet from all files, clean/rename column names to avoid issues
-basic_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_repair="universal", sheet = "Basic Data", read_excel) %>%
+basic_file_data <- purrr::map_dfr(files$files, sheet = "Basic Data", read_demographic_data) %>%
   mutate(ID = str_pad(ID, width=4, side="left", pad="0")) %>% #pad ID with leading zeros
+  rename(`Middle Name and/or Initial 1` =  if("Middle.Name.and.or.Initial.and.or.Nickname" %in% colnames(.)) `Middle.Name.and.or.Initial.and.or.Nickname`) %>% #if condition takes care if new template is being used
   rename(`Last Name` =  `Last.Name`,                                                              
          `First Name` = `First.Name`,                                                             
-         `Middle Name and/or Initial 1` =  `Middle.Name.and.or.Initial.and.or.Nickname`, 
          `Age in 1977` =  `Age.in.1977`,
          `Place of Birth` = `Place.of.Birth`, 
          `Total Population of Place of Residence (check US Census)` = `Total.Population.of.Place.of.Residence..check.US.Census.`,
@@ -61,6 +61,8 @@ basic_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_repair=
   mutate(`Birthdate Month` = if("Birthdate" %in% colnames(.)) `Birthdate`) %>%
   mutate(`Deathdate Month` = if("Date.of.Death" %in% colnames(.)) `Date.of.Death`) %>%
   select(-any_of(c("Birthdate", "Date.of.Death"))) %>%
+  mutate(`Median Household Income of Place of Residence (check US Census)` = as.numeric(`Median Household Income of Place of Residence (check US Census)`)) %>%
+  mutate(`Median Household Income of Place of Residence (check US Census)` = scales::dollar(`Median Household Income of Place of Residence (check US Census)`, largest_with_cents = 0)) %>%
   mutate(across(everything(), str_replace, 'unknown', '')) %>% # remove unknown
   mutate(across(everything(), str_replace, 'n/a', '')) %>% # remove n/a 
   mutate(across(everything(), str_replace, 'N/A', ''))
@@ -72,7 +74,8 @@ basic_data <- full_join(basic_template, basic_file_data) %>%
          -starts_with("Latitude"),
          -starts_with("Longitude"), 
          -starts_with("Name.of.Spouse"))
-writeData(wb, basic_data, sheet="Basic Data", row.names=FALSE, startRow=1)
+
+writeData(wb, basic_data, sheet="Basic Data", rowNames=FALSE, startRow=1)
 
 ## Add basic data validation with drop-downs
 dataValidation(wb, sheet="Basic Data",
@@ -88,44 +91,20 @@ dataValidation(wb, sheet="Basic Data",
                col = 27, rows = 2:(nrow(basic_data)+1), type = "list", 
                value = "'Validations'!$D$2:$D4") # sexual_orientation
 
-## Read styles
-library(tidyxl)
-path <- files$files[1]
-
-formats <- xlsx_formats(path)
-colors_used <- formats$local$fill$patternFill$fgColor$rgb
-
-cells <-
-  xlsx_cells(path, sheet = "Basic Data") %>%
-  select(row, col, character, style_format, local_format_id) %>%
-  mutate(colored = colors_used[local_format_id]) %>%
-  filter(colored == "FF00FF00")
-cells
-
-#find rows fo cells  with red background
-cells[ cells$local_format_id %in%
-         which( formats$local$fill$patternFill$fgColor$rgb == "FF00FF00"), 
-       "row" ]
-
-saveWorkbook(wb, output_filename, overwrite = TRUE)
-
-color_white <- "#FFFFFF00"
-color_pick <- "#FF00FFFF"
-color_yellow <- "#FFFFFF00"
-color_yellow <- "#FFFFFFFF"
-
 ## apply styles and set row height for header column
-addStyle(wb, sheet = "Basic Data", outputStyle, rows=1:(nrow(basic_data)+1), cols=1:ncol(basic_data), gridExpand = TRUE)
-addStyle(wb, sheet = "Basic Data", coloredStyle, rows=1, cols=c(4,5,6), gridExpand = TRUE)
+addStyle(wb, sheet = "Basic Data", style = bodyStyle, rows=1:(nrow(basic_data)+1), cols=1:ncol(basic_data), gridExpand = TRUE)
+addStyle(wb, sheet = "Basic Data", style = numStyle, rows=1:(nrow(basic_data)+1), cols = c(22), gridExpand = TRUE)
+conditionalFormatting(wb, sheet = "Basic Data", rows=1:(nrow(basic_data)+1), cols=c(4,5,6), rule="!=0", style = coloredStyle)
+conditionalFormatting(wb, sheet = "Basic Data", rows=1:(nrow(basic_data)+1), cols=c(4,5,6), rule="==0", style = coloredStyle)
 setRowHeights(wb, "Basic Data", rows = 1, heights = 256)
 
 # RACE & ETHNICITY ---------------------------------------------------------------
-## Read reg race data template 
+## Read reg race data template
 race_reg_template <- read_excel("template.xlsx", col_types = 'text', sheet = "Race & Ethnicity--Reg Forms") %>%
   filter(`ID` != "0") #removing any existing data from template
 
 ## Read reg race data sheet from all files, clean/rename columns
-race_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_repair="universal", sheet = "Race & Ethnicity--Reg Forms", read_excel) %>%
+race_file_data <- purrr::map_dfr(files$files, sheet = "Race & Ethnicity--Reg Forms", read_demographic_data) %>%
   mutate(ID = str_pad(ID, width=4, side="left", pad="0")) %>% #pad ID with leading zeros
   rename(`Asian American/Pacific Islander` =  `Asian.American.Pacific.Islander`,
          `Native American/American Indian` = `Native.American.American.Indian`) %>%
@@ -139,7 +118,7 @@ race_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_repair="
 ## Create the reg race data and add to workbook (removing columns that are not used in new template)
 addWorksheet(wb, "Race & Ethnicity--Reg Forms")
 race_reg_data <- full_join(race_reg_template, race_file_data)
-writeData(wb, race_reg_data, sheet="Race & Ethnicity--Reg Forms", row.names=FALSE, startRow=1)
+writeData(wb, race_reg_data, sheet="Race & Ethnicity--Reg Forms", rowNames=FALSE, startRow=1)
 
 ## Add race reg data validation with drop-downs
 dataValidation(wb, sheet="Race & Ethnicity--Reg Forms",
@@ -147,7 +126,7 @@ dataValidation(wb, sheet="Race & Ethnicity--Reg Forms",
                value = "'Validations'!$E$2:$E$2") # race yes
 
 ## apply styles and set row height for header column
-addStyle(wb, sheet = "Race & Ethnicity--Reg Forms", outputStyle, rows=1:(nrow(race_reg_data)+1), cols=1:ncol(race_reg_data), gridExpand = TRUE)
+addStyle(wb, sheet = "Race & Ethnicity--Reg Forms", style = bodyStyle, rows=1:(nrow(race_reg_data)+1), cols=1:ncol(race_reg_data), gridExpand = TRUE)
 setRowHeights(wb, "Race & Ethnicity--Reg Forms", rows = 1, heights = 64)
 
 ## Read expanded race data template (will be used if file doesn't contain an extended race sheet)
@@ -156,13 +135,14 @@ race_ext_template <- read_excel("template.xlsx", col_types = 'text', sheet = "Ra
 
 ## Read/Create the ext race data and add to workbook 
 addWorksheet(wb, "Race & Ethnicity--Expanded")
+
 ## Check whether extended race sheet exists
 if (!'Race & Ethnicity--Expanded' %in% file_sheets) {
   race_ext_file_data <- race_file_data %>%
     select(ID, Name) # only adding ID and name from race sheet
   race_ext_data <- full_join(race_ext_template, race_ext_file_data)
 } else {
-  race_ext_data <- purrr::map_dfr(files$files, col_types = 'text', sheet = "Race & Ethnicity--Expanded", read_excel) %>%
+  race_ext_data <- purrr::map_dfr(files$files, sheet = "Race & Ethnicity--Expanded", read_demographic_data) %>%
   mutate(ID = str_pad(ID, width=4, side="left", pad="0")) %>%
     mutate( Name = if("First Name" %in% colnames(.)) str_c(`Last Name`,`First Name`) else Name) %>%
     relocate(Name, .after = ID) %>%
@@ -172,7 +152,7 @@ if (!'Race & Ethnicity--Expanded' %in% file_sheets) {
     mutate(across(everything(), str_replace, 'N/A', ''))
 }
 
-writeData(wb, race_ext_data, sheet="Race & Ethnicity--Expanded", row.names=FALSE, startRow=1)
+writeData(wb, race_ext_data, sheet="Race & Ethnicity--Expanded", rowNames=FALSE, startRow=1)
 
 ## Add race ext data validation with drop-downs
 dataValidation(wb, sheet="Race & Ethnicity--Expanded",
@@ -180,7 +160,7 @@ dataValidation(wb, sheet="Race & Ethnicity--Expanded",
                value = "'Validations'!$E$2:$E$2") # race yes
 
 ## apply styles and set row height for header column
-addStyle(wb, sheet = "Race & Ethnicity--Expanded", outputStyle, rows=1:(nrow(race_reg_data)+1), cols=1:ncol(race_ext_data), gridExpand = TRUE)
+addStyle(wb, sheet = "Race & Ethnicity--Expanded", style = bodyStyle, rows=1:(nrow(race_reg_data)+1), cols=1:ncol(race_ext_data), gridExpand = TRUE)
 setRowHeights(wb, "Race & Ethnicity--Expanded", rows = 1, heights = 64)
 
 
@@ -190,7 +170,7 @@ ed_template <- read_excel("template.xlsx", col_types = 'text', sheet = "Ed & Car
   filter(`ID` != "0") #removing any existing data from template
 
 ## Read ed & career data sheet from all files, clean/rename columns
-ed_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_repair="universal", sheet = "Ed & Career", read_excel) %>%
+ed_file_data <- purrr::map_dfr(files$files, sheet = "Ed & Career", read_demographic_data) %>%
   mutate(ID = str_pad(ID, width=4, side="left", pad="0")) %>% #pad ID with leading zeros
   rename(`Highest Level of Education Attained` = `Highest.Level.of.Education.Attained`,
          `High School` = `High.School`,
@@ -215,7 +195,7 @@ ed_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_repair="un
 addWorksheet(wb, "Ed & Career")
 ed_data <- full_join(ed_template, ed_file_data) %>%
   select(-`Spouse.s.Profession..if.more.than.one..list.all.but.create.new.row.for.each.`)
-writeData(wb, ed_data, sheet="Ed & Career", row.names=FALSE, startRow=1)
+writeData(wb, ed_data, sheet="Ed & Career", rowNames=FALSE, startRow=1)
 
 ## Add ed data validation with drop-downs
 dataValidation(wb, sheet="Ed & Career",
@@ -229,7 +209,7 @@ dataValidation(wb, sheet="Ed & Career",
                value = "'Validations'!$I$2:$I$28") # employment categories
 
 ## apply styles and set row height for header column
-addStyle(wb, sheet = "Ed & Career", outputStyle, rows=1:(nrow(ed_data)+1), cols=1:ncol(ed_data), gridExpand = TRUE)
+addStyle(wb, sheet = "Ed & Career", style = bodyStyle, rows=1:(nrow(ed_data)+1), cols=1:ncol(ed_data), gridExpand = TRUE)
 setRowHeights(wb, "Ed & Career", rows = 1, heights = 156)
 
 # ELECTORAL POLITICS DATA ---------------------------------------------------------------
@@ -238,7 +218,7 @@ electoral_template <- read_excel("template.xlsx", col_types = 'text', sheet = "E
   filter(`ID` != "0") #removing any existing data from template
 
 ## Read electoral data sheet from all files, clean/rename columns
-electoral_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_repair="universal", sheet = "Electoral Politics", read_excel) %>%
+electoral_file_data <- purrr::map_dfr(files$files, sheet = "Electoral Politics", read_demographic_data) %>%
   mutate(ID = str_pad(ID, width=4, side="left", pad="0")) %>% #pad ID with leading zeros
   rename(`Jurisdiction of Political Offices Held (if true for more than one category, create a new row for each)` = `Jurisdiction.of.Political.Offices.Held..if.true.for.more.than.one.category..create.a.new.row.for.each.`, 
          `Name of Political Offices Held (if more than one, list all but create new row for each)` = `Name.of.Political.Offices.Held..if.more.than.one..list.all.but.create.new.row.for.each.`,
@@ -263,7 +243,7 @@ electoral_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_rep
 addWorksheet(wb, "Electoral Politics")
 electoral_data <- full_join(electoral_template, electoral_file_data) %>%
   select(-starts_with("Spouse.partner.s.Political."))
-writeData(wb, electoral_data, sheet="Electoral Politics", row.names=FALSE, startRow=1)
+writeData(wb, electoral_data, sheet="Electoral Politics", rowNames=FALSE, startRow=1)
 
 ## Add electoral data validation with drop-downs
 dataValidation(wb, sheet="Electoral Politics",
@@ -286,7 +266,7 @@ dataValidation(wb, sheet="Electoral Politics",
                value = "'Validations'!$E$2:$E$2") # yes
 
 ## apply styles and set row height for header column
-addStyle(wb, sheet = "Electoral Politics", outputStyle, rows=1:(nrow(electoral_data)+1), cols=1:ncol(electoral_data), gridExpand = TRUE)
+addStyle(wb, sheet = "Electoral Politics", style = bodyStyle, rows=1:(nrow(electoral_data)+1), cols=1:ncol(electoral_data), gridExpand = TRUE)
 setRowHeights(wb, "Electoral Politics", rows = 1, heights = 156)
 
 # SPOUSE DATA ---------------------------------------------------------------
@@ -313,11 +293,12 @@ spouse_info3 <- electoral_file_data %>%
 
 spouse_data <- full_join(spouse_template, spouse_info3) %>%
   relocate(Notes, .after = last_col())
-writeData(wb, spouse_data, sheet="Spouse Partner Info", row.names=FALSE, startRow=1)
+writeData(wb, spouse_data, sheet="Spouse Partner Info", rowNames=FALSE, startRow=1)
 
 ## apply styles and set row height for header column
-addStyle(wb, sheet = "Spouse Partner Info", outputStyle, rows=1:(nrow(spouse_data)+1), cols=1:ncol(spouse_data), gridExpand = TRUE)
-addStyle(wb, sheet = "Spouse Partner Info", coloredStyle, rows=1, cols=c(3), gridExpand = TRUE)
+addStyle(wb, sheet = "Spouse Partner Info", style = bodyStyle, rows=1:(nrow(spouse_data)+1), cols=1:ncol(spouse_data), gridExpand = TRUE)
+conditionalFormatting(wb, sheet = "Spouse Partner Info", rows=1:(nrow(basic_data)+1), cols=c(3), rule="!=0", style = coloredStyle)
+conditionalFormatting(wb, sheet = "Spouse Partner Info", rows=1:(nrow(basic_data)+1), cols=c(3), rule="==0", style = coloredStyle)
 setRowHeights(wb, "Spouse Partner Info", rows = 1, heights = 150)
 
 # LEADERSHIP IN ORG DATA ---------------------------------------------------------------
@@ -326,9 +307,9 @@ leadership_template <- read_excel("template.xlsx", col_types = 'text', sheet = "
   filter(`ID` != "0") #removing any existing data from template
 
 ## Read leadership data sheet from all files, clean/rename columns
-leadership_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_repair="universal", sheet = "Leadership in Org", read_excel) %>%
+leadership_file_data <- purrr::map_dfr(files$files, sheet = "Leadership in Org", read_demographic_data) %>%
   mutate(ID = str_pad(ID, width=4, side="left", pad="0")) %>% #pad ID with leading zeros
-  rename(`Specific Name of Leadership Position  (create separate row for each leadership position)` = `Leadership.positions.in.voluntary.organizations..create.separate.row.for.each.leadership.position.and.identify.the.group.`) %>%
+  rename(`Specific Name of Leadership Position  (create separate row for each leadership position)` = if("Leadership.positions.in.voluntary.organizations..create.separate.row.for.each.leadership.position.and.identify.the.group." %in% colnames(.)) `Leadership.positions.in.voluntary.organizations..create.separate.row.for.each.leadership.position.and.identify.the.group.`) %>% #if condition takes care if new template is being used
   mutate(Name = if("First.Name" %in% colnames(.)) str_c(`Last.Name`,`First.Name`) else Name) %>%
   relocate(Name, .after = ID) %>%
   select(-any_of(c("Middle.Name.and.or.Initial.and.or.Nickname", "First.Name", "Last.Name"))) %>%
@@ -339,7 +320,7 @@ leadership_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_re
 ## Create the leadership data and add to workbook (adding columns from new template)
 addWorksheet(wb, "Leadership in Org")
 leadership_data <- full_join(leadership_template, leadership_file_data)
-writeData(wb, leadership_data, sheet="Leadership in Org", row.names=FALSE, startRow=1)
+writeData(wb, leadership_data, sheet="Leadership in Org", rowNames=FALSE, startRow=1)
 
 ## Add leadership data validation with drop-downs
 dataValidation(wb, sheet="Leadership in Org",
@@ -347,12 +328,12 @@ dataValidation(wb, sheet="Leadership in Org",
                value = "'Validations'!$M$2:$M$10") # leadership role
 
 ## apply styles and set row height for header column
-addStyle(wb, sheet = "Leadership in Org", outputStyle, rows=1:(nrow(leadership_data)+1), cols=1:ncol(leadership_data), gridExpand = TRUE)
+addStyle(wb, sheet = "Leadership in Org", style = bodyStyle, rows=1:(nrow(leadership_data)+1), cols=1:ncol(leadership_data), gridExpand = TRUE)
 setRowHeights(wb, "Leadership in Org", rows = 1, heights = 156)
 
 # ORG & POLITICAL DATA ---------------------------------------------------------------
 ## Read political data sheet from all files (don't fix column names)
-political_file_data <- purrr::map_dfr(files$files, col_types = 'text', sheet = "Organizational & Political", read_excel) %>%
+political_file_data <- purrr::map_dfr(files$files, sheet = "Organizational & Political", read_demographic_data) %>%
   mutate(ID = str_pad(ID, width=4, side="left", pad="0")) %>% #pad ID with leading zeros
   mutate( Name = if("First Name" %in% colnames(.)) str_c(`Last Name`,`First Name`) else Name) %>%
   relocate(Name, .after = ID) %>%
@@ -363,7 +344,7 @@ political_file_data <- purrr::map_dfr(files$files, col_types = 'text', sheet = "
 
 ## Add political data
 addWorksheet(wb, "Organizational & Political")
-writeData(wb, political_file_data, sheet="Organizational & Political", row.names=FALSE, startRow=1)
+writeData(wb, political_file_data, sheet="Organizational & Political", rowNames=FALSE, startRow=1)
 
 ## Add political data validation with drop-downs
 dataValidation(wb, sheet="Organizational & Political",
@@ -371,7 +352,7 @@ dataValidation(wb, sheet="Organizational & Political",
                value = "'Validations'!$M$2:$M$10") # leadership role
 
 ## apply styles and set row height for header column
-addStyle(wb, sheet = "Organizational & Political", outputStyle, rows=1:(nrow(political_file_data)+1), cols=1:ncol(political_file_data), gridExpand = TRUE)
+addStyle(wb, sheet = "Organizational & Political", style = bodyStyle, rows=1:(nrow(political_file_data)+1), cols=1:ncol(political_file_data), gridExpand = TRUE)
 setRowHeights(wb, "Organizational & Political", rows = 1, heights = 156)
 
 # ROLE AT NWC DATA ---------------------------------------------------------------
@@ -415,7 +396,7 @@ role_lookup <- c(`Delegate at the NWC` =  "Delegate.at.the.NWC",
                  `Women in Sports Caucus` = "Women.in.Sports.Caucus",
                  `Youth Caucus` = "Youth.Caucus",
                  `Other Role` = "Other.Role")
-role_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_repair="universal", sheet = "Role at NWC", read_excel) %>%
+role_file_data <- purrr::map_dfr(files$files, sheet = "Role at NWC", read_demographic_data) %>%
   mutate(ID = str_pad(ID, width=4, side="left", pad="0")) %>% #pad ID with leading zeros
   select(ID:`Other.Role`) %>%
   rename(any_of(role_lookup)) %>%
@@ -429,7 +410,7 @@ role_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_repair="
 ## Create the role data and add to workbook (adding columns from new template)
 addWorksheet(wb, "Role at NWC")
 role_data <- full_join(role_template, role_file_data)
-writeData(wb, role_data, sheet="Role at NWC", row.names=FALSE, startRow=1)
+writeData(wb, role_data, sheet="Role at NWC", rowNames=FALSE, startRow=1)
 
 ## Add role data validation with drop-downs
 dataValidation(wb, sheet="Role at NWC",
@@ -437,7 +418,7 @@ dataValidation(wb, sheet="Role at NWC",
                value = "'Validations'!$F$2:$F$3") # role yes no
 
 ## apply styles and set row height for header column
-addStyle(wb, sheet = "Role at NWC", outputStyle, rows=1:(nrow(role_data)+1), cols=1:ncol(role_data), gridExpand = TRUE)
+addStyle(wb, sheet = "Role at NWC", style = bodyStyle, rows=1:(nrow(role_data)+1), cols=1:ncol(role_data), gridExpand = TRUE)
 setRowHeights(wb, "Role at NWC", rows = 1, heights = 64)
 
 # POSITION ON PLANKS DATA ---------------------------------------------------------------
@@ -448,9 +429,9 @@ planks_template <- read_excel("template.xlsx", col_types = 'text', sheet = "Posi
 ## Read planks data from all files, clean/rename columns
 ## Check whether planks data sheet exists
 if (!'Position on Planks' %in% file_sheets) {
-  planks_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_repair="universal", sheet = "Role at NWC", read_excel) 
+  planks_file_data <- purrr::map_dfr(files$files, sheet = "Role at NWC", read_demographic_data) 
 } else {
-  planks_file_data <- purrr::map_dfr(files$files, col_types = 'text', .name_repair="universal", sheet = "Position on Planks", read_excel)
+  planks_file_data <- purrr::map_dfr(files$files, sheet = "Position on Planks", read_demographic_data)
 }
 
 planks_file_data <- planks_file_data %>%
@@ -494,7 +475,7 @@ planks_file_data <- planks_file_data %>%
 ## Create the planks data and add to workbook (removing columns that are not used in new template)
 addWorksheet(wb, "Position on Planks")
 planks_data <- full_join(planks_template, planks_file_data)
-writeData(wb, planks_data, sheet="Position on Planks", row.names=FALSE, startRow=1)
+writeData(wb, planks_data, sheet="Position on Planks", rowNames=FALSE, startRow=1)
 
 ## Add planks data validation with drop-downs
 dataValidation(wb, sheet="Position on Planks",
@@ -502,16 +483,16 @@ dataValidation(wb, sheet="Position on Planks",
                value = "'Validations'!$G$2:$G$4") # planks
 
 ## apply styles and set row height for header column
-addStyle(wb, sheet = "Position on Planks", outputStyle, rows=1:(nrow(planks_data)+1), cols=1:ncol(planks_data), gridExpand = TRUE)
+addStyle(wb, sheet = "Position on Planks", style = bodyStyle, rows=1:(nrow(planks_data)+1), cols=1:ncol(planks_data), gridExpand = TRUE)
 setRowHeights(wb, "Position on Planks", rows = 1, heights = 64)
 
 # SIMPLE COPY Questions Sources ---------------------------------------------------------------
 addWorksheet(wb, "Questions")
 questions_data <- purrr::map_dfr(files$files, col_types = 'text', sheet = "Questions", read_excel)
-writeData(wb, questions_data, sheet="Questions", row.names=FALSE, startRow=1)
+writeData(wb, questions_data, sheet="Questions", rowNames=FALSE, startRow=1)
 
 ## apply styles and set row height for header column
-addStyle(wb, sheet = "Questions", outputStyle, rows=1:(nrow(questions_data)+1), cols=1:ncol(questions_data), gridExpand = TRUE)
+addStyle(wb, sheet = "Questions", style = bodyStyle, rows=1:(nrow(questions_data)+1), cols=1:ncol(questions_data), gridExpand = TRUE)
 setRowHeights(wb, "Questions", rows = 1, heights = 120)
 
 addWorksheet(wb, "Sources")
@@ -519,10 +500,10 @@ sources_data <- purrr::map_dfr(files$files, col_types = 'text', sheet = "Sources
   mutate(ID = str_pad(ID, width=4, side="left", pad="0")) %>% #pad ID with leading zeros 
   #select(ID:"Source 61") %>%
   slice_head(n = 68)
-writeData(wb, sources_data, sheet="Sources", row.names=FALSE, startRow=1)
+writeData(wb, sources_data, sheet="Sources", rowNames=FALSE, startRow=1)
 
 ## apply styles and set row height for header column
-addStyle(wb, sheet = "Sources", outputStyle, rows=1:(nrow(sources_data)+1), cols=1:ncol(sources_data), gridExpand = TRUE)
+addStyle(wb, sheet = "Sources", style = bodyStyle, rows=1:(nrow(sources_data)+1), cols=1:ncol(sources_data), gridExpand = TRUE)
 setRowHeights(wb, "Sources", rows = 1, heights = 120)
 
 # Write the Excel file --------------------------------------------------------
@@ -530,10 +511,29 @@ worksheetOrder(wb) <- c(2, 7, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 1) # move spouse
 activeSheet(wb) <- "Basic Data"
 saveWorkbook(wb, output_filename, overwrite = TRUE)
 
-
-#Questions for Nancy
-#Formatting for median income and population. Number, currency? - yes, carry forward
-#Need to keep color coding
+## Work in progress Read styles color coding
+# library(tidyxl)
+# path <- files$files[1]
+# 
+# formats <- xlsx_formats(path)
+# colors_used <- formats$local$fill$patternFill$fgColor$rgb
+# 
+# cells <-
+#   xlsx_cells(path, sheet = "Basic Data") %>%
+#   select(row, col, character, style_format, local_format_id) %>%
+#   mutate(colored = colors_used[local_format_id]) %>%
+#   filter(colored == "FF00FF00")
+# cells
+# 
+# #find rows fo cells  with red background
+# cells[ cells$local_format_id %in%
+#          which( formats$local$fill$patternFill$fgColor$rgb == "FF00FF00"), 
+#        "row" ]
+# 
+# color_white <- "#FFFFFF00"
+# color_pick <- "#FF00FFFF"
+# color_yellow <- "#FFFFFF00"
+# color_yellow <- "#FFFFFFFF"
 
 
 
