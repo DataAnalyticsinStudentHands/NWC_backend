@@ -26,6 +26,9 @@
     },
     "ExploreText": {
       "type": "richtext"
+    },
+    "NWC_Means_VideoURL": {
+      "type": "string"
     }
   }
 }
