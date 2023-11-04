@@ -29,7 +29,7 @@
     },
     "OralHistory_Role_Toggle": {
       "type": "boolean",
-      "default": true
+      "default": false
     }
   }
 }
