@@ -26,6 +26,10 @@
       "relation": "manyToMany",
       "target": "api::nwc-participant.nwc-participant",
       "mappedBy": "role"
+    },
+    "OralHistory_Role_Toggle": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
