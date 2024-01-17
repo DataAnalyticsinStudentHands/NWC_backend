@@ -2,6 +2,7 @@ module.exports = ({ env }) => (
   {
     host: env('HOST', '0.0.0.0'),
     port: env.int('PORT', 1337),
+    url: env('PUBLIC_URL', 'https://dash.cs.uh.edu'),
     //v4.6.1
     // url: 'http://localhost:1337',
     // webhooks: {

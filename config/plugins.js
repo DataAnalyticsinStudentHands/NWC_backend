@@ -8,16 +8,16 @@ module.exports = {
     enabled: true,
   },
   email: {
+	config:{
     provider: "nodemailer",
     providerOptions: {
       sendmail: true,
-      newline: "unix",
-      path: "/usr/sbin/sendmail",
     },
     settings: {
       defaultFrom: "webadmin@dash.cs.uh.edu",
       defaultReplyTo: "",
     },
+	},
   },
   // ...
 };
