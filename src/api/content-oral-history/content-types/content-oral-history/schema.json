@@ -1,0 +1,34 @@
+{
+  "kind": "singleType",
+  "collectionName": "content_oral_histories",
+  "info": {
+    "singularName": "content-oral-history",
+    "pluralName": "content-oral-histories",
+    "displayName": "Content-oral-histories",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "BannerText": {
+      "type": "richtext"
+    },
+    "BannerImage_Credit": {
+      "type": "string"
+    },
+    "BannerImageCredit_more": {
+      "type": "string"
+    },
+    "What_NWC_Means": {
+      "type": "richtext"
+    },
+    "ExploreText": {
+      "type": "richtext"
+    },
+    "NWC_Means_VideoURL": {
+      "type": "string"
+    }
+  }
+}
