@@ -129,3 +129,4 @@ data
 .env.shark
 data_import/DataDirectory
 .Rhistory
+data_import/Output
