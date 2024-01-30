@@ -1,6 +1,6 @@
 const master = require("./res/IDCodeRangesMaster_V1_NBY_2023-02-27.json");
 
-export default function checkWithMaser(sheets) {
+export default function checkWithMaster(sheets) {
     const masterCheck = {
       ID: "id",
       "Last Name": "last_name",
