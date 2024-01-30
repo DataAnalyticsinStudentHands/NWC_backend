@@ -20,7 +20,7 @@ const FormatReport = (props) => {
       <Box padding={4}>
         <Flex direction="column" alignItems="start" gap={2}>
           <Typography variant="beta">
-            This process will not check the sheets of 'Organizational & Political', 'Role at NWC' 
+            This process will not check the 'Organizational & Political' sheet.
           </Typography>
           <Typography variant="beta">
             The suggestion section is only for reference. Please check the template.

@@ -1,4 +1,4 @@
-const format = require("./res/TXDemographics_NBY_Pub_2023-04-03.json");
+const format = require("./res/DemographicsTemplate_2024-01-29.json");
 
 function matchStringWithArray(string, array, stop_words) {
 	stop_words = stop_words || [];
@@ -18,7 +18,7 @@ function matchStringWithArray(string, array, stop_words) {
 	return Object.keys(obj).filter((key) => obj[key] === maxCount && maxCount > 1);
 }
 export default function checkFormat(sheets) {
-    const stop_sheet_list = ["Organizational & Political", "Role at NWC"];
+    const stop_sheet_list = ["Organizational & Political", "Questions", "Sources"];
     let errors = [];
     sheets && Object.entries(sheets).forEach(([sheetName, sheetData]) => {
         if(!format[sheetName]) {
@@ -44,28 +44,6 @@ export default function checkFormat(sheets) {
                 });
             });
         }
-        // const headings = format[sheetName]?.headings;
-        // if (headings) {
-        //     sheetData.forEach((row) => {
-        //         Object.keys(row).forEach((key) => {
-        //             if (!headings.includes(key) && !_.startsWith(key, 'Notes')) {
-        //                 let error = {
-        //                     sheetName: sheetName,
-        //                     key: key,
-        //                     errorMessage: `Not a valid heading: ${sheetName} | ${key}`,
-        //                 }
-        //                 headings.forEach((header) => {
-        //                     if(_.startsWith(header, key.substring(0, (key.length)/2))) {
-        //                         error.suggestion = header;
-        //                     } else if (_.startsWith(key, header.substring(0, (key.length)/2))) {
-        //                         error.suggestion = header;
-        //                     }
-        //                 });
-        //                 errors.push(error);
-        //             }
-        //         });
-        //     });
-        // }
     });
 
     return _.uniqWith(errors, _.isEqual);

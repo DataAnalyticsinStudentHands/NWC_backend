@@ -1,8 +1,8 @@
 import checkIsNumber from "./checkIsNumber";
 import checkFormat from "./checkFormat";
-import checkWithMaser from "./checkWithMaser";
+import checkWithMaster from "./checkWithMaster";
 export {
-    checkWithMaser,
+    checkWithMaster,
     checkIsNumber,
     checkFormat,
 }

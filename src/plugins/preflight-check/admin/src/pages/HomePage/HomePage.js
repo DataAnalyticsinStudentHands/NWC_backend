@@ -18,7 +18,7 @@ import NumberReport from "../../components/NumberReport";
 import { Header } from "../../components/Header/Header";
 import { InjectedImportButton } from '../../components/InjectedImportButton';
 import { ImportButton } from "../../components/ImportButton";
-import { checkFormat, checkWithMaser, checkIsNumber } from "../../utils/data_check";
+import { checkFormat, checkWithMaster, checkIsNumber } from "../../utils/data_check";
 
 const HomePage = () => {
   const [file, setFile] = useState({});
@@ -28,7 +28,7 @@ const HomePage = () => {
     setReportData(null);
     const sheetData = JSON.parse(sheets);
 
-    let MasertCheckReport = checkWithMaser(sheetData);
+    let MasertCheckReport = checkWithMaster(sheetData);
     let formatReportData = checkFormat(sheetData);
     let isNumberReportData = checkIsNumber(sheetData, formatReportData);
 
