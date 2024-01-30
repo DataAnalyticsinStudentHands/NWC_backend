@@ -1,4 +1,4 @@
-const format = require("./res/TXDemographics_NBY_Pub_2023-04-03.json");
+const format = require("./res/DemographicsTemplate_2024-01-29.json");
 
 function matchStringWithArray(string, array, stop_words) {
 	stop_words = stop_words || [];
@@ -18,7 +18,7 @@ function matchStringWithArray(string, array, stop_words) {
 	return Object.keys(obj).filter((key) => obj[key] === maxCount && maxCount > 1);
 }
 export default function checkFormat(sheets) {
-    const stop_sheet_list = ["Organizational & Political"];
+    const stop_sheet_list = ["Organizational & Political", "Questions", "Sources"];
     let errors = [];
     sheets && Object.entries(sheets).forEach(([sheetName, sheetData]) => {
         if(!format[sheetName]) {

@@ -91,6 +91,8 @@
     "First Nations",
     "Indigenous",
     "Native American/American Indian",
+    "Choctaw",
+    "Huichol",
     "Albanian",
     "Czech",
     "Dutch",
@@ -129,7 +131,7 @@
     "Job/ Profession (if more than one, list all but create new row for each)",
     "Union Member",
     "Income Level",
-    "Optional: Fill out ONLY if NWC Registration Forms have specific dollar amount check boxes, otherwise indicate low, medium, high, or not reported per the NWC Registration forms in previous column.",
+    "Optional: Fill out ONLY if NWC Registration Forms have specific dollar amount check boxes, otherwise indicate low, medium, high, or not reported per the NWC Registration forms in previous column."
   ],
   "Electoral Politics": [
     "ID",
@@ -227,5 +229,9 @@
     "Statistics Plank",
     "Women, Welfare and Poverty Plank",
     "Committee on the Conference Plank"
+  ],
+  "Questions": [
+  ],
+  "Sources": [
   ]
 }
