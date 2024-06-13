@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "content_oral_history_mains",
+  "info": {
+    "singularName": "content-oral-history-main",
+    "pluralName": "content-oral-history-mains",
+    "displayName": "Content-oral-history-main",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "synopsis": {
+      "type": "richtext"
+    },
+    "role": {
+      "type": "string"
+    },
+    "person": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::content-person.content-person",
+      "inversedBy": "content_oral_history_main"
+    }
+  }
+}
