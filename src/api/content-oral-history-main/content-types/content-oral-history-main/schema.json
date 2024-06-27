@@ -19,9 +19,6 @@
     "synopsis": {
       "type": "richtext"
     },
-    "role": {
-      "type": "string"
-    },
     "person": {
       "type": "relation",
       "relation": "oneToOne",
