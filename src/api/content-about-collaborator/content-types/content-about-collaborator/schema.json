@@ -17,16 +17,16 @@
     "Contributor_Type": {
       "type": "enumeration",
       "enum": [
-        "SteeringCommittee",
         "StudentCollaborators",
-        "InternsResearchAssistants",
         "EducatorCollaborators",
+        "ContentResearchAssistants",
+        "ContentInterns",
+        "DevUXInterns",
+        "InauguralTeam",
+        "SteeringCommittee",
+        "InternalAdvisoryCommittee",
         "ExternalAdvisoryCommittee",
-        "NWCParticipantCommittee",
-        "InternalAdvisoryBoard",
-        "DonorGrantingAgencies",
-        "FormerProjectLeads",
-        "Alumni"
+        "DonorGrantingAgencies"
       ]
     },
     "FirstName": {

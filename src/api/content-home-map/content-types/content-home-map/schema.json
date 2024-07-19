@@ -2,15 +2,13 @@
   "kind": "collectionType",
   "collectionName": "content_home_maps",
   "info": {
-    "singularName": "content-home-map", 
-    "pluralName": "content-home-maps", 
+    "singularName": "content-home-map",
+    "pluralName": "content-home-maps",
     "displayName": "content-home-map",
     "name": "CONTENT_Home_MapPoint",
     "description": ""
   },
   "options": {
-    "increments": true,
-    "timestamps": true,
     "draftAndPublish": true
   },
   "attributes": {
@@ -37,94 +35,94 @@
       "type": "richtext"
     },
     "mainImage": {
-      "type":"media",
-      "multiple":false,
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos"
-      ],
-      "required": false
+      ]
     },
     "pdf1": {
-      "type":"media",
-      "multiple":false,
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos"
-      ],
-      "required": false
+      ]
     },
     "pdf2": {
-      "type":"media",
-      "multiple":false,
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos"
-      ],
-      "required": false
+      ]
     },
     "pdf3": {
-      "type":"media",
-      "multiple":false,
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos"
-      ],
-      "required": false
+      ]
     },
     "pdf4": {
-      "type":"media",
-      "multiple":false,
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos"
-      ],
-      "required": false
+      ]
     },
     "img1": {
-      "type":"media",
-      "multiple":false,
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos"
-      ],
-      "required": false
+      ]
     },
     "img2": {
-      "type":"media",
-      "multiple":false,
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos"
-      ],
-      "required": false
+      ]
     },
     "img3": {
-      "type":"media",
-      "multiple":false,
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos"
-      ],
-      "required": false
+      ]
     },
     "img4": {
-      "type":"media",
-      "multiple":false,
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos"
-      ],
-      "required": false
+      ]
     },
     "citation1": {
       "type": "string"
@@ -137,6 +135,12 @@
     },
     "citation4": {
       "type": "string"
+    },
+    "sources": {
+      "displayName": "sources",
+      "type": "component",
+      "repeatable": true,
+      "component": "general.sources"
     }
   }
 }
