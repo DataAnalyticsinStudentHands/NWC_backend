@@ -1,11 +1,11 @@
 import { Button } from '@strapi/design-system/Button';
 import Upload from '@strapi/icons/Upload';
 import React from 'react';
-import { preFlightFile } from '../../utils/data_import';
+import { importDemographicData } from '../../utils/data_import';
 export const ImportButton = ({data}) => {
 
   function handleImport() {
-    preFlightFile(data);
+    importDemographicData(data);
   }
 
   return (

@@ -20,7 +20,7 @@ function matchStringWithArray(string, array, stop_words) {
 
 // checks all rows for correct headers (it will not check any headers that have no data)
 export default function checkFormat(sheets) {
-    const stop_sheet_list = ["Organizational & Political", "Race & Ethnicity--Expanded", "Validations", "Questions", "Sources"];
+    const stop_sheet_list = ["Race & Ethnicity--Expanded", "Organizational & Political", "Validations", "Questions", "Sources"];
     let errors = [];
     sheets && Object.entries(sheets).forEach(([sheetName, sheetData]) => {
         if(!format[sheetName]) {

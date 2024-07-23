@@ -124,6 +124,7 @@ async function HandleM2M(props) {
 }
 
 async function HandleParticipants(props) {
+
   const { sheets, key } = props;
   const { pk, sheet, lookup, slug } = config[key];
 
@@ -148,6 +149,69 @@ async function HandleParticipants(props) {
   } catch (error) {
     console.error("An error occurred while adding new content:", error);
   }
+}
+
+async function HandleOne2One(props) {
+  const { sheets, key } = props;
+  const { pk, sheet, slug } = config[key];
+
+  const response = await axios.post(
+    `${process.env.STRAPI_ADMIN_BACKEND_URL}/api/import-export-entries/content/export/contentTypes`,
+    {
+      slug: slug,
+      exportFormat: "json-v2",
+      deepness: 2,
+    },
+    header
+  );
+  const parsedData = JSON.parse(response.data.data);
+  const strapiData = parsedData.data[slug];
+
+  const obj = {};
+  Object.values(strapiData).forEach((item) => {
+    obj[item[pk]] = { [pk]: item[pk] };
+  });
+
+  const sheetData = sheets[sheet] || [];
+  sheetData.forEach((item) => {
+    Object.entries(item).forEach(([key, value]) => {
+
+  key === "Residence in 1977" &&
+        (obj[value]
+          ? !obj[value].participants.includes(item["ID"]) &&
+            obj[value].participants.push(item["ID"])
+          : (obj[value] = {
+              [pk]: value,
+              participants: [item["ID"]],
+              total_population:
+                item[
+                  "Total Population of Place of Residence (check US Census)"
+                ],
+              median_household_income:
+                item[
+                  "Median Household Income of Place of Residence (check US Census)"
+                ],
+            }));
+          });
+        });
+        try {
+          let url = `${process.env.STRAPI_ADMIN_BACKEND_URL}/api/import-export-entries/content/import`;
+          let result = await axios.post(url, {
+            slug: slug,
+            data: JSON.stringify({
+              version: 2,
+              data: {
+                [slug]: obj,
+              },
+            }),
+            format: "json",
+            idField: pk,
+          }, header);
+          console.log(`${result.status}: ${key} Added`);
+        } catch (error) {
+          console.log(error);
+        }
+  
 }
 
 async function HandleOne2Many(props) {
@@ -227,23 +291,6 @@ async function HandleOne2Many(props) {
               participants_against: [],
               participants_spoke_for: [item["ID"]],
             }));
-
-      key === "Residence in 1977" &&
-        (obj[value]
-          ? !obj[value].participants.includes(item["ID"]) &&
-            obj[value].participants.push(item["ID"])
-          : (obj[value] = {
-              [pk]: value,
-              participants: [item["ID"]],
-              total_population:
-                item[
-                  "Total Population of Place of Residence (check US Census)"
-                ],
-              median_household_income:
-                item[
-                  "Median Household Income of Place of Residence (check US Census)"
-                ],
-            }));
     });
   });
 
@@ -274,6 +321,9 @@ const orderObj = {
     "political_participant",
     "role_participant",
   ],
+  One2OneList: [
+    "residence_in_1977"
+  ],
   One2ManyList: [
     "education_career",
     "education_edu",
@@ -281,8 +331,7 @@ const orderObj = {
     "political_office_lost",
     "political_party",
     "leadership_in_org",
-    "plank",
-    "residence_in_1977", //should be onetoone
+    "plank"
   ],
   Many2ManyList: [
     "basic_race",
@@ -293,7 +342,7 @@ const orderObj = {
 };
 
 // imports data after passing preflight
-async function preFlightFile(data) {
+async function importDemographicData(data) {
   const sheets = JSON.parse(data);
 
   for (const [key, value] of Object.entries(orderObj)) {
@@ -301,7 +350,12 @@ async function preFlightFile(data) {
       case "ParticipantsList":
         for (const key of value) {
           await HandleParticipants({ sheets: sheets, key: key });
-          console.log(`Finished ${key}`);
+          await delay(1000);
+        }
+        break;
+      case "One2OneList":
+        for (const key of value) {
+          await HandleOne2One({ sheets: sheets, key: key });
           await delay(1000);
         }
         break;
@@ -323,4 +377,4 @@ async function preFlightFile(data) {
   }
 }
 
-export { fetchDataWithRetry, preFlightFile };
+export { fetchDataWithRetry, importDemographicData };
