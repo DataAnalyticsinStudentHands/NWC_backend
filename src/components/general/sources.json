@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_sources_sources",
+  "info": {
+    "displayName": "General.map-sources",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "LastName": {
+      "type": "string"
+    },
+    "FirstName": {
+      "type": "string"
+    },
+    "Title": {
+      "type": "string"
+    },
+    "Date": {
+      "type": "string"
+    },
+    "SourceName": {
+      "type": "string"
+    },
+    "Description": {
+      "type": "text"
+    }
+  }
+}
