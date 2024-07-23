@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "data_roles",
+  "info": {
+    "singularName": "data-role",
+    "pluralName": "data-roles",
+    "displayName": "data-role"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "role": {
+      "type": "string"
+    },
+    "participants": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::nwc-participant.nwc-participant",
+      "inversedBy": "roles"
+    },
+    "oralhistory_role_toggle": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

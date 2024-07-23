@@ -18,13 +18,19 @@
     "first_name": {
       "type": "string"
     },
-    "middle_name_initial": {
+    "middle_name_initial_1": {
       "type": "string"
     },
     "middle_name_initial_2": {
       "type": "string"
     },
     "nickname": {
+      "type": "string"
+    },
+    "suffix": {
+      "type": "string"
+    },
+    "represented_state": {
       "type": "string"
     },
     "birth_month": {
@@ -42,6 +48,9 @@
     },
     "birth_year": {
       "type": "integer"
+    },
+    "age_range": {
+      "type": "string"
     },
     "age_in_1977": {
       "type": "integer"
@@ -62,112 +71,53 @@
     "place_of_birth": {
       "type": "string"
     },
-    "total_number_of_children": {
-      "type": "integer"
-    },
-    "income_level_dollar_amount": {
-      "type": "decimal"
-    },
-    "military_service": {
-      "type": "boolean"
-    },
-    "union_member": {
-      "type": "boolean"
-    },
-    "planks_fors": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::nwc-plank.nwc-plank",
-      "inversedBy": "participants_for"
-    },
-    "planks_againsts": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::nwc-plank.nwc-plank",
-      "inversedBy": "participants_against"
-    },
-    "planks_spoke_fors": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::nwc-plank.nwc-plank",
-      "inversedBy": "participants_spoke_for"
-    },
-    "role": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::nwc-role.nwc-role",
-      "inversedBy": "participants"
-    },
-    "organizational_and_politicals": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::organizational-and-political.organizational-and-political",
-      "inversedBy": "participants"
-    },
-    "self_identified_feminist": {
-      "type": "boolean"
-    },
-    "address": {
-      "type": "string"
-    },
-    "zip": {
-      "type": "string",
-      "maxLength": 5,
-      "minLength": 5
-    },
-    "city": {
-      "type": "string"
-    },
     "residence_in_1977": {
       "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::resident-in-1977.resident-in-1977",
-      "inversedBy": "participants"
-    },
-    "high_school": {
-      "type": "string"
-    },
-    "sexual_orientation": {
-      "type": "string"
-    },
-    "gender": {
-      "type": "string"
+      "relation": "oneToOne",
+      "target": "api::data-residence-in-1977.data-residence-in-1977",
+      "mappedBy": "participant"
     },
     "marital_classification": {
-      "type": "string"
-    },
-    "represented_state": {
-      "type": "string"
-    },
-    "age_range": {
       "type": "string"
     },
     "religion": {
       "type": "string"
     },
-    "races": {
+    "gender": {
+      "type": "string"
+    },
+    "sexual_orientation": {
+      "type": "string"
+    },
+    "has_children": {
+      "type": "boolean"
+    },
+    "total_number_of_children": {
+      "type": "integer"
+    },
+    "spouses": {
       "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::race.race",
-      "inversedBy": "participants"
-    },
-    "highest_level_of_education_attained": {
-      "type": "string"
-    },
-    "income_level": {
-      "type": "string"
-    },
-    "political_party_membership": {
-      "type": "string"
-    },
-    "votes_received_at_state_meeting_for_nwc_delegate_alternate": {
-      "type": "biginteger"
+      "relation": "oneToMany",
+      "target": "api::data-spouse.data-spouse",
+      "mappedBy": "participant"
     },
     "basic_races": {
       "type": "relation",
       "relation": "manyToMany",
-      "target": "api::basic-race.basic-race",
+      "target": "api::data-basic-race.data-basic-race",
       "mappedBy": "participants"
+    },
+    "races": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::data-race.data-race",
+      "mappedBy": "participants"
+    },
+    "highest_level_of_education_attained": {
+      "type": "string"
+    },
+    "high_school": {
+      "type": "string"
     },
     "educations": {
       "type": "relation",
@@ -175,11 +125,23 @@
       "target": "api::data-education.data-education",
       "mappedBy": "participant"
     },
+    "military_service": {
+      "type": "boolean"
+    },
     "careers": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::data-career.data-career",
       "mappedBy": "participant"
+    },
+    "union_member": {
+      "type": "boolean"
+    },
+    "income_level_dollar_amount": {
+      "type": "decimal"
+    },
+    "income_level": {
+      "type": "string"
     },
     "political_office_helds": {
       "type": "relation",
@@ -193,11 +155,14 @@
       "target": "api::data-political-office-lost.data-political-office-lost",
       "mappedBy": "participant"
     },
-    "leadership_in_organizations": {
+    "political_parties": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::data-leadership-in-organization.data-leadership-in-organization",
+      "target": "api::data-political-party.data-political-party",
       "mappedBy": "participant"
+    },
+    "self_identified_feminist": {
+      "type": "boolean"
     },
     "federal_level_commission": {
       "type": "boolean"
@@ -211,20 +176,53 @@
     "city_level_commission": {
       "type": "boolean"
     },
-    "has_children": {
+    "national_advisory_committee": {
       "type": "boolean"
+    },
+    "leadership_in_organizations": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::data-leadership-in-organization.data-leadership-in-organization",
+      "mappedBy": "participant"
+    },
+    "organizational_politicals": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::data-organizational-political.data-organizational-political",
+      "mappedBy": "participants"
+    },
+    "roles": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::data-role.data-role",
+      "mappedBy": "participants"
+    },
+    "votes_received_at_state_meeting_for_nwc_delegate_alternate": {
+      "type": "biginteger"
+    },
+    "planks_fors": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::data-plank.data-plank",
+      "mappedBy": "participants_for"
+    },
+    "planks_against": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::data-plank.data-plank",
+      "mappedBy": "participants_against"
+    },
+    "planks_spoke_fors": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::data-plank.data-plank",
+      "mappedBy": "participants_spoke_for"
     },
     "lat": {
       "type": "float"
     },
     "lon": {
       "type": "float"
-    },
-    "spouses": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::data-spouse.data-spouse",
-      "mappedBy": "participant"
     }
   }
 }

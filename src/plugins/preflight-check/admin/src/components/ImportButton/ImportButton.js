@@ -6,8 +6,6 @@ export const ImportButton = ({data}) => {
 
   function handleImport() {
     preFlightFile(data);
-
-    // Still working in Process ...
   }
 
   return (

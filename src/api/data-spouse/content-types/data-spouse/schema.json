@@ -12,16 +12,13 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "name": {
-      "type": "string"
-    },
     "last_name": {
       "type": "string"
     },
     "first_name": {
       "type": "string"
     },
-    "middle_name_initial": {
+    "middle_name_initial_1": {
       "type": "string"
     },
     "middle_name_initial_2": {
@@ -30,17 +27,14 @@
     "nickname": {
       "type": "string"
     },
-    "spouse_political_offices": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::data-spouse-political-office.data-spouse-political-office",
-      "mappedBy": "spouses"
+    "suffix": {
+      "type": "string"
     },
-    "spouse_careers": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::data-spouse-career.data-spouse-career",
-      "inversedBy": "spouses"
+    "professions": {
+      "type": "text"
+    },
+    "political_offices": {
+      "type": "text"
     },
     "participant": {
       "type": "relation",

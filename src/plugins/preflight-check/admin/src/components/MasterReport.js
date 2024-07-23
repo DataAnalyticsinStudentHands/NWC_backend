@@ -20,7 +20,7 @@ const MasterReport = (props) => {
         <Box padding={4}>
           <Flex direction="column" alignItems="start" gap={2}>
             <Typography variant="beta">
-              The Master Sheet is based on file: IDCodeRangesMaster_V1_NBY_2023-02-27.xlsx
+              IDs are checked against collection data-idc-master
             </Typography>
           </Flex>
         </Box>

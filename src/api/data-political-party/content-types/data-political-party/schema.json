@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "data_political_parties",
+  "info": {
+    "singularName": "data-political-party",
+    "pluralName": "data-political-parties",
+    "displayName": "data-political-party"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "party": {
+      "type": "string"
+    },
+    "participant": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::nwc-participant.nwc-participant",
+      "inversedBy": "political_parties"
+    }
+  }
+}

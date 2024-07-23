@@ -1,0 +1,103 @@
+{
+  "kind": "collectionType",
+  "collectionName": "data_idc_masters",
+  "info": {
+    "singularName": "data-idc-master",
+    "pluralName": "data-idc-masters",
+    "displayName": "data-idc-master",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "last_name": {
+      "type": "string"
+    },
+    "first_name": {
+      "type": "string"
+    },
+    "middle_name_initial_1": {
+      "type": "string"
+    },
+    "middle_name_initial_2": {
+      "type": "string"
+    },
+    "nick_name": {
+      "type": "string"
+    },
+    "suffix": {
+      "type": "string"
+    },
+    "represented_state": {
+      "type": "enumeration",
+      "enum": [
+        "AK",
+        "AL",
+        "AR",
+        "AS",
+        "AZ",
+        "CA",
+        "CO",
+        "CT",
+        "DC",
+        "DE",
+        "FL",
+        "GA",
+        "GU",
+        "HI",
+        "IA",
+        "ID",
+        "IL",
+        "IN",
+        "KS",
+        "KY",
+        "LA",
+        "MA",
+        "MD",
+        "ME",
+        "MI",
+        "MN",
+        "MO",
+        "MS",
+        "MT",
+        "NC",
+        "ND",
+        "NE",
+        "NH",
+        "NJ",
+        "NM",
+        "NV",
+        "NY",
+        "OH",
+        "OK",
+        "OR",
+        "PA",
+        "PR",
+        "RI",
+        "SC",
+        "SD",
+        "TN",
+        "TT",
+        "TX",
+        "UT",
+        "VA",
+        "VI",
+        "VT",
+        "WA",
+        "WI",
+        "WV",
+        "WY"
+      ]
+    },
+    "participant_category": {
+      "type": "enumeration",
+      "enum": [
+        "Ford",
+        "Carter",
+        "Ford_Carter"
+      ]
+    }
+  }
+}

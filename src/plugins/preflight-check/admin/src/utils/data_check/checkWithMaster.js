@@ -1,21 +1,18 @@
-const master = require("./res/IDCodeRangesMaster_V1_NBY_2023-02-27.json");
-
-export default function checkWithMaster(sheets) {
+export default function checkWithMaster(sheets, master) {
     const masterCheck = {
       ID: "id",
       "Last Name": "last_name",
       "First Name": "first_name",
       State: "represented_state",
-      "Middle Name and/or Initial and/or Nickname": "middle_name_initial",
-      "Middle Name and/or Initial 1": "middle_name_initial",
+      "Middle Name and/or Initial 1": "middle_name_initial_1",
       "Middle Name and/or Initial 2": "middle_name_initial_2",
-      Nickname: "nickname",
+      Nickname: "nick_name",
       Name: "last_name",
     };
   
     let errors = [];
     sheets && Object.entries(sheets).forEach(([sheetName, sheetData]) => {
-        if (sheetName === "Sources") return;
+        if (sheetName === "Sources" || sheetName === "Questions") return;
         const newSheetData = sheetData.map((row) => {
           const newRow = {};
           Object.keys(row).forEach((key) => {
@@ -30,10 +27,10 @@ export default function checkWithMaster(sheets) {
           });
           return newRow;
         });
-      // check the data
+        // check the data for match in master idc
         newSheetData?.forEach((row) => {
           const masterRow = _.find(master, { id: row.id });
-          if (!masterRow) {
+          if (!masterRow || masterRow === undefined) {
             errors.push({
               id: row.id,
               sheetName: sheetName,
@@ -41,15 +38,18 @@ export default function checkWithMaster(sheets) {
             });
           } else {
             Object.keys(row).forEach((key) => {
-              if (masterRow[key] !== row[key]) {
-                errors.push({
-                  id: row.id,
-                  key: key,
-                  sheetName: sheetName,
-                  masterValue: masterRow[key],
-                  sheetValue: row[key],
-                  errorMessage: `Mismatch for ${row.id} ${key}: ${masterRow[key]}(master) !== ${row[key]}`,
-                });
+              //don't check again for id
+              if(key !== 'id') {
+                if (masterRow.attributes[key] !== row[key]) {
+                  errors.push({
+                    id: row.id,
+                    key: key,
+                    sheetName: sheetName,
+                    masterValue: masterRow[key],
+                    sheetValue: row[key],
+                    errorMessage: `Mismatch for ${row.id} ${key}: ${masterRow[key]}(master) !== ${row[key]}`,
+                  });
+                }
               }
             });
           }

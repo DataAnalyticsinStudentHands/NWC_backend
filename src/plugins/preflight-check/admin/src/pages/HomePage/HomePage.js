@@ -16,9 +16,13 @@ import MasterReport from "../../components/MasterReport";
 import FormatReport from "../../components/FormatReport";
 import NumberReport from "../../components/NumberReport";
 import { Header } from "../../components/Header/Header";
-import { InjectedImportButton } from '../../components/InjectedImportButton';
+import { UploadExcelButton } from '../../components/UploadExcelButton';
 import { ImportButton } from "../../components/ImportButton";
 import { checkFormat, checkWithMaster, checkIsNumber } from "../../utils/data_check";
+import { fetchDataWithRetry } from "../../utils/data_import";
+
+const masterdata = await fetchDataWithRetry(`${process.env.STRAPI_ADMIN_BACKEND_URL}/api/data-idc-masters`);
+const master = masterdata.data.data
 
 const HomePage = () => {
   const [file, setFile] = useState({});
@@ -28,12 +32,12 @@ const HomePage = () => {
     setReportData(null);
     const sheetData = JSON.parse(sheets);
 
-    let MasertCheckReport = checkWithMaster(sheetData);
+    let masterCheckReport = checkWithMaster(sheetData, master);
     let formatReportData = checkFormat(sheetData);
     let isNumberReportData = checkIsNumber(sheetData, formatReportData);
 
     setReportData({
-      masterCheck: MasertCheckReport,
+      masterCheck: masterCheckReport,
       formatData: formatReportData,
       isNumberData: isNumberReportData,
     })
@@ -69,7 +73,7 @@ const showImport = file.name && _.isEqual(reportData, {
               <Box>
                 <Flex direction="column" alignItems="start" gap={4}>
                   <Flex gap={4}>
-                    {!file?.name && <InjectedImportButton setSheets={setSheets} setFile={setFile}/>}
+                    {!file?.name && <UploadExcelButton setSheets={setSheets} setFile={setFile}/>}
                     {
                       file?.name && <Button onClick={removeFile} variant="tertiary">
                         Remove File
@@ -92,7 +96,7 @@ const showImport = file.name && _.isEqual(reportData, {
             { showImport && (
                 <Box style={{ alignSelf: "stretch" }} background="neutral0" padding="32px" hasRadius={true}>
                   <Typography variant="alpha">
-                      This File passed All the checks and ready to import
+                      This File passed All the checks and is ready to import
                   </Typography>
                 </Box>
               )

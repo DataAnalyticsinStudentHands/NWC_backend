@@ -13,6 +13,7 @@ const header = {
 async function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
+
 async function fetchDataWithRetry(url, retryCount = 3, delay = 1000) {
   try {
     const response = await axios.get(url);
@@ -27,6 +28,7 @@ async function fetchDataWithRetry(url, retryCount = 3, delay = 1000) {
     }
   }
 }
+
 async function deletDataWithRetry(url, retryCount = 3, delay = 1000) {
   try {
     const response = await axios.delete(url, header);
@@ -84,7 +86,7 @@ async function removeCurrentContent(props) {
 
 async function HandleM2M(props) {
   const { sheets, key } = props;
-  const { pk, sheet, route, attribute, lookup, lookup_gard, lookup_undergrad } =
+  const { pk, sheet, route, attribute, lookup, lookup_grad, lookup_undergrad } =
     config[key];
 
   const sheetData = sheets[sheet] || {};
@@ -92,10 +94,10 @@ async function HandleM2M(props) {
   let newSheetData = [];
 
   lookup && (newSheetData = cleanSheetArray(sheetData, lookup));
-  lookup_gard &&
+  lookup_grad &&
     lookup_undergrad &&
     (newSheetData = [
-      ...cleanSheetArray(sheetData, lookup_gard),
+      ...cleanSheetArray(sheetData, lookup_grad),
       ...cleanSheetArray(sheetData, lookup_undergrad),
     ]);
 
@@ -263,25 +265,34 @@ async function HandleOne2Many(props) {
     console.log(error);
   }
 }
+
+// setup for data import processing
 const orderObj = {
   ParticipantsList: [
     "participant",
     "education_participant",
-    "politics_participant",
+    "political_participant",
     "role_participant",
   ],
   One2ManyList: [
+    "education_career",
+    "education_edu",
+    "political_office_held",
+    "political_office_lost",
+    "political_party",
+    "leadership_in_org",
+    "plank",
+    "residence_in_1977", //should be onetoone
+  ],
+  Many2ManyList: [
     "basic_race",
     "race",
-    "organizational_and_political",
-    "role",
-    "plank",
-    "residence_in_1977",
+    "organizational_political",
+    "role"
   ],
-  Mant2ManyList: ["education_career", "education_edu", "politics_office_hold", "politics_office_lost"],
 };
 
-// function preFlightFile(sheets, jsonData){
+// imports data after passing preflight
 async function preFlightFile(data) {
   const sheets = JSON.parse(data);
 
@@ -301,7 +312,7 @@ async function preFlightFile(data) {
           await delay(1000);
         }
         break;
-      case "Mant2ManyList":
+      case "Many2ManyList":
         for (const key of value) {
           await HandleM2M({ sheets: sheets, key: key });
           console.log(`Finished ${key}`);
@@ -312,4 +323,4 @@ async function preFlightFile(data) {
   }
 }
 
-export { preFlightFile };
+export { fetchDataWithRetry, preFlightFile };
