@@ -71,12 +71,6 @@
     "place_of_birth": {
       "type": "string"
     },
-    "residence_in_1977": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::data-residence-in-1977.data-residence-in-1977",
-      "mappedBy": "participant"
-    },
     "marital_classification": {
       "type": "string"
     },
@@ -94,6 +88,12 @@
     },
     "total_number_of_children": {
       "type": "integer"
+    },
+    "residence_in_1977s": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::data-residence-in-1977.data-residence-in-1977",
+      "mappedBy": "participant"
     },
     "spouses": {
       "type": "relation",

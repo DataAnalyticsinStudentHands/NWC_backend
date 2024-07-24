@@ -4,10 +4,11 @@
   "info": {
     "singularName": "data-residence-in-1977",
     "pluralName": "data-residence-in-1977s",
-    "displayName": "data-residence-in-1977"
+    "displayName": "data-residence-in-1977",
+    "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
@@ -31,9 +32,9 @@
     },
     "participant": {
       "type": "relation",
-      "relation": "oneToOne",
+      "relation": "manyToOne",
       "target": "api::nwc-participant.nwc-participant",
-      "inversedBy": "residence_in_1977"
+      "inversedBy": "residence_in_1977s"
     }
   }
 }

@@ -31,18 +31,19 @@
 		}
 	},
 	"residence_in_1977": {
-		"pk": "residence_in_1977",
+		"pk": "participant",
 		"sheet": "Basic Data",
-		"slug": "api::resident-in-1977.resident-in-1977",
+		"slug": "api::data-residence-in-1977.data-residence-in-1977",
+		"route": "/api/data-residence-in-1977",
+		"attribute": "residence_in_1977s",
 		"lookup": {
-			"ID": "participant_id",
+			"ID": "participant",
 			"Residence in 1977: Street Address and Apartment Number": "street_address",
     		"Residence in 1977: PO Box and/or Rural Route Number": "po_box_rural_route",
     		"Residence in 1977: City and State": "city_state",
     		"Residence in 1977: Zip Code": "zip_code",
 			"Total Population of Place of Residence (check US Census)": "total_population",
-			"Median Household Income of Place of Residence (check US Census)": "median_household_income",
-			"data-participant": "data-participant"
+			"Median Household Income of Place of Residence (check US Census)": "median_household_income"
 		}
 	},
 	"spouse": {
@@ -65,7 +66,7 @@
 	"basic_race": {
 		"pk": "basic_race",
 		"sheet": "Race & Ethnicity--Reg Forms",
-		"slug": "api::basic-race.basic-race"
+		"slug": "api::data-basic-race.data-basic-race"
 	},
 	"race": {
 		"pk": "race",

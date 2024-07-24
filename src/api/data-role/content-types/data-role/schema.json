@@ -4,10 +4,11 @@
   "info": {
     "singularName": "data-role",
     "pluralName": "data-roles",
-    "displayName": "data-role"
+    "displayName": "data-role",
+    "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {

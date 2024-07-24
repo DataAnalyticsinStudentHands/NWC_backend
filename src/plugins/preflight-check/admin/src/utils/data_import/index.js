@@ -3,6 +3,8 @@ const { cleanSheetObject, cleanSheetArray } = require("./utils/sheetData.js");
 import * as config from "./config.json";
 import axios from "axios";
 import qs from "qs";
+
+// Setup header for API calls
 const token = process.env.STRAPI_ADMIN_WEBTOKEN
 const header = {
   headers: {
@@ -10,10 +12,12 @@ const header = {
   },
 };
 
+// Helper function for timeout
 async function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+// Helper function to fetch existing data (retry if needed)
 async function fetchDataWithRetry(url, retryCount = 3, delay = 1000) {
   try {
     const response = await axios.get(url);
@@ -29,6 +33,7 @@ async function fetchDataWithRetry(url, retryCount = 3, delay = 1000) {
   }
 }
 
+// Helper function to delete data (does retry if needed)
 async function deletDataWithRetry(url, retryCount = 3, delay = 1000) {
   try {
     const response = await axios.delete(url, header);
@@ -44,12 +49,11 @@ async function deletDataWithRetry(url, retryCount = 3, delay = 1000) {
   }
 }
 
+// Helper function to delete entries
 async function deleteEntries(props) {
   const { id, route } = props;
   const url = `${process.env.STRAPI_ADMIN_BACKEND_URL}${route}/${id}`;
   await deletDataWithRetry(url);
-  // let result = await deletDataWithRetry(url);
-  // console.log(`${result.status} :Deleted ${id}`);
 }
 
 async function removeCurrentContent(props) {
@@ -114,15 +118,14 @@ async function HandleM2M(props) {
     for (const item of newSheetData) {
       let url = `${process.env.STRAPI_ADMIN_BACKEND_URL}${route}`;
       let data = { data: item };
-      await axios.post(url, data, header);
-      //   let result = await axios.post(url, data);
-      //   console.log(`${result.status}: ${key} Added`);
+      await axios.post(url, data, header)
     }
   } catch (error) {
     console.error("An error occurred while adding new content:", error);
   }
 }
 
+// imports participant data, will overwrite existing content
 async function HandleParticipants(props) {
 
   const { sheets, key } = props;
@@ -145,16 +148,67 @@ async function HandleParticipants(props) {
       format: "json",
       idField: pk,
     }, header);
-    console.log(`${result.status}: ${key} Added`);
+    console.debug(`${result.status}: ${key} Added`);
   } catch (error) {
     console.error("An error occurred while adding new content:", error);
   }
 }
 
+// imports one to many content, will first remove existing content by participant ID
+async function HandleOne2Many(props) {
+  const { sheets, key } = props;
+  const { pk, sheet, route, attribute, lookup, lookup_grad, lookup_undergrad } =
+    config[key];
+
+  const sheetData = sheets[sheet] || {};
+
+  let newSheetData = [];
+
+  lookup && (newSheetData = cleanSheetArray(sheetData, lookup));
+  lookup_grad &&
+    lookup_undergrad &&
+    (newSheetData = [
+      ...cleanSheetArray(sheetData, lookup_grad),
+      ...cleanSheetArray(sheetData, lookup_undergrad),
+    ]);
+
+  // Remove all one to many content
+  const partIDs = _.uniq(newSheetData.map((item) => item[pk]));
+
+  await removeCurrentContent({
+    ids: partIDs,
+    attribute: attribute,
+    route: route,
+  });
+
+  try {
+    for (const item of newSheetData) {
+      let url = `${process.env.STRAPI_ADMIN_BACKEND_URL}${route}`;
+      let data = { data: item };
+      let result = await axios.post(url, data, header);
+      console.debug(`${result.status}: ${key} Added`);
+    }
+  } catch (error) {
+    console.error("An error occurred while adding new content:", error);
+  }
+}
+
+// handles the One2One data - this will not update just add
 async function HandleOne2One(props) {
   const { sheets, key } = props;
-  const { pk, sheet, slug } = config[key];
+  const { pk, sheet, lookup, slug } = config[key];
 
+  const sheetData = sheets[sheet] || [];
+
+  //currently we only have residence data
+  const cleanData = {
+    version: 2,
+    data: {
+      [slug]: cleanSheetObject(sheetData, lookup, pk),
+    },
+  };
+
+  // get existing data
   const response = await axios.post(
     `${process.env.STRAPI_ADMIN_BACKEND_URL}/api/import-export-entries/content/export/contentTypes`,
     {
@@ -172,14 +226,10 @@ async function HandleOne2One(props) {
     obj[item[pk]] = { [pk]: item[pk] };
   });
 
-  const sheetData = sheets[sheet] || [];
+  
   sheetData.forEach((item) => {
     Object.entries(item).forEach(([key, value]) => {
-
-  key === "Residence in 1977" &&
-        (obj[value]
-          ? !obj[value].participants.includes(item["ID"]) &&
-            obj[value].participants.push(item["ID"])
+      key === "Residence in 1977" && (obj[value] ? !obj[value].participants.includes(item["ID"]) && obj[value].participants.push(item["ID"])
           : (obj[value] = {
               [pk]: value,
               participants: [item["ID"]],
@@ -194,27 +244,27 @@ async function HandleOne2One(props) {
             }));
           });
         });
-        try {
-          let url = `${process.env.STRAPI_ADMIN_BACKEND_URL}/api/import-export-entries/content/import`;
-          let result = await axios.post(url, {
-            slug: slug,
-            data: JSON.stringify({
-              version: 2,
-              data: {
-                [slug]: obj,
-              },
-            }),
-            format: "json",
-            idField: pk,
-          }, header);
-          console.log(`${result.status}: ${key} Added`);
-        } catch (error) {
-          console.log(error);
-        }
-  
+
+  try {
+    let url = `${process.env.STRAPI_ADMIN_BACKEND_URL}/api/import-export-entries/content/import`;
+    let result = await axios.post(url, {
+      slug: slug,
+      data: JSON.stringify({
+        version: 2,
+        data: {
+          [slug]: cleanData,
+        },
+      }),
+      format: "json",
+        idField: pk,
+    }, header);
+    console.debug(`${result.status}: ${key} Added`);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-async function HandleOne2Many(props) {
+async function OldHandleOne2Many(props) {
   const { sheets, key } = props;
   const { pk, sheet, slug } = config[key];
 
@@ -307,7 +357,7 @@ async function HandleOne2Many(props) {
       format: "json",
       idField: pk,
     }, header);
-    console.log(`${result.status}: ${key} Added`);
+    console.debug(`${result.status}: ${key} Added`);
   } catch (error) {
     console.log(error);
   }
@@ -322,22 +372,23 @@ const orderObj = {
     "role_participant",
   ],
   One2OneList: [
-    "residence_in_1977"
+   // 
   ],
   One2ManyList: [
+    "residence_in_1977",
     "education_career",
     "education_edu",
     "political_office_held",
     "political_office_lost",
     "political_party",
-    "leadership_in_org",
-    "plank"
+    "leadership_in_org"
   ],
   Many2ManyList: [
-    "basic_race",
-    "race",
-    "organizational_political",
-    "role"
+   // "basic_race",
+   // "race",
+   // "organizational_political",
+   // "role",
+   // "plank"
   ],
 };
 
@@ -355,22 +406,21 @@ async function importDemographicData(data) {
         break;
       case "One2OneList":
         for (const key of value) {
-          await HandleOne2One({ sheets: sheets, key: key });
-          await delay(1000);
+        // await HandleOne2One({ sheets: sheets, key: key });
+        // await delay(1000);
         }
         break;
       case "One2ManyList":
         for (const key of value) {
           await HandleOne2Many({ sheets: sheets, key: key });
-          console.log(`Finished ${key}`);
           await delay(1000);
         }
         break;
       case "Many2ManyList":
         for (const key of value) {
-          await HandleM2M({ sheets: sheets, key: key });
-          console.log(`Finished ${key}`);
-          await delay(1000);
+         // await HandleM2M({ sheets: sheets, key: key });
+         // console.log(`Finished ${key}`);
+         // await delay(1000);
         }
         break;
     }
