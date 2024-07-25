@@ -5,7 +5,7 @@ import axios from "axios";
 import qs from "qs";
 
 // Setup header for API calls
-const token = process.env.STRAPI_ADMIN_WEBTOKEN
+const token = process.env.STRAPI_ADMIN_WEBTOKEN;
 const header = {
   headers: {
     Authorization: `Bearer ${token}`,
@@ -56,6 +56,7 @@ async function deleteEntries(props) {
   await deletDataWithRetry(url);
 }
 
+// Helper function to remove existing content based on participant IDs
 async function removeCurrentContent(props) {
   const { ids, attribute, route } = props;
 
@@ -88,46 +89,8 @@ async function removeCurrentContent(props) {
     });
 }
 
-async function HandleM2M(props) {
-  const { sheets, key } = props;
-  const { pk, sheet, route, attribute, lookup, lookup_grad, lookup_undergrad } =
-    config[key];
-
-  const sheetData = sheets[sheet] || {};
-
-  let newSheetData = [];
-
-  lookup && (newSheetData = cleanSheetArray(sheetData, lookup));
-  lookup_grad &&
-    lookup_undergrad &&
-    (newSheetData = [
-      ...cleanSheetArray(sheetData, lookup_grad),
-      ...cleanSheetArray(sheetData, lookup_undergrad),
-    ]);
-
-  // Remove all many to many content
-  const partIDs = _.uniq(newSheetData.map((item) => item[pk]));
-
-  await removeCurrentContent({
-    ids: partIDs,
-    attribute: attribute,
-    route: route,
-  });
-
-  try {
-    for (const item of newSheetData) {
-      let url = `${process.env.STRAPI_ADMIN_BACKEND_URL}${route}`;
-      let data = { data: item };
-      await axios.post(url, data, header)
-    }
-  } catch (error) {
-    console.error("An error occurred while adding new content:", error);
-  }
-}
-
 // imports participant data, will overwrite existing content
 async function HandleParticipants(props) {
-
   const { sheets, key } = props;
   const { pk, sheet, lookup, slug } = config[key];
 
@@ -142,20 +105,24 @@ async function HandleParticipants(props) {
 
   try {
     let url = `${process.env.STRAPI_ADMIN_BACKEND_URL}/api/import-export-entries/content/import`;
-    let result = await axios.post(url, {
-      slug: slug,
-      data: JSON.stringify(data),
-      format: "json",
-      idField: pk,
-    }, header);
-    console.debug(`${result.status}: ${key} Added`);
+    let result = await axios.post(
+      url,
+      {
+        slug: slug,
+        data: JSON.stringify(data),
+        format: "json",
+        idField: pk,
+      },
+      header
+    );
+    console.debug(`${result.status}: ${key} processed`);
   } catch (error) {
     console.error("An error occurred while adding new content:", error);
   }
 }
 
 // imports one to many content, will first remove existing content by participant ID
-async function HandleOne2Many(props) {
+async function HandleOne2(props) {
   const { sheets, key } = props;
   const { pk, sheet, route, attribute, lookup, lookup_grad, lookup_undergrad } =
     config[key];
@@ -164,6 +131,7 @@ async function HandleOne2Many(props) {
 
   let newSheetData = [];
 
+  // pre-process sheet data
   lookup && (newSheetData = cleanSheetArray(sheetData, lookup));
   lookup_grad &&
     lookup_undergrad &&
@@ -172,7 +140,7 @@ async function HandleOne2Many(props) {
       ...cleanSheetArray(sheetData, lookup_undergrad),
     ]);
 
-  // Remove all one to many content
+  // Remove all one to many content based on participant ID
   const partIDs = _.uniq(newSheetData.map((item) => item[pk]));
 
   await removeCurrentContent({
@@ -186,88 +154,21 @@ async function HandleOne2Many(props) {
       let url = `${process.env.STRAPI_ADMIN_BACKEND_URL}${route}`;
       let data = { data: item };
       let result = await axios.post(url, data, header);
-      console.debug(`${result.status}: ${key} Added`);
+      console.debug(
+        `${result.status}: ${key} for ID ${item.participant} added`
+      );
     }
   } catch (error) {
     console.error("An error occurred while adding new content:", error);
   }
 }
 
-// handles the One2One data - this will not update just add
-async function HandleOne2One(props) {
-  const { sheets, key } = props;
-  const { pk, sheet, lookup, slug } = config[key];
-
-  const sheetData = sheets[sheet] || [];
-
-  //currently we only have residence data
-  const cleanData = {
-    version: 2,
-    data: {
-      [slug]: cleanSheetObject(sheetData, lookup, pk),
-    },
-  };
-
-  // get existing data
-  const response = await axios.post(
-    `${process.env.STRAPI_ADMIN_BACKEND_URL}/api/import-export-entries/content/export/contentTypes`,
-    {
-      slug: slug,
-      exportFormat: "json-v2",
-      deepness: 2,
-    },
-    header
-  );
-  const parsedData = JSON.parse(response.data.data);
-  const strapiData = parsedData.data[slug];
-
-  const obj = {};
-  Object.values(strapiData).forEach((item) => {
-    obj[item[pk]] = { [pk]: item[pk] };
-  });
-
-  
-  sheetData.forEach((item) => {
-    Object.entries(item).forEach(([key, value]) => {
-      key === "Residence in 1977" && (obj[value] ? !obj[value].participants.includes(item["ID"]) && obj[value].participants.push(item["ID"])
-          : (obj[value] = {
-              [pk]: value,
-              participants: [item["ID"]],
-              total_population:
-                item[
-                  "Total Population of Place of Residence (check US Census)"
-                ],
-              median_household_income:
-                item[
-                  "Median Household Income of Place of Residence (check US Census)"
-                ],
-            }));
-          });
-        });
-
-  try {
-    let url = `${process.env.STRAPI_ADMIN_BACKEND_URL}/api/import-export-entries/content/import`;
-    let result = await axios.post(url, {
-      slug: slug,
-      data: JSON.stringify({
-        version: 2,
-        data: {
-          [slug]: cleanData,
-        },
-      }),
-      format: "json",
-        idField: pk,
-    }, header);
-    console.debug(`${result.status}: ${key} Added`);
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-async function OldHandleOne2Many(props) {
+// imports many to many content
+async function HandleMany2(props) {
   const { sheets, key } = props;
   const { pk, sheet, slug } = config[key];
 
+  // get existing content
   const response = await axios.post(
     `${process.env.STRAPI_ADMIN_BACKEND_URL}/api/import-export-entries/content/export/contentTypes`,
     {
@@ -277,9 +178,12 @@ async function OldHandleOne2Many(props) {
     },
     header
   );
+
   const parsedData = JSON.parse(response.data.data);
   const strapiData = parsedData.data[slug];
 
+  // create an object to only hold the relations that need to inserted
+  // into the collections with many2many data
   const obj = {};
   Object.values(strapiData).forEach((item) => {
     obj[item[pk]] = { [pk]: item[pk] };
@@ -291,19 +195,13 @@ async function OldHandleOne2Many(props) {
       (obj[item[pk]]["participants_against"] = item.participants_against);
     item.participants_spoke_for &&
       (obj[item[pk]]["participants_spoke_for"] = item.participants_spoke_for);
-    item.total_population &&
-      (obj[item[pk]]["total_population"] = parseInt(item.total_population));
-    item.median_household_income &&
-      (obj[item[pk]]["median_household_income"] = parseInt(
-        item.median_household_income
-      ));
   });
 
   const sheetData = sheets[sheet] || [];
   sheetData.forEach((item) => {
     Object.entries(item).forEach(([key, value]) => {
       value === "yes" &&
-        key !== "Children" &&
+        key !== "Children" && // exclude the boolean value for has children
         (obj[key]
           ? !obj[key].participants.includes(item["ID"]) &&
             obj[key].participants.push(item["ID"])
@@ -346,18 +244,22 @@ async function OldHandleOne2Many(props) {
 
   try {
     let url = `${process.env.STRAPI_ADMIN_BACKEND_URL}/api/import-export-entries/content/import`;
-    let result = await axios.post(url, {
-      slug: slug,
-      data: JSON.stringify({
-        version: 2,
-        data: {
-          [slug]: obj,
-        },
-      }),
-      format: "json",
-      idField: pk,
-    }, header);
-    console.debug(`${result.status}: ${key} Added`);
+    let result = await axios.post(
+      url,
+      {
+        slug: slug,
+        data: JSON.stringify({
+          version: 2,
+          data: {
+            [slug]: obj,
+          },
+        }),
+        format: "json",
+        idField: pk,
+      },
+      header
+    );
+    console.debug(`${result.status}: ${key} processed`);
   } catch (error) {
     console.log(error);
   }
@@ -371,24 +273,22 @@ const orderObj = {
     "political_participant",
     "role_participant",
   ],
-  One2OneList: [
-   // 
-  ],
   One2ManyList: [
     "residence_in_1977",
+    "spouse",
     "education_career",
     "education_edu",
     "political_office_held",
     "political_office_lost",
     "political_party",
-    "leadership_in_org"
+    "leadership_in_org",
   ],
   Many2ManyList: [
-   // "basic_race",
-   // "race",
-   // "organizational_political",
-   // "role",
-   // "plank"
+    "basic_race",
+    "race",
+    "organizational_political",
+    "role",
+    "plank",
   ],
 };
 
@@ -404,23 +304,16 @@ async function importDemographicData(data) {
           await delay(1000);
         }
         break;
-      case "One2OneList":
-        for (const key of value) {
-        // await HandleOne2One({ sheets: sheets, key: key });
-        // await delay(1000);
-        }
-        break;
       case "One2ManyList":
         for (const key of value) {
-          await HandleOne2Many({ sheets: sheets, key: key });
+          await HandleOne2({ sheets: sheets, key: key });
           await delay(1000);
         }
         break;
       case "Many2ManyList":
         for (const key of value) {
-         // await HandleM2M({ sheets: sheets, key: key });
-         // console.log(`Finished ${key}`);
-         // await delay(1000);
+          await HandleMany2({ sheets: sheets, key: key });
+          await delay(1000);
         }
         break;
     }

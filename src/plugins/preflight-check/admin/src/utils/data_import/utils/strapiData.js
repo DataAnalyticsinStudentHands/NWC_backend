@@ -37,7 +37,6 @@ function cleanStrapiArray(data, lookup, pk) {
   const array = data.map((row) => {
     const rowObj = {};
     Object.values(lookup).forEach((value) => {
-      // reg.test(row[value]) ? rowObj[value] = parseInt(row[value]) : rowObj[value] = row[value];
       Array.isArray(row[value])
         ? (rowObj[value] = row[value])
         : reg.test(row[value])

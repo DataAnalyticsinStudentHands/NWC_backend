@@ -34,7 +34,7 @@
 		"pk": "participant",
 		"sheet": "Basic Data",
 		"slug": "api::data-residence-in-1977.data-residence-in-1977",
-		"route": "/api/data-residence-in-1977",
+		"route": "/api/data-residence-in-1977s",
 		"attribute": "residence_in_1977s",
 		"lookup": {
 			"ID": "participant",
@@ -47,11 +47,13 @@
 		}
 	},
 	"spouse": {
-		"pk": "id",
+		"pk": "participant",
 		"sheet": "Spouse Partner Info",
 		"slug": "api::data-spouse.data-spouse",
+		"route": "/api/data-spouses",
+		"attribute": "spouses",
 		"lookup": {
-			"ID": "participant_id",
+			"ID": "participant",
 			"Last Name of Spouse/Partner": "last_name",
 			"First Name of Spouse/Partner": "first_name",
 			"Middle Name and/or Initial 1 of Spouse/Partner": "middle_name_initial_1",
@@ -59,19 +61,18 @@
 			"Nickname of Spouse/Partner": "nickname",
 			"Suffix of Spouse/Partner": "suffix",
 			"Spouse's Profession (if more than one, list all separated by semicolon)": "professions",
-    		"Spouse/partner's Political offices (if more than one, list separated by semicolon)": "political_offices",
-			"participant": "participant"
+    		"Spouse/partner's Political offices (if more than one, list separated by semicolon)": "political_offices"
 		}
 	},
 	"basic_race": {
-		"pk": "basic_race",
+		"pk": "race",
 		"sheet": "Race & Ethnicity--Reg Forms",
 		"slug": "api::data-basic-race.data-basic-race"
 	},
 	"race": {
 		"pk": "race",
 		"sheet": "Race & Ethnicity--Expanded",
-		"slug": "api::race.race"
+		"slug": "api::data-race.data-race"
 	},
 	"education_participant": {
 		"pk": "id",
@@ -184,7 +185,7 @@
 			"Name of Organization in which leadership position was held": "organization"
 		}
 	},
-	"organizational_and_political": {
+	"organizational_political": {
 		"pk": "organizational_and_political",
 		"sheet": "Organizational & Political",
 		"slug": "api::data-organizational-political.data-organizational-political"
