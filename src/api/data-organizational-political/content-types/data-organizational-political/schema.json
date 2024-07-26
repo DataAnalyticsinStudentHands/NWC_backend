@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "data_organizational_politicals",
+  "info": {
+    "singularName": "data-organizational-political",
+    "pluralName": "data-organizational-politicals",
+    "displayName": "data-organizational-political",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "organizational_and_political": {
+      "type": "string"
+    },
+    "participants": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::nwc-participant.nwc-participant",
+      "inversedBy": "organizational_politicals"
+    }
+  }
+}

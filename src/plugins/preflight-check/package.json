@@ -4,9 +4,9 @@
   "description": "This is the description of the plugin.",
   "strapi": {
     "name": "preflight-check",
-    "description": "Description of Preflight Check plugin",
+    "description": "Demographic Data Preflight Check and Import plugin",
     "kind": "plugin",
-    "displayName": "Preflight Check"
+    "displayName": "Demographic Data"
   },
   "dependencies": {
     "@strapi/design-system": "^1.6.3",

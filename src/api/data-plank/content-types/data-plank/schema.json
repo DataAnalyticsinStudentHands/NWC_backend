@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "data_planks",
+  "info": {
+    "singularName": "data-plank",
+    "pluralName": "data-planks",
+    "displayName": "data-plank",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "plank": {
+      "type": "string"
+    },
+    "participants_for": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::nwc-participant.nwc-participant",
+      "inversedBy": "planks_fors"
+    },
+    "participants_against": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::nwc-participant.nwc-participant",
+      "inversedBy": "planks_against"
+    },
+    "participants_spoke_for": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::nwc-participant.nwc-participant",
+      "inversedBy": "planks_spoke_fors"
+    }
+  }
+}

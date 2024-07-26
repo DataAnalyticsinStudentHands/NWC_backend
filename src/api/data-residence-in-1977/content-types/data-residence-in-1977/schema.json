@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "data_residence_in_1977s",
+  "info": {
+    "singularName": "data-residence-in-1977",
+    "pluralName": "data-residence-in-1977s",
+    "displayName": "data-residence-in-1977",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "street_address": {
+      "type": "string"
+    },
+    "po_box_rural_route": {
+      "type": "string"
+    },
+    "city_state": {
+      "type": "string"
+    },
+    "zip_code": {
+      "type": "string"
+    },
+    "total_population": {
+      "type": "biginteger"
+    },
+    "median_household_income": {
+      "type": "biginteger"
+    },
+    "participant": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::nwc-participant.nwc-participant",
+      "inversedBy": "residence_in_1977s"
+    }
+  }
+}
