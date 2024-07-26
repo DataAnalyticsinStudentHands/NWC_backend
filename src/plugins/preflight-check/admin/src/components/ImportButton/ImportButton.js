@@ -5,7 +5,9 @@ import { importDemographicData } from '../../utils/data_import';
 export const ImportButton = ({data}) => {
 
   function handleImport() {
-    importDemographicData(data);
+    if (confirm("Do you want to proceed with the import?") == true) {
+      importDemographicData(data);
+    }
   }
 
   return (
