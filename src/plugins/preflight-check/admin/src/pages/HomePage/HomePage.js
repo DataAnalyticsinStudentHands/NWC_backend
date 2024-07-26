@@ -23,12 +23,6 @@ import {
   checkWithMaster,
   checkIsNumber,
 } from "../../utils/data_check";
-import { fetchDataWithRetry } from "../../utils/data_import";
-
-const masterdata = await fetchDataWithRetry(
-  `${process.env.STRAPI_ADMIN_BACKEND_URL}/api/data-idc-masters`
-);
-const master = masterdata.data.data;
 
 const HomePage = () => {
   const [file, setFile] = useState({});
@@ -38,7 +32,7 @@ const HomePage = () => {
     setReportData(null);
     const sheetData = JSON.parse(sheets);
 
-    let masterCheckReport = checkWithMaster(sheetData, master);
+    let masterCheckReport = checkWithMaster(sheetData);
     let formatReportData = checkFormat(sheetData);
     let isNumberReportData = checkIsNumber(sheetData, formatReportData);
 

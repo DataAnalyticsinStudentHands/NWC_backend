@@ -1,4 +1,11 @@
-export default function checkWithMaster(sheets, master) {
+import { fetchDataWithRetry } from "../data_import";
+
+const masterdata = await fetchDataWithRetry(
+  `${process.env.STRAPI_ADMIN_BACKEND_URL}/api/data-idc-masters`
+);
+const master = masterdata.data.data;
+
+export default function checkWithMaster(sheets) {
     const masterCheck = {
       ID: "id",
       "Last Name": "last_name",
