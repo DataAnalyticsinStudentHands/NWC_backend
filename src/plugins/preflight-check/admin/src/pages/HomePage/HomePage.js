@@ -36,11 +36,14 @@ const HomePage = () => {
     let formatReportData = checkFormat(sheetData);
     let isNumberReportData = checkIsNumber(sheetData, formatReportData);
 
-    setReportData({
-      masterCheck: masterCheckReport,
-      formatData: formatReportData,
-      isNumberData: isNumberReportData,
-    });
+    masterCheckReport.then(function(result) {
+      setReportData({
+        masterCheck: result,
+        formatData: formatReportData,
+        isNumberData: isNumberReportData,
+      });
+    })
+    
   }, [sheets]);
 
   const removeFile = () => {
