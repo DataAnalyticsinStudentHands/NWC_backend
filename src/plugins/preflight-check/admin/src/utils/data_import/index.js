@@ -44,7 +44,6 @@ async function removeCurrentContent(props) {
   let url = `${process.env.STRAPI_ADMIN_BACKEND_URL}/api/nwc-participants`;
   const query = qs.stringify(
     {
-      fields: [attribute],
       populate: [attribute],
       filters: {
         id: {
