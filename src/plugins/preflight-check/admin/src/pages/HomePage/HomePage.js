@@ -18,6 +18,7 @@ import NumberReport from "../../components/NumberReport";
 import { Header } from "../../components/Header/Header";
 import { UploadExcelButton } from "../../components/UploadExcelButton";
 import { ImportButton } from "../../components/ImportButton";
+import { GeoButton } from "../../components/GeoButton";
 import {
   checkFormat,
   checkWithMaster,
@@ -95,6 +96,7 @@ const HomePage = () => {
                       </Button>
                     )}
                     {showImport && <ImportButton data={sheets} />}
+                    {<GeoButton/>}
                   </Flex>
                 </Flex>
               </Box>
