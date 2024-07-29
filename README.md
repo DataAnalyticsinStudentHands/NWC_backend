@@ -34,7 +34,5 @@ Please follow the general [Strapi developer documentation](https://docs.strapi.i
 
 Here is an [intro video to Strapi content managment](https://strapi.io/documentation/developer-docs/latest/getting-started/quick-start.html)
 
-### Import of Excel/Tabular Data into DB
-Excel data can be uploaded by using scripts inside the /data_import folder.
-
-Excel/Tabular data's api is handled in api/participants.
+### Import of Demographic Data into DB via Plugin
+Demographic data can be uploaded through the preflight plugin - a special plugin for this project only.
