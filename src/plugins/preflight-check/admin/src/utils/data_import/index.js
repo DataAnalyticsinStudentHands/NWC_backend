@@ -1,8 +1,10 @@
 const _ = require("lodash");
 const { cleanSheetObject, cleanSheetArray } = require("./utils/sheetData.js");
 import * as config from "./config.json";
-import axios from "axios";
 import qs from "qs";
+import axios from "axios";
+
+import { fetchDataWithRetry, delay } from "./utils/fetchData.js";
 
 // Setup header for API calls
 const token = process.env.STRAPI_ADMIN_WEBTOKEN;
@@ -11,27 +13,6 @@ const header = {
     Authorization: `Bearer ${token}`,
   },
 };
-
-// Helper function for timeout
-async function delay(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-// Helper function to fetch existing data (retry if needed)
-async function fetchDataWithRetry(url, retryCount = 3, delay = 1000) {
-  try {
-    const response = await axios.get(url);
-    return response;
-  } catch (error) {
-    if (retryCount > 0) {
-      console.error(`Request failed. Retrying ${retryCount} more times...`);
-      await new Promise((resolve) => setTimeout(resolve, delay));
-      return fetchDataWithRetry(url, retryCount - 1, delay);
-    } else {
-      throw error;
-    }
-  }
-}
 
 // Helper function to delete data (does retry if needed)
 async function deletDataWithRetry(url, retryCount = 3, delay = 1000) {
