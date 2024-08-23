@@ -46,21 +46,23 @@ export default async function checkWithMaster(sheets) {
             errorMessage: `No master row found for ${row.id}`,
           });
         } else {
-          Object.keys(row).forEach((key) => {
-            //don't check again for id
-            if (key !== "id") {
-              if (masterRow.attributes[key] !== row[key]) {
-                errors.push({
-                  id: row.id,
-                  key: key,
-                  sheetName: sheetName,
-                  masterValue: masterRow[key],
-                  sheetValue: row[key],
-                  errorMessage: `Mismatch for ${row.id} ${key}: ${masterRow[key]}(master) !== ${row[key]}`,
-                });
+          // check the fields to match master for Basic sheet
+          if (sheetName === "Basic Data")
+            Object.keys(row).forEach((key) => {
+              //don't check again for id
+              if (key !== "id") {
+                if (masterRow.attributes[key] !== row[key]) {
+                  errors.push({
+                    id: row.id,
+                    key: key,
+                    sheetName: sheetName,
+                    masterValue: masterRow[key],
+                    sheetValue: row[key],
+                    errorMessage: `Mismatch for ${row.id} ${key}: ${masterRow[key]}(master) !== ${row[key]}`,
+                  });
+                }
               }
-            }
-          });
+            });
         }
       });
     });
