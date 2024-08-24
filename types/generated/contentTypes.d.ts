@@ -1388,18 +1388,19 @@ export interface ApiContentMappingNwcContentMappingNwc
     pluralName: 'content-mapping-nwcs';
     displayName: 'content-mapping-nwc';
     name: 'Content_MappingNWC';
+    description: '';
   };
   options: {
-    increments: true;
-    timestamps: true;
     draftAndPublish: true;
   };
   attributes: {
-    BasicSearch_Text: Attribute.RichText;
     Banner_text: Attribute.RichText;
     BannerImage_Credit: Attribute.String;
     BannerImageCredit_more: Attribute.String;
+    BasicSearch_Text: Attribute.RichText;
     AdvancedSearch_Banner: Attribute.RichText;
+    AdvancedSearch_HowTo: Attribute.RichText;
+    AdvancedSearch_OpenSearch: Attribute.RichText;
     AdvancedSearch_NWC: Attribute.RichText;
     AdvancedSearch_Participants: Attribute.RichText;
     AdvancedSearch_Education: Attribute.RichText;
