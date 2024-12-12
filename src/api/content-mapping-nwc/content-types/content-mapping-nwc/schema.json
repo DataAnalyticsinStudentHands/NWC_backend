@@ -47,6 +47,17 @@
     },
     "AdvancedSearch_Organizations": {
       "type": "richtext"
+    },
+    "BasicSearch_Progress_Map": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
     }
   }
 }
