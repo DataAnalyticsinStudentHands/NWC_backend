@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "content_home_highlights",
+  "info": {
+    "singularName": "content-home-highlight",
+    "pluralName": "content-home-highlights",
+    "displayName": "content-home-highlight",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Featured": {
+      "type": "boolean"
+    },
+    "Thumbnail": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "ShortTitle": {
+      "type": "string"
+    },
+    "home_highlights_link": {
+      "type": "string"
+    }
+  }
+}
