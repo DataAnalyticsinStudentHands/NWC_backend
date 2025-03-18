@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "data_races",
+  "info": {
+    "singularName": "data-race",
+    "pluralName": "data-races",
+    "displayName": "data-race",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "race": {
+      "type": "string"
+    },
+    "participants": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::nwc-participant.nwc-participant",
+      "inversedBy": "races"
+    }
+  }
+}

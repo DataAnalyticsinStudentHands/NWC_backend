@@ -3,18 +3,18 @@
 		"pk": "id",
 		"sheet": "Basic Data",
 		"slug": "api::nwc-participant.nwc-participant",
-		"route": "/api/import-export-entries/content/import",
 		"lookup": {
 			"ID": "id",
 			"Last Name": "last_name",
 			"First Name": "first_name",
-			"Middle Name and/or Initial 1": "middle_name_initial",
+			"Middle Name and/or Initial 1": "middle_name_initial_1",
 			"Middle Name and/or Initial 2": "middle_name_initial_2",
 			"Nickname": "nickname",
+			"Suffix": "suffix",
 			"State": "represented_state",
-			"Optional Column: Use only if Birthdate year is an approximation.  In such cases use dropdown menu and select ca.": "birth_ca",
 			"Birthdate Month": "birth_month",
 			"Birthdate Day": "birth_day",
+			"Optional Column: Use only if Birthdate year is an approximation.  In such cases use dropdown menu and select ca.": "birth_ca",
 			"Birthdate Year": "birth_year",
 			"Optional Column: Fill out ONLY if birth year or Age in 1977 not found. Use Age Range from NWC Registration forms as indicated in dropdown menu.": "age_range",
 			"Age in 1977": "age_in_1977",
@@ -23,7 +23,6 @@
 			"Deathdate Year": "death_year",
 			"Place of Birth": "place_of_birth",
 			"Marital Classification": "marital_classification",
-			"Name of Spouse": "name_of_spouse",
 			"Religion": "religion",
 			"Gender ": "gender",
 			"Sexual Orientation": "sexual_orientation",
@@ -32,26 +31,48 @@
 		}
 	},
 	"residence_in_1977": {
-		"pk": "residence_in_1977",
+		"pk": "participant",
 		"sheet": "Basic Data",
-		"slug": "api::resident-in-1977.resident-in-1977",
+		"slug": "api::data-residence-in-1977.data-residence-in-1977",
+		"route": "/api/data-residence-in-1977s",
+		"attribute": "residence_in_1977s",
 		"lookup": {
-			"ID": "participant_id",
-			"Residence in 1977": "residence_in_1977",
+			"ID": "participant",
+			"Residence in 1977: Street Address and Apartment Number": "street_address",
+    		"Residence in 1977: PO Box and/or Rural Route Number": "po_box_rural_route",
+    		"Residence in 1977: City and State": "city_state",
+    		"Residence in 1977: Zip Code": "zip_code",
 			"Total Population of Place of Residence (check US Census)": "total_population",
-			"Median Household Income of Place of Residence (check US Census)": "median_household_income",
-			"participants": "participants"
+			"Median Household Income of Place of Residence (check US Census)": "median_household_income"
+		}
+	},
+	"spouse": {
+		"pk": "participant",
+		"sheet": "Spouse Partner Info",
+		"slug": "api::data-spouse.data-spouse",
+		"route": "/api/data-spouses",
+		"attribute": "spouses",
+		"lookup": {
+			"ID": "participant",
+			"Last Name of Spouse/Partner": "last_name",
+			"First Name of Spouse/Partner": "first_name",
+			"Middle Name and/or Initial 1 of Spouse/Partner": "middle_name_initial_1",
+			"Middle Name and/or Initial 2 of Spouse/Partner": "middle_name_initial_2",
+			"Nickname of Spouse/Partner": "nickname",
+			"Suffix of Spouse/Partner": "suffix",
+			"Spouse's Profession (if more than one, list all separated by semicolon)": "professions",
+    		"Spouse/partner's Political offices (if more than one, list separated by semicolon)": "political_offices"
 		}
 	},
 	"basic_race": {
-		"pk": "basic_race",
+		"pk": "race",
 		"sheet": "Race & Ethnicity--Reg Forms",
-		"slug": "api::basic-race.basic-race"
+		"slug": "api::data-basic-race.data-basic-race"
 	},
 	"race": {
 		"pk": "race",
 		"sheet": "Race & Ethnicity--Expanded",
-		"slug": "api::race.race"
+		"slug": "api::data-race.data-race"
 	},
 	"education_participant": {
 		"pk": "id",
@@ -73,7 +94,7 @@
 		"slug": "api::data-education.data-education",
 		"route": "/api/data-educations",
 		"attribute": "educations",
-		"lookup_gard": {
+		"lookup_grad": {
 			"ID": "participant",
 			"College: Graduate/ Professional degree (if more than one, list all but create new row for each)": "degree",
 			"College: Graduate/ Professional institution (if more than one, list all but create new row for each)": "institution",
@@ -98,60 +119,7 @@
 			"Job/ Profession (if more than one, list all but create new row for each)": "job_profession"
 		}
 	},
-	"spouse": {
-		"pk": "id",
-		"sheet": "Spouse Partner Info",
-		"slug": "api::data-spouse.data-spouse",
-		"lookup": {
-			"Last Name of Spouse/Partner": "last_name",
-			"First Name of Spouse/Partner": "first_name",
-			"Middle Name and/or Initial 1 of Spouse/Partner": "middle_name_initial",
-			"Middle Name and/or Initial 2 of Spouse/Partner": "middle_name_initial_2",
-			"Nickname of Spouse/Partner": "nickname",
-			"Suffix of Spouse/Partner": "suffix",
-			"ID": "participant",
-
-			"name": "name",
-			"id": "id"
-		}
-	},
-	"education_spouse_career": {
-		"pk": "participant",
-		"sheet": "Ed & Career",
-		"slug": "api::data-spouse-career.data-spouse-career",
-		"lookup": {
-			"ID": "participant",
-			"Last Name of Spouse/Partner": "last_name",
-			"First Name of Spouse/Partner": "first_name",
-			"Spouse's Profession (if more than one, list all but create new row for each)": "spouse_career"
-		}
-	},
-	"politics_office_spouse": {
-		"pk": "participant",
-		"sheet": "Electoral Politics",
-		"slug": "api::data-spouse-political-office.data-spouse-political-office",
-		"lookup": {
-			"ID": "participant",
-			"Last Name of Spouse/Partner": "last_name",
-			"First Name of Spouse/Partner": "first_name",
-			"Spouse/partner's Political offices (if more than one, list all but create new column for each)": "political_office"
-		}
-	},
-	"politics_participant": {
-		"pk": "id",
-		"sheet": "Electoral Politics",
-		"slug": "api::nwc-participant.nwc-participant",
-		"lookup": {
-			"ID": "id",
-			"Political Party Membership": "political_party_membership",
-			"Identified Self as a Feminist": "self_identified_feminist",
-			"President's Commission on the Status of Women (federal level)": "federal_level_commission",
-			"state level Commission on the Status of Women (include years)": "state_level_commission",
-			"county level Commission on the Status of Women (include years) ": "county_level_commission",
-			"city level Commission on the Status of Women (include years)": "city_level_commission"
-		}
-	},
-	"politics_office_hold": {
+	"political_office_held": {
 		"pk": "participant",
 		"sheet": "Electoral Politics",
 		"slug": "api::data-political-office-held.data-political-office-held",
@@ -166,7 +134,7 @@
 			"Optional Column:  Use this column only if the person is still serving in office.  Select \"present\" from the dropdown menu.": "present"
 		}
 	},
-	"politics_office_lost": {
+	"political_office_lost": {
 		"pk": "participant",
 		"sheet": "Electoral Politics",
 		"slug": "api::data-political-office-lost.data-political-office-lost",
@@ -177,6 +145,31 @@
 			"Jurisdiction of Political Offices Sought but Lost": "jurisdiction",
 			"Name of Political Offices Sought but Lost (if more than one, list all but create new row for each)": "political_office",
 			"Year of Race that was Lost": "year"
+		}
+	},
+	"political_party": {
+		"pk": "participant",
+		"sheet": "Electoral Politics",
+		"slug": "api::data-political-party.data-political-party",
+		"route": "/api/data-political-parties",
+		"attribute": "political_parties",
+		"lookup": {
+			"ID": "participant",
+			"Political Party Membership": "party"
+		}
+	},
+	"political_participant": {
+		"pk": "id",
+		"sheet": "Electoral Politics",
+		"slug": "api::nwc-participant.nwc-participant",
+		"lookup": {
+			"ID": "id",
+			"Identified Self as a Feminist": "self_identified_feminist",
+			"President's Commission on the Status of Women (federal level)": "federal_level_commission",
+			"state level Commission on the Status of Women (include years)": "state_level_commission",
+			"county level Commission on the Status of Women (include years) ": "county_level_commission",
+			"city level Commission on the Status of Women (include years)": "city_level_commission",
+			"National Advisory Committee for Women": "national_advisory_committee"
 		}
 	},
 	"leadership_in_org": {
@@ -192,10 +185,10 @@
 			"Name of Organization in which leadership position was held": "organization"
 		}
 	},
-	"organizational_and_political": {
+	"organizational_political": {
 		"pk": "organizational_and_political",
 		"sheet": "Organizational & Political",
-		"slug": "api::organizational-and-political.organizational-and-political"
+		"slug": "api::data-organizational-political.data-organizational-political"
 	},
 	"role_participant": {
 		"pk": "id",
@@ -209,7 +202,7 @@
 	"role": {
 		"pk": "role",
 		"sheet": "Role at NWC",
-		"slug": "api::nwc-role.nwc-role",
+		"slug": "api::data-role.data-role",
 		"lookup": {
 			"participants": "participants",
 			"role": "role"
@@ -218,7 +211,7 @@
 	"plank": {
 		"pk": "plank",
 		"sheet": "Position on Planks",
-		"slug": "api::nwc-plank.nwc-plank",
+		"slug": "api::data-plank.data-plank",
 		"lookup": {
 			"plank": "plank",
 			"participants_for": "participants_for",

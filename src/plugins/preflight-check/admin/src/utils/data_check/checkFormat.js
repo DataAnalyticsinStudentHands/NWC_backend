@@ -1,4 +1,4 @@
-const format = require("./res/DemographicsTemplate_2024-01-29.json");
+const format = require("./res/DemographicsTemplate.json");
 
 function matchStringWithArray(string, array, stop_words) {
 	stop_words = stop_words || [];
@@ -17,8 +17,10 @@ function matchStringWithArray(string, array, stop_words) {
 	let maxCount = Math.max(...Object.values(obj));
 	return Object.keys(obj).filter((key) => obj[key] === maxCount && maxCount > 1);
 }
+
+// checks all rows for correct headers (it will not check any headers that have no data)
 export default function checkFormat(sheets) {
-    const stop_sheet_list = ["Organizational & Political", "Questions", "Sources"];
+    const stop_sheet_list = ["Race & Ethnicity--Expanded", "Organizational & Political", "Validations", "Questions", "Sources"];
     let errors = [];
     sheets && Object.entries(sheets).forEach(([sheetName, sheetData]) => {
         if(!format[sheetName]) {

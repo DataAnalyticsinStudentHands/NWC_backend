@@ -1,4 +1,5 @@
 import { Box } from '@strapi/design-system/Box';
+import { Typography } from '@strapi/design-system/Typography';
 import { BaseHeaderLayout } from '@strapi/design-system/Layout';
 import React from 'react';
 
@@ -8,7 +9,7 @@ export const Header = () => {
     <Box background="neutral100">
       <BaseHeaderLayout
         title="Demographics Data Check"
-        subtitle="Based on Master Sheet: IDCodeRangesMaster_V1_NBY_2023-02-27"
+        subtitle="Checks and imports after passing"
         as="h2"
       />
     </Box>

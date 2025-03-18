@@ -2,7 +2,7 @@
   "name": "nwc-back",
   "private": true,
   "version": "0.1.0",
-  "description": "A Strapi application",
+  "description": "A Strapi backend for Sharing Stories 1977",
   "scripts": {
     "develop": "strapi develop",
     "start": "strapi start",
@@ -10,26 +10,30 @@
     "strapi": "strapi"
   },
   "dependencies": {
-    "@strapi/plugin-i18n": "4.11.4",
-    "@strapi/plugin-users-permissions": "4.11.4",
+    "@strapi/plugin-i18n": "4.25.5",
+    "@strapi/plugin-users-permissions": "4.25.5",
     "@strapi/provider-email-nodemailer": "^4.14.4",
-    "@strapi/strapi": "4.11.4",
+    "@strapi/strapi": "4.25.5",
     "nodemailer": "^6.7.3",
     "pg": "^8.7.3",
     "qs": "^6.11.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^5.3.4",
     "request": "^2.88.2",
     "strapi-plugin-import-export-entries": "^1.21.0",
     "strapi-plugin-wysiwyg-react-md-editor": "^4.3.0",
+    "styled-components": "^5.3.11",
     "xlsx": "^0.18.5"
   },
   "author": {
-    "name": "A Strapi developer"
+    "name": "Peggy Lindner"
   },
   "strapi": {
     "uuid": "13feb85a-7ef9-4b19-b824-9d5bd9a576fe"
   },
   "engines": {
-    "node": ">=14.x.x <=16.x.x",
+    "node": ">=18.0.0 <=20.x.x",
     "npm": ">=6.x.x"
   },
   "license": "MIT",
