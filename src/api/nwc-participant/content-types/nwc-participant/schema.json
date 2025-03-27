@@ -223,6 +223,12 @@
     },
     "lon": {
       "type": "float"
+    },
+    "planks_no_known_position": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::data-plank.data-plank",
+      "mappedBy": "participants_no_known_position"
     }
   }
 }
