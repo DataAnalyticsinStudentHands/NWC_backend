@@ -32,6 +32,12 @@
       "relation": "manyToMany",
       "target": "api::nwc-participant.nwc-participant",
       "inversedBy": "planks_spoke_fors"
+    },
+    "participants_no_known_position": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::nwc-participant.nwc-participant",
+      "inversedBy": "planks_no_known_position"
     }
   }
 }
