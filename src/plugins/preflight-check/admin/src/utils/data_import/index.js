@@ -213,7 +213,7 @@ async function HandleMany2(props) {
               participants_spoke_for: [],
               participants_no_known_position: [],
             }));
-      value === "spoke_for" &&
+      value === "spoke about with position unknown" &&
             (obj[key]
               ? !obj[key].participants_spoke_for.includes(item["ID"]) &&
                 obj[key].participants_spoke_for.push(item["ID"])
@@ -224,7 +224,7 @@ async function HandleMany2(props) {
                   participants_spoke_for: [item["ID"]],
                   participants_no_known_position: [],
                 }));
-      value === "no_known" &&
+      value === "no known position" &&
             (obj[key]
               ? !obj[key].participants_spoke_for.includes(item["ID"]) &&
                 obj[key].participants_spoke_for.push(item["ID"])
