@@ -175,6 +175,8 @@ async function HandleMany2(props) {
       (obj[item[pk]]["participants_against"] = item.participants_against);
     item.participants_spoke_for &&
       (obj[item[pk]]["participants_spoke_for"] = item.participants_spoke_for);
+    item.participants_no_known_position &&
+      (obj[item[pk]]["participants_no_known_position"] = item.participants_no_known_position);
   });
 
   const sheetData = sheets[sheet] || [];
@@ -198,6 +200,7 @@ async function HandleMany2(props) {
               participants_for: [item["ID"]],
               participants_against: [],
               participants_spoke_for: [],
+              participants_no_known_position: [],
             }));
       value === "against" &&
         (obj[key]
@@ -208,17 +211,31 @@ async function HandleMany2(props) {
               participants_for: [],
               participants_against: [item["ID"]],
               participants_spoke_for: [],
+              participants_no_known_position: [],
             }));
       value === "spoke_for" &&
-        (obj[key]
-          ? !obj[key].participants_spoke_for.includes(item["ID"]) &&
-            obj[key].participants_spoke_for.push(item["ID"])
-          : (obj[key] = {
-              [pk]: key,
-              participants_for: [],
-              participants_against: [],
-              participants_spoke_for: [item["ID"]],
-            }));
+            (obj[key]
+              ? !obj[key].participants_spoke_for.includes(item["ID"]) &&
+                obj[key].participants_spoke_for.push(item["ID"])
+              : (obj[key] = {
+                  [pk]: key,
+                  participants_for: [],
+                  participants_against: [],
+                  participants_spoke_for: [item["ID"]],
+                  participants_no_known_position: [],
+                }));
+      value === "no_known" &&
+            (obj[key]
+              ? !obj[key].participants_spoke_for.includes(item["ID"]) &&
+                obj[key].participants_spoke_for.push(item["ID"])
+              : (obj[key] = {
+                  [pk]: key,
+                  participants_for: [],
+                  participants_against: [],
+                  participants_spoke_for: [],
+                  participants_no_known_position: [item["ID"]],
+                }));
+            
     });
   });
 

@@ -216,7 +216,8 @@
 			"plank": "plank",
 			"participants_for": "participants_for",
 			"participants_against": "participants_against",
-			"participants_spoke_for": "participants_spoke_for"
+			"participants_spoke_for": "participants_spoke_for",
+			"participants_no_known_position": "participants_no_known_position"
 		}
 	}
 }
