@@ -226,8 +226,8 @@ async function HandleMany2(props) {
                 }));
       value === "no known position" &&
             (obj[key]
-              ? !obj[key].participants_spoke_for.includes(item["ID"]) &&
-                obj[key].participants_spoke_for.push(item["ID"])
+              ? !obj[key].participantsno_known_position.includes(item["ID"]) &&
+                obj[key].participantsno_known_position.push(item["ID"])
               : (obj[key] = {
                   [pk]: key,
                   participants_for: [],
