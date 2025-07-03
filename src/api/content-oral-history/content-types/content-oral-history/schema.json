@@ -29,6 +29,15 @@
     },
     "NWC_Means_VideoURL": {
       "type": "string"
+    },
+    "Reflections_VideoURL1": {
+      "type": "string"
+    },
+    "Reflections_VideoURL2": {
+      "type": "string"
+    },
+    "ReflectionsText": {
+      "type": "richtext"
     }
   }
 }
