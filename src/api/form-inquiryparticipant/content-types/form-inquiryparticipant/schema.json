@@ -1,0 +1,43 @@
+{
+  "kind": "collectionType",
+  "collectionName": "form_inquiryparticipant",
+  "info": {
+    "singularName": "form-inquiryparticipant",
+    "pluralName": "form-inquiryparticipant",
+    "displayName": "form-inquiryparticipant",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "role_at_nwc": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "experience": {
+      "type": "text"
+    },
+    "involved": {
+      "type": "text"
+    },
+    "interview": {
+      "type": "text"
+    },
+    "memorabilia": {
+      "type": "text"
+    },
+    "more": {
+      "type": "text"
+    }
+  }
+}
