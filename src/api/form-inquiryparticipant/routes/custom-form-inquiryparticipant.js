@@ -2,7 +2,7 @@ module.exports = {
     routes: [
       {
         method: 'POST',
-        path: '/form-inquiryparticipant', 
+        path: '/forms-inquiryparticipant', 
         handler: 'form-inquiryparticipant.sendEmail',
       },
     ]
