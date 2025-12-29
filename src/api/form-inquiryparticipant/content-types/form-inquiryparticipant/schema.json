@@ -1,9 +1,9 @@
 {
   "kind": "collectionType",
-  "collectionName": "form_inquiryparticipant",
+  "collectionName": "form_inquiryparticipants",
   "info": {
     "singularName": "form-inquiryparticipant",
-    "pluralName": "form-inquiryparticipant",
+    "pluralName": "form-inquiryparticipants",
     "displayName": "form-inquiryparticipant",
     "description": ""
   },
