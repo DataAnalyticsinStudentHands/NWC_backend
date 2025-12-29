@@ -92,7 +92,11 @@ export interface GeneralFiles extends Schema.Component {
         'Biographies and Orale Histories',
         'Archives',
         'More Ideas',
-        'Donate Papers'
+        'Donate Papers',
+        'Participant Inquiry',
+        'Researcher Inquery',
+        'Educator Inquiry',
+        'Student Researcher Inquiry'
       ]
     >;
   };
