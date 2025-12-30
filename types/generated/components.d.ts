@@ -89,14 +89,12 @@ export interface GeneralFiles extends Schema.Component {
     link_to_form: Attribute.Enumeration<
       [
         'Corrections',
-        'Biographies and Orale Histories',
-        'Archives',
         'More Ideas',
         'Donate Papers',
         'Participant Inquiry',
-        'Researcher Inquery',
+        'Researcher Inquiry',
         'Educator Inquiry',
-        'Student Researcher Inquiry'
+        'Student Inquiry'
       ]
     >;
   };
