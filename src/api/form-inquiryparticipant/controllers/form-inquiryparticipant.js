@@ -54,12 +54,12 @@ async function fetchEmailTemplate(template) {
 // Helper function to build email object
 function buildEmailObject(data, emailConfig) {
   return {
-    to: data.Email,
+    to: data.email,
     from: "webadmin@dash.cs.uh.edu",
     bcc: emailConfig.bcc || undefined,
     subject: emailConfig.subject || "NWC - Thanks for your inquiry",
     text: `
-Dear ${data.Name},
+Dear ${data.name},
 
 ${emailConfig.text || "Thanks for contacting us. We will get back to you soon."}
 `,
