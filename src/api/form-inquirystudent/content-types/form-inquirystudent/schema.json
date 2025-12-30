@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "form_inquirystudents",
+  "info": {
+    "singularName": "form-inquirystudent",
+    "pluralName": "form-inquirystudents",
+    "displayName": "form-inquirystudent",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "school": {
+      "type": "string"
+    },
+    "year": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "why": {
+      "type": "text"
+    },
+    "skills": {
+      "type": "text"
+    },
+    "how": {
+      "type": "text"
+    },
+    "time": {
+      "type": "text"
+    }
+  }
+}

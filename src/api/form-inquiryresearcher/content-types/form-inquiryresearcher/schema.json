@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "form_inquiryresearchers",
+  "info": {
+    "singularName": "form-inquiryresearcher",
+    "pluralName": "form-inquiryresearchers",
+    "displayName": "form-inquiryresearcher",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "affiliation": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "projects": {
+      "type": "text"
+    },
+    "interest": {
+      "type": "text"
+    },
+    "guidance": {
+      "type": "text"
+    }
+  }
+}
