@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "form_inquiryeducators",
+  "info": {
+    "singularName": "form-inquiryeducator",
+    "pluralName": "form-inquiryeducators",
+    "displayName": "form-inquiryeducator",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "affiliation": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "classes": {
+      "type": "text"
+    },
+    "students": {
+      "type": "text"
+    },
+    "guidance": {
+      "type": "text"
+    },
+    "more": {
+      "type": "text"
+    }
+  }
+}
