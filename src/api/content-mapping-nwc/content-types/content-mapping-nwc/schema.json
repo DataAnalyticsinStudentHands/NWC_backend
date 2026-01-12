@@ -58,6 +58,9 @@
         "videos",
         "audios"
       ]
+    },
+    "DigDeeperImage_Credit": {
+      "type": "string"
     }
   }
 }
