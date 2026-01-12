@@ -1,0 +1,43 @@
+{
+  "kind": "collectionType",
+  "collectionName": "form_inquiryarchivists",
+  "info": {
+    "singularName": "form-inquiryarchivist",
+    "pluralName": "form-inquiryarchivists",
+    "displayName": "form-inquiryarchivist",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "affiliation": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "collections": {
+      "type": "text"
+    },
+    "corrections": {
+      "type": "text"
+    },
+    "archives": {
+      "type": "text"
+    },
+    "story": {
+      "type": "text"
+    },
+    "oralHistory": {
+      "type": "text"
+    }
+  }
+}
