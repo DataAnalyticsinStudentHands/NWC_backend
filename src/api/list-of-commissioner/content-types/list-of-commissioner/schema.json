@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "list_of_commissioners",
+  "info": {
+    "singularName": "list-of-commissioner", 
+    "pluralName": "list-of-commissioners", 
+    "displayName": "list-of-commissioners",
+    "name": "List_of_Commissioner",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "FirstName": {
+      "type": "string"
+    },
+    "LastName": {
+      "type": "string"
+    },
+    "Commissioner": {
+      "type": "enumeration",
+      "enum": [
+        "Carter National Commissioner",
+        "Ford National Commissioner",
+        "Ford National Commissioner, Carter National Commissioner"
+      ]
+    }
+  }
+}
