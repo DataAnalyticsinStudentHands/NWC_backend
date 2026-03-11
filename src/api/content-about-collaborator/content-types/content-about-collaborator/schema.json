@@ -24,10 +24,12 @@
         "DevUXInterns",
         "InauguralTeam",
         "SteeringCommittee",
-        "InauguralAdvisoryCommittees",
+        "InternalAdvisoryCommittee",
+        "ExternalAdvisoryCommittee",
         "DonorGrantingAgencies",
         "EditorialBoardFellows",
-        "EditorialBoardLeads"
+        "EditorialBoardLeads",
+        "InauguralAdvisoryCommittees"
       ]
     },
     "FirstName": {
