@@ -137,6 +137,12 @@
         "audios"
       ],
       "multiple": false
+    },
+    "BehindTheScenes_Video1": {
+      "type": "string"
+    },
+    "BehindTheScenes_Video2": {
+      "type": "string"
     }
   }
 }

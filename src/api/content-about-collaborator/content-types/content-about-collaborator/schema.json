@@ -28,7 +28,8 @@
         "ExternalAdvisoryCommittee",
         "DonorGrantingAgencies",
         "EditorialBoardFellows",
-        "EditorialBoardLeads"
+        "EditorialBoardLeads",
+        "InauguralAdvisoryCommittees"
       ]
     },
     "FirstName": {
