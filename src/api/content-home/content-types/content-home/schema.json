@@ -29,12 +29,6 @@
     "homeAbout_p": {
       "type": "richtext"
     },
-    "homeAbout_p1": {
-      "type": "richtext"
-    },
-    "homeAbout_p2": {
-      "type": "richtext"
-    },
     "homeButton1_link": {
       "type": "string"
     },
