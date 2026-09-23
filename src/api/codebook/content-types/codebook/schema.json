@@ -1,0 +1,46 @@
+{
+  "kind": "collectionType",
+  "collectionName": "codebooks",
+  "info": {
+    "singularName": "codebook",
+    "pluralName": "codebooks",
+    "displayName": "Codebook",
+    "description": "Data dictionary and variable definitions for the Sharing Stories 1977 dataset."
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "variable_name": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "display_name": {
+      "type": "string"
+    },
+    "tab_category": {
+      "type": "string"
+    },
+    "definition": {
+      "type": "text"
+    },
+    "data_type": {
+      "type": "string"
+    },
+    "allowed_values": {
+      "type": "text"
+    },
+    "data_entry_rules": {
+      "type": "text"
+    },
+    "primary_sources": {
+      "type": "text"
+    },
+    "is_public": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}
