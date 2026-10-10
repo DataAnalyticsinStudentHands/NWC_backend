@@ -856,6 +856,8 @@ export interface ApiContentAboutContentAbout extends Schema.SingleType {
     aboutDocuments_collectionsGuide: Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
     >;
+    BehindTheScenes_Video1: Attribute.String;
+    BehindTheScenes_Video2: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -901,7 +903,10 @@ export interface ApiContentAboutCollaboratorContentAboutCollaborator
         'SteeringCommittee',
         'InternalAdvisoryCommittee',
         'ExternalAdvisoryCommittee',
-        'DonorGrantingAgencies'
+        'DonorGrantingAgencies',
+        'EditorialBoardFellows',
+        'EditorialBoardLeads',
+        'InauguralAdvisoryCommittees'
       ]
     >;
     FirstName: Attribute.String;
@@ -1176,8 +1181,6 @@ export interface ApiContentHomeContentHome extends Schema.SingleType {
     aboutImgCredit: Attribute.String;
     aboutImgCredit_more: Attribute.Text;
     homeAbout_p: Attribute.RichText;
-    homeAbout_p1: Attribute.RichText;
-    homeAbout_p2: Attribute.RichText;
     homeButton1_link: Attribute.String;
     homeButton1_text: Attribute.Text;
     homeButton2_link: Attribute.String;
@@ -1206,35 +1209,34 @@ export interface ApiContentHomeContentHome extends Schema.SingleType {
   };
 }
 
-export interface ApiContentHomeCarouselContentHomeCarousel
+export interface ApiContentHomeHighlightContentHomeHighlight
   extends Schema.CollectionType {
-  collectionName: 'content_home_carousels';
+  collectionName: 'content_home_highlights';
   info: {
-    singularName: 'content-home-carousel';
-    pluralName: 'content-home-carousels';
-    displayName: 'content-home-carousel';
-    name: 'CONTENT_Home_Carousel_Imgs';
+    singularName: 'content-home-highlight';
+    pluralName: 'content-home-highlights';
+    displayName: 'content-home-highlight';
     description: '';
   };
   options: {
-    increments: true;
-    timestamps: true;
     draftAndPublish: true;
   };
   attributes: {
-    Section: Attribute.String;
-    Image: Attribute.Media<'images' | 'files' | 'videos'>;
+    Featured: Attribute.Boolean;
+    Thumbnail: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    ShortTitle: Attribute.String;
+    home_highlights_link: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
-      'api::content-home-carousel.content-home-carousel',
+      'api::content-home-highlight.content-home-highlight',
       'oneToOne',
       'admin::user'
     > &
       Attribute.Private;
     updatedBy: Attribute.Relation<
-      'api::content-home-carousel.content-home-carousel',
+      'api::content-home-highlight.content-home-highlight',
       'oneToOne',
       'admin::user'
     > &
@@ -1406,6 +1408,10 @@ export interface ApiContentMappingNwcContentMappingNwc
     AdvancedSearch_Education: Attribute.RichText;
     AdvancedSearch_Politics: Attribute.RichText;
     AdvancedSearch_Organizations: Attribute.RichText;
+    BasicSearch_Progress_Map: Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
+    DigDeeperImage_Credit: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1443,6 +1449,9 @@ export interface ApiContentOralHistoryContentOralHistory
     What_NWC_Means: Attribute.RichText;
     ExploreText: Attribute.RichText;
     NWC_Means_VideoURL: Attribute.String;
+    Reflections_VideoURL1: Attribute.String;
+    Reflections_VideoURL2: Attribute.String;
+    ReflectionsText: Attribute.RichText;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1865,6 +1874,11 @@ export interface ApiDataPlankDataPlank extends Schema.CollectionType {
       'manyToMany',
       'api::nwc-participant.nwc-participant'
     >;
+    participants_no_known_position: Attribute.Relation<
+      'api::data-plank.data-plank',
+      'manyToMany',
+      'api::nwc-participant.nwc-participant'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -2248,6 +2262,197 @@ export interface ApiFormDonatepaperFormDonatepaper
   };
 }
 
+export interface ApiFormInquiryarchivistFormInquiryarchivist
+  extends Schema.CollectionType {
+  collectionName: 'form_inquiryarchivists';
+  info: {
+    singularName: 'form-inquiryarchivist';
+    pluralName: 'form-inquiryarchivists';
+    displayName: 'form-inquiryarchivist';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    name: Attribute.String;
+    title: Attribute.String;
+    affiliation: Attribute.String;
+    email: Attribute.Email;
+    collections: Attribute.Text;
+    corrections: Attribute.Text;
+    archives: Attribute.Text;
+    story: Attribute.Text;
+    oralHistory: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::form-inquiryarchivist.form-inquiryarchivist',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::form-inquiryarchivist.form-inquiryarchivist',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiFormInquiryeducatorFormInquiryeducator
+  extends Schema.CollectionType {
+  collectionName: 'form_inquiryeducators';
+  info: {
+    singularName: 'form-inquiryeducator';
+    pluralName: 'form-inquiryeducators';
+    displayName: 'form-inquiryeducator';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    name: Attribute.String;
+    title: Attribute.String;
+    affiliation: Attribute.String;
+    email: Attribute.Email;
+    classes: Attribute.Text;
+    students: Attribute.Text;
+    guidance: Attribute.Text;
+    more: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::form-inquiryeducator.form-inquiryeducator',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::form-inquiryeducator.form-inquiryeducator',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiFormInquiryparticipantFormInquiryparticipant
+  extends Schema.CollectionType {
+  collectionName: 'form_inquiryparticipants';
+  info: {
+    singularName: 'form-inquiryparticipant';
+    pluralName: 'form-inquiryparticipants';
+    displayName: 'form-inquiryparticipant';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    name: Attribute.String;
+    role_at_nwc: Attribute.String;
+    phone: Attribute.String;
+    email: Attribute.Email;
+    experience: Attribute.Text;
+    involved: Attribute.Text;
+    interview: Attribute.Text;
+    memorabilia: Attribute.Text;
+    more: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::form-inquiryparticipant.form-inquiryparticipant',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::form-inquiryparticipant.form-inquiryparticipant',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiFormInquiryresearcherFormInquiryresearcher
+  extends Schema.CollectionType {
+  collectionName: 'form_inquiryresearchers';
+  info: {
+    singularName: 'form-inquiryresearcher';
+    pluralName: 'form-inquiryresearchers';
+    displayName: 'form-inquiryresearcher';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    name: Attribute.String;
+    title: Attribute.String;
+    affiliation: Attribute.String;
+    email: Attribute.Email;
+    projects: Attribute.Text;
+    interest: Attribute.Text;
+    guidance: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::form-inquiryresearcher.form-inquiryresearcher',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::form-inquiryresearcher.form-inquiryresearcher',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiFormInquirystudentFormInquirystudent
+  extends Schema.CollectionType {
+  collectionName: 'form_inquirystudents';
+  info: {
+    singularName: 'form-inquirystudent';
+    pluralName: 'form-inquirystudents';
+    displayName: 'form-inquirystudent';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    name: Attribute.String;
+    school: Attribute.String;
+    year: Attribute.String;
+    email: Attribute.Email;
+    why: Attribute.Text;
+    skills: Attribute.Text;
+    how: Attribute.Text;
+    time: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::form-inquirystudent.form-inquirystudent',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::form-inquirystudent.form-inquirystudent',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiFormMoreideaFormMoreidea extends Schema.CollectionType {
   collectionName: 'form_moreideas';
   info: {
@@ -2283,33 +2488,42 @@ export interface ApiFormMoreideaFormMoreidea extends Schema.CollectionType {
   };
 }
 
-export interface ApiHomeHighlightHomeHighlight extends Schema.CollectionType {
-  collectionName: 'home_highlights';
+export interface ApiListOfCommissionerListOfCommissioner
+  extends Schema.CollectionType {
+  collectionName: 'list_of_commissioners';
   info: {
-    singularName: 'home-highlight';
-    pluralName: 'home-highlights';
-    displayName: 'Home-highlights';
+    singularName: 'list-of-commissioner';
+    pluralName: 'list-of-commissioners';
+    displayName: 'list-of-commissioners';
+    name: 'List_of_Commissioner';
     description: '';
   };
   options: {
+    increments: true;
+    timestamps: true;
     draftAndPublish: true;
   };
   attributes: {
-    Featured: Attribute.Boolean;
-    Thumbnail: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
-    ShortTitle: Attribute.String;
-    home_highlights_link: Attribute.String;
+    FirstName: Attribute.String;
+    LastName: Attribute.String;
+    Commissioner: Attribute.Enumeration<
+      [
+        'Carter National Commissioner',
+        'Ford National Commissioner',
+        'Ford National Commissioner, Carter National Commissioner'
+      ]
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
-      'api::home-highlight.home-highlight',
+      'api::list-of-commissioner.list-of-commissioner',
       'oneToOne',
       'admin::user'
     > &
       Attribute.Private;
     updatedBy: Attribute.Relation<
-      'api::home-highlight.home-highlight',
+      'api::list-of-commissioner.list-of-commissioner',
       'oneToOne',
       'admin::user'
     > &
@@ -2560,6 +2774,11 @@ export interface ApiNwcParticipantNwcParticipant extends Schema.CollectionType {
     >;
     lat: Attribute.Float;
     lon: Attribute.Float;
+    planks_no_known_position: Attribute.Relation<
+      'api::nwc-participant.nwc-participant',
+      'manyToMany',
+      'api::data-plank.data-plank'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -2679,7 +2898,7 @@ declare module '@strapi/types' {
       'api::content-essay.content-essay': ApiContentEssayContentEssay;
       'api::content-footer.content-footer': ApiContentFooterContentFooter;
       'api::content-home.content-home': ApiContentHomeContentHome;
-      'api::content-home-carousel.content-home-carousel': ApiContentHomeCarouselContentHomeCarousel;
+      'api::content-home-highlight.content-home-highlight': ApiContentHomeHighlightContentHomeHighlight;
       'api::content-home-map.content-home-map': ApiContentHomeMapContentHomeMap;
       'api::content-how-to-contribute.content-how-to-contribute': ApiContentHowToContributeContentHowToContribute;
       'api::content-how-to-contribute-resource.content-how-to-contribute-resource': ApiContentHowToContributeResourceContentHowToContributeResource;
@@ -2704,8 +2923,13 @@ declare module '@strapi/types' {
       'api::email-template.email-template': ApiEmailTemplateEmailTemplate;
       'api::form.form': ApiFormForm;
       'api::form-donatepaper.form-donatepaper': ApiFormDonatepaperFormDonatepaper;
+      'api::form-inquiryarchivist.form-inquiryarchivist': ApiFormInquiryarchivistFormInquiryarchivist;
+      'api::form-inquiryeducator.form-inquiryeducator': ApiFormInquiryeducatorFormInquiryeducator;
+      'api::form-inquiryparticipant.form-inquiryparticipant': ApiFormInquiryparticipantFormInquiryparticipant;
+      'api::form-inquiryresearcher.form-inquiryresearcher': ApiFormInquiryresearcherFormInquiryresearcher;
+      'api::form-inquirystudent.form-inquirystudent': ApiFormInquirystudentFormInquirystudent;
       'api::form-moreidea.form-moreidea': ApiFormMoreideaFormMoreidea;
-      'api::home-highlight.home-highlight': ApiHomeHighlightHomeHighlight;
+      'api::list-of-commissioner.list-of-commissioner': ApiListOfCommissionerListOfCommissioner;
       'api::list-of-participant.list-of-participant': ApiListOfParticipantListOfParticipant;
       'api::nwc-participant.nwc-participant': ApiNwcParticipantNwcParticipant;
       'api::participant.participant': ApiParticipantParticipant;

@@ -94,7 +94,8 @@ export interface GeneralFiles extends Schema.Component {
         'Participant Inquiry',
         'Researcher Inquiry',
         'Educator Inquiry',
-        'Student Inquiry'
+        'Student Inquiry',
+        'Archivist Inquiry'
       ]
     >;
   };
