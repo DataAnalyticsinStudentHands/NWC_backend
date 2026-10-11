@@ -34,7 +34,6 @@
 		"pk": "participant",
 		"sheet": "Basic Data",
 		"slug": "api::data-residence-in-1977.data-residence-in-1977",
-		"route": "/api/data-residence-in-1977s",
 		"attribute": "residence_in_1977s",
 		"lookup": {
 			"ID": "participant",
@@ -50,7 +49,6 @@
 		"pk": "participant",
 		"sheet": "Spouse Partner Info",
 		"slug": "api::data-spouse.data-spouse",
-		"route": "/api/data-spouses",
 		"attribute": "spouses",
 		"lookup": {
 			"ID": "participant",
@@ -92,7 +90,6 @@
 		"pk": "participant",
 		"sheet": "Ed & Career",
 		"slug": "api::data-education.data-education",
-		"route": "/api/data-educations",
 		"attribute": "educations",
 		"lookup_grad": {
 			"ID": "participant",
@@ -111,7 +108,6 @@
 		"pk": "participant",
 		"sheet": "Ed & Career",
 		"slug": "api::data-career.data-career",
-		"route": "/api/data-careers",
 		"attribute": "careers",
 		"lookup": {
 			"ID": "participant",
@@ -123,7 +119,6 @@
 		"pk": "participant",
 		"sheet": "Electoral Politics",
 		"slug": "api::data-political-office-held.data-political-office-held",
-		"route": "/api/data-political-office-helds",
 		"attribute": "political_office_helds",
 		"lookup": {
 			"ID": "participant",
@@ -138,7 +133,6 @@
 		"pk": "participant",
 		"sheet": "Electoral Politics",
 		"slug": "api::data-political-office-lost.data-political-office-lost",
-		"route": "/api/data-political-office-losts",
 		"attribute": "political_office_losts",
 		"lookup": {
 			"ID": "participant",
@@ -151,7 +145,6 @@
 		"pk": "participant",
 		"sheet": "Electoral Politics",
 		"slug": "api::data-political-party.data-political-party",
-		"route": "/api/data-political-parties",
 		"attribute": "political_parties",
 		"lookup": {
 			"ID": "participant",
@@ -176,7 +169,6 @@
 		"pk": "participant",
 		"sheet": "Leadership in Org",
 		"slug": "api::data-leadership-in-organization.data-leadership-in-organization",
-		"route": "/api/data-leadership-in-organizations",
 		"attribute": "leadership_in_organizations",
 		"lookup": {
 			"ID": "participant",

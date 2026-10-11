@@ -14,7 +14,7 @@ export default async function checkWithMaster(sheets) {
 
   //get the master ID data
   const masterdata = await fetchDataWithRetry(
-    `${process.env.STRAPI_ADMIN_BACKEND_URL}/api/data-idc-masters`
+    `${process.env.STRAPI_ADMIN_BACKEND_URL}/preflight-check/data-idc-masters`
   );
   const master = masterdata.data.data;
 

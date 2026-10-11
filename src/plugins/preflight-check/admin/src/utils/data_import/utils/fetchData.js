@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosInstance from "../../axiosInstance";
 
 // Helper function for timeout
 async function delay(ms) {
@@ -8,7 +8,7 @@ async function delay(ms) {
 // Helper function to fetch existing data (retry if needed)
 async function fetchDataWithRetry(url, retryCount = 3, delay = 1000) {
   try {
-    const response = await axios.get(url);
+    const response = await axiosInstance.get(url);
     return response;
   } catch (error) {
     if (retryCount > 0) {

@@ -29,11 +29,15 @@ instance.interceptors.response.use(
   error => {
     // whatever you want to do with the error
     if (error.response?.status === 401) {
-      auth.clearAppStorage();
-      window.location.reload();
-    }
+      console.error('Authenticated Strapi request returned 401:', {
+      url: error.config?.url,
+      method: error.config?.method,
+      status: error.response?.status,
+      data: error.response?.data,
+    });
+  }
 
-    throw error;
+  throw error;
   }
 );
 
