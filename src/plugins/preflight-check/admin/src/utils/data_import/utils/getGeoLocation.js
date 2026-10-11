@@ -1,15 +1,8 @@
 const qs = require("qs");
 const axios = require("axios");
+import axiosInstance from "../../axiosInstance";
 
 import { fetchDataWithRetry } from "./fetchData";
-
-// Setup header for Strapi API calls
-const token = process.env.STRAPI_ADMIN_WEBTOKEN;
-const header = {
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-};
 
 const fetchData = async (url) => {
   const response = await axios.get(url);
@@ -48,7 +41,7 @@ async function parseStrapiData(strapiData) {
 // will create lat/long for any participant where it is missing - will not update
 export default async function getGeoLocation() {
   // get existing data
-  let url = `${process.env.STRAPI_ADMIN_BACKEND_URL}/api/nwc-participants`;
+  let url = `${process.env.STRAPI_ADMIN_BACKEND_URL}/preflight-check/nwc-participants`;
   const strapi_query = qs.stringify(
     {
       populate: "residence_in_1977s",
@@ -97,16 +90,15 @@ export default async function getGeoLocation() {
     };
 
     try {
-      let url = `${process.env.STRAPI_ADMIN_BACKEND_URL}/api/import-export-entries/content/import`;
-      let result = await axios.post(
+      let url = `${process.env.STRAPI_ADMIN_BACKEND_URL}/preflight-check/import`;
+      let result = await axiosInstance.post(
         url,
         {
           slug: "api::nwc-participant.nwc-participant",
           data: JSON.stringify(data),
           format: "json",
           idField: "id",
-        },
-        header
+        }
       );
       console.debug(`${result.status}: Latitude processed`);
     } catch (error) {

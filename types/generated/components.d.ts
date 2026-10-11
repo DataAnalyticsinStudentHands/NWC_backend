@@ -1,90 +1,66 @@
-import type { Schema, Attribute } from '@strapi/strapi';
+import type { Attribute, Schema } from '@strapi/strapi';
 
-export interface GeneralVideoAudio extends Schema.Component {
-  collectionName: 'components_general_video_audios';
+export interface EssaysCaptionedImage extends Schema.Component {
+  collectionName: 'components_general_captioned_images';
   info: {
-    name: 'VideoAudio';
-    icon: 'closed-captioning';
+    description: '';
+    icon: 'image';
+    name: 'CaptionedImage';
   };
   attributes: {
-    Title: Attribute.String;
-    VideoAudioURL: Attribute.String;
+    Image: Attribute.Media<'images' | 'files' | 'videos'>;
+    ImageAlt: Attribute.String;
+    ImgCaption: Attribute.String;
+    ImgCredit: Attribute.String;
+    ImgCreditMore: Attribute.String;
   };
 }
 
-export interface GeneralUsertags extends Schema.Component {
-  collectionName: 'components_general_usertags';
+export interface EssaysSection extends Schema.Component {
+  collectionName: 'components_general_sections';
   info: {
-    name: 'usertags';
-    icon: 'tag';
     description: '';
+    icon: 'text-height';
+    name: 'Section';
+  };
+  attributes: {
+    SectionText: Attribute.RichText;
+    SectionTitle: Attribute.String;
+  };
+}
+
+export interface GeneralCareer extends Schema.Component {
+  collectionName: 'components_general_careers';
+  info: {
+    description: '';
+    icon: 'address-book';
+    name: 'Career';
   };
   attributes: {
     text: Attribute.String;
   };
 }
 
-export interface GeneralSources extends Schema.Component {
-  collectionName: 'components_sources_sources';
+export interface GeneralDocument extends Schema.Component {
+  collectionName: 'components_general_documents';
   info: {
-    displayName: 'General.map-sources';
-    description: '';
+    icon: 'file-pdf';
+    name: 'DOCUMENT';
   };
   attributes: {
-    LastName: Attribute.String;
-    FirstName: Attribute.String;
-    Title: Attribute.String;
-    Date: Attribute.String;
-    SourceName: Attribute.String;
-    Description: Attribute.Text;
-  };
-}
-
-export interface GeneralSource extends Schema.Component {
-  collectionName: 'components_general_sources';
-  info: {
-    name: 'source';
-    icon: 'book-medical';
-    description: '';
-  };
-  attributes: {
-    text: Attribute.Text;
-  };
-}
-
-export interface GeneralRole extends Schema.Component {
-  collectionName: 'components_general_roles';
-  info: {
-    name: 'role';
-    icon: 'scroll';
-    description: '';
-  };
-  attributes: {
-    text: Attribute.String;
-  };
-}
-
-export interface GeneralPrimaryDocuments extends Schema.Component {
-  collectionName: 'components_general_primary_documents';
-  info: {
-    name: 'PrimaryDocuments';
-    icon: 'id-card';
-  };
-  attributes: {
-    THUMBNAIL: Attribute.Media<'images' | 'files' | 'videos'>;
     PDF: Attribute.Media<'images' | 'files' | 'videos'>;
+    THUMBNAIL: Attribute.Media<'images' | 'files' | 'videos'>;
   };
 }
 
 export interface GeneralFiles extends Schema.Component {
   collectionName: 'components_general_files';
   info: {
+    description: '';
     displayName: 'files';
     icon: 'alien';
-    description: '';
   };
   attributes: {
-    title: Attribute.String;
     file: Attribute.Media<'files'>;
     link_to_form: Attribute.Enumeration<
       [
@@ -94,79 +70,104 @@ export interface GeneralFiles extends Schema.Component {
         'Participant Inquiry',
         'Researcher Inquiry',
         'Educator Inquiry',
-        'Student Inquiry'
+        'Student Inquiry',
+        'Archivist Inquiry'
       ]
     >;
+    title: Attribute.String;
   };
 }
 
-export interface GeneralDocument extends Schema.Component {
-  collectionName: 'components_general_documents';
+export interface GeneralPrimaryDocuments extends Schema.Component {
+  collectionName: 'components_general_primary_documents';
   info: {
-    name: 'DOCUMENT';
-    icon: 'file-pdf';
+    icon: 'id-card';
+    name: 'PrimaryDocuments';
   };
   attributes: {
-    THUMBNAIL: Attribute.Media<'images' | 'files' | 'videos'>;
     PDF: Attribute.Media<'images' | 'files' | 'videos'>;
+    THUMBNAIL: Attribute.Media<'images' | 'files' | 'videos'>;
   };
 }
 
-export interface GeneralCareer extends Schema.Component {
-  collectionName: 'components_general_careers';
+export interface GeneralRole extends Schema.Component {
+  collectionName: 'components_general_roles';
   info: {
-    name: 'Career';
-    icon: 'address-book';
     description: '';
+    icon: 'scroll';
+    name: 'role';
   };
   attributes: {
     text: Attribute.String;
   };
 }
 
-export interface EssaysSection extends Schema.Component {
-  collectionName: 'components_general_sections';
+export interface GeneralSource extends Schema.Component {
+  collectionName: 'components_general_sources';
   info: {
-    name: 'Section';
-    icon: 'text-height';
     description: '';
+    icon: 'book-medical';
+    name: 'source';
   };
   attributes: {
-    SectionTitle: Attribute.String;
-    SectionText: Attribute.RichText;
+    text: Attribute.Text;
   };
 }
 
-export interface EssaysCaptionedImage extends Schema.Component {
-  collectionName: 'components_general_captioned_images';
+export interface GeneralSources extends Schema.Component {
+  collectionName: 'components_sources_sources';
   info: {
-    name: 'CaptionedImage';
-    icon: 'image';
     description: '';
+    displayName: 'General.map-sources';
   };
   attributes: {
-    Image: Attribute.Media<'images' | 'files' | 'videos'>;
-    ImageAlt: Attribute.String;
-    ImgCredit: Attribute.String;
-    ImgCaption: Attribute.String;
-    ImgCreditMore: Attribute.String;
+    Date: Attribute.String;
+    Description: Attribute.Text;
+    FirstName: Attribute.String;
+    LastName: Attribute.String;
+    SourceName: Attribute.String;
+    Title: Attribute.String;
+  };
+}
+
+export interface GeneralUsertags extends Schema.Component {
+  collectionName: 'components_general_usertags';
+  info: {
+    description: '';
+    icon: 'tag';
+    name: 'usertags';
+  };
+  attributes: {
+    text: Attribute.String;
+  };
+}
+
+export interface GeneralVideoAudio extends Schema.Component {
+  collectionName: 'components_general_video_audios';
+  info: {
+    icon: 'closed-captioning';
+    name: 'VideoAudio';
+  };
+  attributes: {
+    Title: Attribute.String;
+    VideoAudioURL: Attribute.String;
   };
 }
 
 declare module '@strapi/types' {
   export module Shared {
     export interface Components {
-      'general.video-audio': GeneralVideoAudio;
-      'general.usertags': GeneralUsertags;
-      'general.sources': GeneralSources;
-      'general.source': GeneralSource;
-      'general.role': GeneralRole;
-      'general.primary-documents': GeneralPrimaryDocuments;
-      'general.files': GeneralFiles;
-      'general.document': GeneralDocument;
-      'general.career': GeneralCareer;
-      'essays.section': EssaysSection;
       'essays.captioned-image': EssaysCaptionedImage;
+      'essays.section': EssaysSection;
+      'general.career': GeneralCareer;
+      'general.document': GeneralDocument;
+      'general.files': GeneralFiles;
+      'general.primary-documents': GeneralPrimaryDocuments;
+      'general.role': GeneralRole;
+      'general.source': GeneralSource;
+      'general.sources': GeneralSources;
+      'general.usertags': GeneralUsertags;
+      'general.video-audio': GeneralVideoAudio;
     }
   }
 }

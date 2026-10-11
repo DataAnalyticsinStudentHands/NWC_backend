@@ -12,6 +12,8 @@ import {
 } from "@strapi/design-system";
 import { ContentLayout } from "@strapi/design-system/Layout";
 import { LinkButton } from "@strapi/design-system/v2";
+import { useRBAC } from "@strapi/helper-plugin";
+import pluginPermissions from "../../permissions";
 import MasterReport from "../../components/MasterReport";
 import FormatReport from "../../components/FormatReport";
 import NumberReport from "../../components/NumberReport";
@@ -26,6 +28,12 @@ import {
 } from "../../utils/data_check";
 
 const HomePage = () => {
+  const { allowedActions } = useRBAC({
+    import: pluginPermissions.import,
+  });
+
+  const canImport = allowedActions.canImport;
+
   const [file, setFile] = useState({});
   const [sheets, setSheets] = useState(null);
   const [reportData, setReportData] = useState(null);
@@ -95,8 +103,10 @@ const HomePage = () => {
                         Remove File
                       </Button>
                     )}
-                    {showImport && <ImportButton data={sheets} />}
-                    {<GeoButton/>}
+                    {showImport && (
+                      <ImportButton data={sheets} disabled={!canImport} />
+                    )}
+                    <GeoButton disabled={!canImport} />
                   </Flex>
                 </Flex>
               </Box>

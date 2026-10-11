@@ -2,46 +2,27 @@ const _ = require("lodash");
 const { cleanSheetObject, cleanSheetArray } = require("./utils/sheetData.js");
 import * as config from "./config.json";
 import qs from "qs";
-import axios from "axios";
+import axiosInstance from "../axiosInstance";
 
 import { fetchDataWithRetry, delay } from "./utils/fetchData.js";
 
-// Setup header for API calls
-const token = process.env.STRAPI_ADMIN_WEBTOKEN;
-const header = {
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-};
-
-// Helper function to delete data (does retry if needed)
-async function deletDataWithRetry(url, retryCount = 3, delay = 1000) {
-  try {
-    const response = await axios.delete(url, header);
-    return response;
-  } catch (error) {
-    if (retryCount > 0) {
-      console.error(`Request failed. Retrying ${retryCount} more times...`);
-      await new Promise((resolve) => setTimeout(resolve, delay));
-      return fetchDataWithRetry(url, retryCount - 1, delay);
-    } else {
-      throw error;
-    }
-  }
-}
-
 // Helper function to delete entries
 async function deleteEntries(props) {
-  const { id, route } = props;
-  const url = `${process.env.STRAPI_ADMIN_BACKEND_URL}${route}/${id}`;
-  await deletDataWithRetry(url);
+  const { id, slug } = props;
+
+  const url = `${process.env.STRAPI_ADMIN_BACKEND_URL}/preflight-check/delete-entry`;
+
+  await axiosInstance.post(url, {
+    slug,
+    id,
+  });
 }
 
 // Helper function to remove existing content based on participant IDs
 async function removeCurrentContent(props) {
-  const { ids, attribute, route } = props;
+  const { ids, attribute, slug } = props;
 
-  let url = `${process.env.STRAPI_ADMIN_BACKEND_URL}/api/nwc-participants`;
+  let url = `${process.env.STRAPI_ADMIN_BACKEND_URL}/preflight-check/nwc-participants`;
   const query = qs.stringify(
     {
       populate: [attribute],
@@ -65,7 +46,7 @@ async function removeCurrentContent(props) {
 
   deleteIds.length > 0 &&
     deleteIds.forEach(async (id) => {
-      await deleteEntries({ id: id, route: route });
+      await deleteEntries({ id: id, slug: slug });
     });
 }
 
@@ -84,16 +65,15 @@ async function HandleParticipants(props) {
   };
 
   try {
-    let url = `${process.env.STRAPI_ADMIN_BACKEND_URL}/api/import-export-entries/content/import`;
-    let result = await axios.post(
+    let url = `${process.env.STRAPI_ADMIN_BACKEND_URL}/preflight-check/import`;
+    let result = await axiosInstance.post(
       url,
       {
         slug: slug,
         data: JSON.stringify(data),
         format: "json",
         idField: pk,
-      },
-      header
+      }
     );
     console.debug(`${result.status}: ${key} processed`);
   } catch (error) {
@@ -104,8 +84,15 @@ async function HandleParticipants(props) {
 // imports one to many content, will first remove existing content by participant ID
 async function HandleOne2(props) {
   const { sheets, key } = props;
-  const { pk, sheet, route, attribute, lookup, lookup_grad, lookup_undergrad } =
-    config[key];
+  const {
+    pk,
+    sheet,
+    slug,
+    attribute,
+    lookup,
+    lookup_grad,
+    lookup_undergrad,
+  } = config[key];
 
   const sheetData = sheets[sheet] || {};
 
@@ -126,14 +113,16 @@ async function HandleOne2(props) {
   await removeCurrentContent({
     ids: partIDs,
     attribute: attribute,
-    route: route,
+    slug: slug,
   });
 
   try {
     for (const item of newSheetData) {
-      let url = `${process.env.STRAPI_ADMIN_BACKEND_URL}${route}`;
-      let data = { data: item };
-      let result = await axios.post(url, data, header);
+      let url = `${process.env.STRAPI_ADMIN_BACKEND_URL}/preflight-check/create-entry`;
+      let result = await axiosInstance.post(url, {
+        slug,
+        data: item,
+      });
       console.debug(
         `${result.status}: ${key} for ID ${item.participant} added`
       );
@@ -149,14 +138,13 @@ async function HandleMany2(props) {
   const { pk, sheet, slug } = config[key];
 
   // get existing content
-  const response = await axios.post(
-    `${process.env.STRAPI_ADMIN_BACKEND_URL}/api/import-export-entries/content/export/contentTypes`,
+  const response = await axiosInstance.post(
+    `${process.env.STRAPI_ADMIN_BACKEND_URL}/preflight-check/export`,
     {
       slug: slug,
       exportFormat: "json-v2",
       deepness: 2,
-    },
-    header
+    }
   );
 
   const parsedData = JSON.parse(response.data.data);
@@ -240,8 +228,8 @@ async function HandleMany2(props) {
   });
 
   try {
-    let url = `${process.env.STRAPI_ADMIN_BACKEND_URL}/api/import-export-entries/content/import`;
-    let result = await axios.post(
+    let url = `${process.env.STRAPI_ADMIN_BACKEND_URL}/preflight-check/import`;
+    let result = await axiosInstance.post(
       url,
       {
         slug: slug,
@@ -253,8 +241,7 @@ async function HandleMany2(props) {
         }),
         format: "json",
         idField: pk,
-      },
-      header
+      }
     );
     console.debug(`${result.status}: ${key} processed`);
   } catch (error) {
